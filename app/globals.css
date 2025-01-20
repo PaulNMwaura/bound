@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .container {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    @media (min-width: 375px) {
+        .container {
+            max-width: 375px;
+        }
+    }
+    @media (min-width: 768px) {
+        .container {
+            max-width: 768px;
+        }
+    }
+    @media (min-width: 1200px) {
+        .container {
+            max-width: 1200px;
+            padding-right: 80px;
+            padding-left: 80px;
+        }
+    }
+}
+
+@layer components {
+    .btn {
+        @apply px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center tracking-tight;
+    }
+
+    .btn-primary {
+        @apply bg-black text-white;
+    }
+    .btn-text {
+        @apply text-black bg-transparent;
+    }
+
+    .tag {
+        @apply text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight;
+    }
+
+    .section-title {
+        @apply text-center text-3xl md:text-5xl font-bold tracking-tighter bg-gradient-to-b from-purple-600 to-orange-500 text-transparent bg-clip-text;
+    }
+
+    .section-description {
+        @apply text-center text-[22px] leading-[30px] tracking-tight text-[#010D3E];
+    }
+
+    .section-heading {
+        @apply max-w-[540px] mx-auto;
+    }
+
+    .search-bar {
+        @apply bg-white flex px-1 py-1 rounded-full border border-orange-500 overflow-hidden w-52 max-w-[350px] font-[san-serif]
+    }
+
+    .search-btn {
+        @apply bg-black hover:bg-black/60 transition-all text-white text-sm rounded-full px-5 py-2.5
+    }
+    
+    .calendar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .calendar-header-item {
+        width: 20%;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    .calendar-grid {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .calendar-day {
+        width: 20%;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+        cursor: pointer;
+    }
+    
+    .calendar-day.available {
+        background-color: lightgreen; /* Shaded day */
+    }
+    
+    .calendar-day.unavailable {
+        background-color: lightgray; /* Non-shaded day */
+    }
+}

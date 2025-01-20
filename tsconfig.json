@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/RegisterUserForm.jsx", "app/components/LoginForm.jsx", "app/register/page.jsx", "app/page.jsx", "app/sections/browsePage/Header.tsx", "app/sections/viewListerPage/Information.jsx", "app/sections/viewListerPage/Hero.jsx", "app/viewLister/[id]/page.jsx", "app/components/Calendar.jsx", "app/components/RegisterListerForm.jsx"],
+  "exclude": ["node_modules"]
+}
