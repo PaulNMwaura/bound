@@ -26,7 +26,8 @@ export async function POST(req) {
       firstname: body.firstname,
       lastname: body.lastname,
       email: body.email,
-      location: body.city + ", " + body.state,
+      city: body.city,
+      state: body.state,
       description: body.description,
       services: body.services || [], // Optional services field (empty array if not provided)
       unavailableDays: body.unavailableDays, // Unavailable days array

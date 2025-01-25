@@ -1,12 +1,52 @@
 "use client";
 
-import { Lister } from "@/app/listersTempData";
+// import { Lister } from "@/app/listersTempData";
+import { useState, useEffect } from "react";
 import Logo from "@/app/assets/logo-holder.png";
 import Image from "next/image";
 
 
-export const Hero = ({id}) => {
-  const thisLister = Lister[id];
+export const Hero = ({ id }) => {
+  const [thisLister, setLister] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch lister data when component mounts
+    const fetchLister = async () => {
+      try {
+        const response = await fetch(`/api/findListers/${id}`);
+        if (!response.ok) {
+          throw new Error('Lister not found');
+        }
+        const data = await response.json();
+        console.log("data: ", data.lister);
+        setLister(data.lister);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLister();
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!thisLister) {
+    return <div>No lister found</div>;
+  }
+  const profileImage = thisLister.imageBase64
+  ? thisLister.imageBase64
+  : Logo;
+
     return (
       <section className="pb-10">
         <div className="container">
@@ -18,7 +58,7 @@ export const Hero = ({id}) => {
               <div className="max-w-[600px]">
                 <div className="flex justify-between font-semibold">
                   <a>{thisLister.rating}</a>
-                  <a>{thisLister.location}</a>
+                  <a>{thisLister.city}, {thisLister.state}</a>
                 </div>
                 <div>
                   {thisLister.description}

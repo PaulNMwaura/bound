@@ -5,13 +5,13 @@ import Logo from "@/app/assets/BoundLogo.png";
 import Image from "next/image";
 import { IoMenu } from "react-icons/io5";
 import { HomeMenu } from "@/app/components/HomeMenu";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Header() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     
-    // const router = useRouter();
+    const router = useRouter();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);

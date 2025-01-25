@@ -127,7 +127,7 @@ export default function ApplyLister() {
           services: [{ name: "", subcategories: [{ name: "", price: "" }] }],
           unavailableDays: [],
         });
-        router.replace(`viewLister/${_id}`)
+        router.replace(`viewLister/${_id}`) //change this to current user's ID. So they can view their lister page.
       } else {
         alert("Failed to register.");
       }
@@ -298,7 +298,7 @@ export default function ApplyLister() {
                 onUnavailableDaysChange={handleUnavailableDaysChange} // Pass function to handle day click
               />
             </div>
-            <h3 className="mt-4 mb-5 text-center">Services and availability can be changed at anytime from your page settings.</h3>
+            <h3 className="mt-4 mb-5 text-center font-semibold">Your settings can be changed at anytime from your page settings</h3>
             {/* Submit Button */}
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full">
               Register

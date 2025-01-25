@@ -6,6 +6,7 @@ import { Reviews } from "@/app/sections/viewListerPage/Reviews";
 
 export default async function listerPage ({params}) {
   const {id} = await params;
+  // console.log("id: ", id);
   return (
     <>
       <Header />
