@@ -54,8 +54,8 @@ export const Hero = () => {
                             listers.map((lister, index) => (
                             <div key={index} className="pt-3 md:pt-3 p-3 flex flex-col bg-[#98F5F9]/20 rounded shadow">
                                 {/* Card Image */}
-                                <div className="flex justify-center rounded-lg bg-red-300">
-                                    <Image src={Logo} alt="Profile Picture" className="w-52 h-52" />
+                                <div className="flex justify-center">
+                                    <Image src={lister.picture || Logo} alt="Profile Picture" width={208} height={208} className="object-fit max-w-62 max-h-52 rounded-lg" />
                                 </div>
 
                                 {/* Card Content */}
@@ -98,7 +98,7 @@ export const Hero = () => {
                             </div>
                         ))
                         ) : (
-                        <div className="w-screen text-center text-xl">
+                        <div className="w-full md:w-screen text-center text-xl">
                             {
                                 filters.service? (
                                     <p className="md:mr-48 text-center">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>

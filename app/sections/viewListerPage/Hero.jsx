@@ -1,16 +1,15 @@
 "use client";
 
-// import { Lister } from "@/app/listersTempData";
 import { useState, useEffect } from "react";
 import Logo from "@/app/assets/logo-holder.png";
 import Image from "next/image";
-
+import { useSession } from "next-auth/react";
 
 export const Hero = ({ id }) => {
   const [thisLister, setLister] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const { data: session } = useSession(); // Get logged-in user session
   useEffect(() => {
     // Fetch lister data when component mounts
     const fetchLister = async () => {
@@ -20,7 +19,7 @@ export const Hero = ({ id }) => {
           throw new Error('Lister not found');
         }
         const data = await response.json();
-        console.log("data: ", data.lister);
+        // console.log("data: ", data.lister);
         setLister(data.lister);
       } catch (error) {
         setError(error.message);
@@ -43,6 +42,7 @@ export const Hero = ({ id }) => {
   if (!thisLister) {
     return <div>No lister found</div>;
   }
+
   const profileImage = thisLister.imageBase64
   ? thisLister.imageBase64
   : Logo;
@@ -51,9 +51,9 @@ export const Hero = ({ id }) => {
       <section className="pb-10">
         <div className="container">
           <div className="pt-10 text-sm md:text-lg">
-            <div className="flex gap-4">
+            <div className="flex items-center gap-4">
               <div>
-                <Image src={Logo} alt="Profile picture goes here" width={100}/>
+                <Image src={thisLister.picture || Logo} alt="Profile picture goes here" height={100} width={100} className="rounded-full" unoptimized={!!thisLister.imageBase64}/>
               </div>
               <div className="max-w-[600px]">
                 <div className="flex justify-between font-semibold">

@@ -8,7 +8,7 @@ export async function POST(req) {
         const { email } = await req.json();
         const lister = await Lister.findOne({ email }).select("_id");
 
-        console.log("Lister found:", lister);
+        console.log("Lister found: ");
 
         return NextResponse.json({ lister });
     } catch (error) {

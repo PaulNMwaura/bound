@@ -11,9 +11,9 @@ export default function ApplyLister() {
   const {data: session } = useSession();
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    picture: "",
-    firstname: "",
-    lastname: "",
+    picture: session?.user?.profilePicture ||"",
+    firstname: session?.user?.firstname || "",
+    lastname: session?.user?.lastname || "",
     email: session?.user?.email || "",
     city: "",
     state: "",
@@ -103,7 +103,7 @@ export default function ApplyLister() {
       const {lister} = await resListerExists.json();
 
       if(lister) {
-          setError("You are already registered as a listerS.");
+          setError("You are already registered as a lister.");
           return;
       }
 
@@ -117,9 +117,9 @@ export default function ApplyLister() {
         alert("Registration successful!");
         // formData.reset();
         setFormData({
-          picture: "",
-          firstname: "",
-          lastname: "",
+          picture: session?.user?.profilePicture ||"",
+          firstname: session?.user?.firstname || "",
+          lastname: session?.user?.lastname || "",
           email: session?.user?.email || "",
           city: "",
           state: "",
@@ -127,7 +127,7 @@ export default function ApplyLister() {
           services: [{ name: "", subcategories: [{ name: "", price: "" }] }],
           unavailableDays: [],
         });
-        router.replace(`viewLister/${_id}`) //change this to current user's ID. So they can view their lister page.
+        router.replace("browse") //change this to current user's ID. So they can view their lister page.
       } else {
         alert("Failed to register.");
       }
@@ -148,7 +148,7 @@ export default function ApplyLister() {
               Profile Picture:
               <input type="file" accept="image/*" onChange={handleImageUpload} className="block mt-2" />
             </label>
-            {formData.picture && <img src={formData.picture} alt="Preview" className="w-24 h-24 mt-2 rounded-full" />}
+            {formData.picture && <img src={formData.picture} alt="Preview" className="w-28 h-28 mt-2 object-cover rounded-full" />}
 
             {/* Name Fields */}
             <div className="w-full flex justify-between space-x-4 mt-5 pb-4">

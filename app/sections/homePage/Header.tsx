@@ -20,10 +20,10 @@ export default function Header() {
     return (
         <>
         <header className="sticky top-0 backdrop-blur-sm z-[1]">
-        <div className="flex justify-center items-center py-2 bg-black text-white text-sm gap-3">
+        <div className="flex justify-center items-center py-2 bg-black text-white text-sm gap-3 cursor-pointer">
           <p className="text-white/60 hidden md:block">Browse our network and freelancing profesionals</p>
           <div className="flex gap-1 items-center">
-            <p onClick={() => router.push("/home")}> Get started for free</p>
+            <p onClick={() => router.push("/browse")}> Get started for free</p>
             <FaArrowRight className="h-3 w-3 mt-[2px]" />
           </div>
         </div>

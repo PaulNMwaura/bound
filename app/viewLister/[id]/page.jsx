@@ -9,7 +9,7 @@ export default async function listerPage ({params}) {
   // console.log("id: ", id);
   return (
     <>
-      <Header />
+      <Header id={id}/>
       <Hero id={id} />
       <Information id={id} />
       <Catalog />

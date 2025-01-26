@@ -24,7 +24,7 @@ export const authOptions = {
                     if (!passwordsMatch) return null;
 
                     // Return the user object (you can include any fields you need)
-                    return user;
+                    return {id: user._id, firstname: user.firstname, lastname: user.lastname, email: user.email};
                 } catch (error) {
                     console.log("Error: ", error);
                     return null; // Return null if an error occurs
@@ -32,6 +32,20 @@ export const authOptions = {
             },
         }),
     ],
+    callbacks: {
+        async session({ session, token }) {
+          if (token?.id) {
+            session.user.id = token.id; // Add user ID to session
+          }
+          return session;
+        },
+        async jwt({ token, user }) {
+          if (user) {
+            token.id = user.id; // Store user ID in token
+          }
+          return token;
+        },
+    },
     session: {
         strategy: "jwt",
     },
