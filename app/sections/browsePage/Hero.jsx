@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Header } from "./Header";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { view } from "framer-motion";
 
 const getListers = async ({ city = "", state = "", service = "" }) => {
     try {
@@ -34,6 +36,10 @@ export const Hero = () => {
         service: searchParams.get("service") || "", 
     });
     const [listers, setListers] = useState([]);
+    const [isLister, setLister] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { data: session } = useSession();
     
     useEffect(() => {
         const fetchListers = async () => {
@@ -43,10 +49,46 @@ export const Hero = () => {
         fetchListers();
     }, [filters]); // Re-run effect when filters change
 
+    const id = session?.user?.id || "";
+    useEffect(() => {
+        if(!id) return;
+        // Fetch lister data when component mounts
+        const checkIfIsLister = async () => {
+        try {
+            console.log("id: ", id);
+            const response = await fetch(`/api/findByUserId?id=${id}`);
+        if (!response.ok) {
+            console.log(response.status);
+            throw new Error('Lister not found');
+        }
+        // const data = await response.json();
+        // console.log("data: ", data.lister);
+        setLister(true);
+        } catch (error) {
+            return;
+        } finally {
+        setLoading(false);
+        }
+    };
+
+    checkIfIsLister();
+    }, [id]);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+// /    if (!isLister) return <div>No lister found</div>;
+
+    // if(isLister)
+    //     console.log("The viewer is a lister");
+
+    // console.log("lister: ", viewer.userId,"\nViewer: ", id);
+    // const isLister = viewer.id;
+    // if(isLister)
+    //     console.log("session: ", session.user.id, "\nlister: ", viewer.id);
 
     return (
         <>
-            <Header setFilters={setFilters}/>
+            <Header id={id} isLister={isLister} setFilters={setFilters}/>
             <main className="pt-10">
                 <div className="container max-w-[90%] ">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

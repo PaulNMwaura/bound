@@ -7,7 +7,7 @@ import { SearchMenu } from "@/app/components/SearchMenu";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
-export const Header = ({setFilters}) => {
+export const Header = ({id, isLister, setFilters}) => {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar visibility state
 
@@ -21,11 +21,13 @@ export const Header = ({setFilters}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(formData.state == "Search All")
+          formData.state = "";
         setFilters(formData); // Update filters in parent component
     };
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
+    
     return (
       <>
         <header className="sticky top-0 backdrop-blur-sm z-[1]">
@@ -36,7 +38,7 @@ export const Header = ({setFilters}) => {
               </div>
               <form
                 onSubmit={handleSubmit}
-                className="hidden md:flex flex-row justify-between gap-3"
+                className="hidden md:flex flex-row justify-between gap-6"
               >
                 <input
                   type="text"
@@ -44,34 +46,34 @@ export const Header = ({setFilters}) => {
                   placeholder="Enter City"
                   value={formData.city}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded placeholder:text-sm"
                 />
-                <input
-                  type="text"
-                  name="state"
-                  placeholder="Enter State"
-                  value={formData.state}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
+                <select name="state" value={formData.state} onChange={handleChange} className="border border-black p-2 rounded w-2/3" required>
+                  <option value="">Select State</option>
+                    {["Search All","AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
+                      <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
                 <input
                   type="text"
                   name="service"
                   placeholder="Enter Service (e.g., Barber)"
                   value={formData.service}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
+                  className="w-full p-2 border border-gray-300 rounded placeholder:text-sm"
                 />
                 <button type="submit" className="btn btn-primary">
                   Search
                 </button>
               </form>
               <div className="flex justify-center items-center">
-                <div className="hidden md:block md:text-xs border border-black rounded-lg p-2">
-                  <button onClick={() => router.replace("/profile")}>
-                    My Profile
-                  </button>
-                </div>
+                {isLister && (
+                  <div className="hidden md:block md:text-xs border border-black rounded-lg p-2">
+                    <button onClick={() => router.replace(`/dashboard/${id}`)}>
+                      My Dashboard
+                    </button>
+                  </div>
+                )}
                 {/* Mobile Menu Icon */}
                 <div className="flex items-center md:hidden">
                   <button

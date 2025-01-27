@@ -59,7 +59,7 @@ export const Header = ({ id }) => {
               </div>
             </div>
             <div className="hidden md:flex md:text-xs border border-black rounded-lg p-2">
-              <button onClick={() => router.replace("/profile")}>My Profile</button>
+              <button onClick={() => router.replace(`/dashboard/${thisLister.userId}`)}>My Dashboard</button>
             </div>
           </div>
         </div>

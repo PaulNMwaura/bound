@@ -54,7 +54,7 @@ export const Information = ({id}) => {
                         <div className="section-description flex justify-between">
                             <ul>{service.name}</ul>
                             {service.price && (
-                            <ul className="font-semibold">{service.price}</ul>
+                            <ul className="font-semibold">${service.price}</ul>
                             )}
                         </div>
                         {/* question mark because they may not exists */}
@@ -64,7 +64,7 @@ export const Information = ({id}) => {
                             className="pl-8 flex flex-row justify-between font-light"
                             >
                             <ul>{subService.name}</ul>
-                            <ul className="font-semibold">{subService.price}</ul>
+                            <ul className="font-semibold">${subService.price}</ul>
                             </div>
                         ))}
                         </div>
