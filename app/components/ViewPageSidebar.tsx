@@ -40,7 +40,7 @@ export const ViewPageSidebar: React.FC<SidebarModalProps> = ({isLister, id, isOp
                         </li>
                         <li>
                             {isLister && (
-                                <a href={`/editLister/${id}`} className="hover:underline">
+                                <a href={`/dashboard/${id}`} className="hover:underline">
                                     Edit Profile
                                 </a>
                             )}

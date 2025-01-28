@@ -2,13 +2,39 @@
 
 import Calendar from "@/app/components/Calendar";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 // import { Lister } from "@/app/listersTempData";
+const handleAppointmentRequest = async ({curr_userId}) => {
+  try {
+    const response = await fetch("/api/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: curr_userId,
+        listerId: id,
+        date: new Date(), // Replace with actual date selection
+      }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert("Appointment request sent!");
+    } else {
+      alert(`Error: ${data.message}`);
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong.");
+  }
+};
 
 export const Information = ({id}) => {
   const [thisLister, setLister] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const { data: session } = useSession(); // Get logged-in user session
+  const curr_user = session?.user?.id;
+  console.log(curr_user);
   useEffect(() => {
     // Fetch lister data when component mounts
     const fetchLister = async () => {
@@ -92,7 +118,7 @@ export const Information = ({id}) => {
                         </div>
                     </div>
                     <div className="pt-5 flex justify-center md:gap-20 text-xs md:text-lg">
-                        <button className="btn btn-primary">Request An Appointment</button>
+                        <button onClick={() => handleAppointmentRequest(curr_user)}className="btn btn-primary">Request An Appointment</button>
                         <button className="btn">contact</button>
                     </div>
                 </div>
