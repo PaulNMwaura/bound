@@ -34,23 +34,23 @@ export const Hero = ({listerId}) => {
     };
 
     return (
-        <div className="container max-w-fit">
-        <h1 className="section-title">Overview</h1>
-        <ul className="flex flex-col md:flex-row md:gap-24">
-            {appointments.length > 0 && appointments?.map((appointment) => (
-            <li key={appointment._id} className="px-4 py-4 shadow-md rounded-md">
-                <p>FIRSTNAME LASTNAME</p>
-                <p>Requesting SERVICE on: {new Date(appointment.date).toDateString()}</p>
-                <p>Request: {appointment.status}</p>
-                {appointment.status === "pending" && (
-                <div className="flex justify-between">
-                    <button onClick={() => handleAction(appointment._id, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
-                    <button onClick={() => handleAction(appointment._id, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
-                </div>
-                )}
-            </li>
-            ))}
-        </ul>
+        <div>
+            <h1 className="section-title py-5">Manage Appointments</h1>
+            <ul className="flex flex-col md:flex-row md:gap-24 justify-center">
+                {appointments.length > 0 && appointments?.map((appointment) => (
+                <li key={appointment._id} className="px-4 py-4 shadow-md rounded-md">
+                    <p>FIRSTNAME LASTNAME</p>
+                    <p>Requesting SERVICE on: {new Date(appointment.date).toDateString()}</p>
+                    <p>Request: {appointment.status}</p>
+                    {appointment.status === "pending" && (
+                    <div className="flex justify-between">
+                        <button onClick={() => handleAction(appointment._id, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
+                        <button onClick={() => handleAction(appointment._id, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
+                    </div>
+                    )}
+                </li>
+                ))}
+            </ul>
         </div>
     );
 };

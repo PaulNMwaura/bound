@@ -48,9 +48,9 @@ export const Header = ({id, isLister, setFilters}) => {
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded placeholder:text-sm"
                 />
-                <select name="state" value={formData.state} onChange={handleChange} className="border border-black p-2 rounded w-2/3" required>
+                <select name="state" value={formData.state} onChange={handleChange} className="border border-black p-2 rounded w-2/3">
                   <option value="">Select State</option>
-                    {["Search All","AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
+                    {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
                       <option key={state} value={state}>{state}</option>
                   ))}
                 </select>
