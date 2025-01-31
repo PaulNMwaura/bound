@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/RegisterUserForm.jsx", "app/components/LoginForm.jsx", "app/register/page.jsx", "app/page.jsx", "app/sections/browsePage/Header.jsx", "app/sections/viewListerPage/Information.jsx", "app/sections/viewListerPage/Hero.tsx", "app/viewLister/[id]/page.jsx", "app/components/Calendar.jsx", "app/components/RegisterListerForm.jsx", "app/sections/browsePage/Hero.jsx", "app/sections/viewListerPage/Header.jsx", "app/components/SearchMenu.jsx", "app/dashboard/[id]/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/RegisterUserForm.jsx", "app/sections/loginPage/LoginForm.jsx", "app/register/page.jsx", "app/page.jsx", "app/sections/browsePage/Header.jsx", "app/sections/viewListerPage/Information.jsx", "app/sections/viewListerPage/Hero.tsx", "app/viewLister/[id]/page.jsx", "app/components/Calendar.jsx", "app/components/RegisterListerForm.jsx", "app/sections/browsePage/Hero.jsx", "app/sections/viewListerPage/Header.jsx", "app/components/SearchMenu.jsx", "app/dashboard/[id]/page.jsx", "app/login/page.jsx", "app/browse/page.jsx"],
   "exclude": ["node_modules"]
 }
