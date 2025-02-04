@@ -7,7 +7,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-export const Navbar = () => {
+export const Navbar = ({session}) => {
     return (
         <section className="text-white/90 tracking-tight">
             <div className="h-screen flex flex-col">
@@ -17,7 +17,7 @@ export const Navbar = () => {
                         {/* firstname[0].toUpper */}
                         Y
                     </div>
-                    <a>Your Name</a>
+                    <a>{session?.user?.firstname} {session?.user?.lastname}</a>
                 </div>
                 <div className="py-4 bg-[#A63EC1] text-md lg:text-lg">
                     <ul className="flex flex-col">

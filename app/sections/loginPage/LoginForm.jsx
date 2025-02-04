@@ -24,7 +24,7 @@ export default function LoginForm(){
                 return;
             }
 
-            router.replace("home");
+            router.replace("browse");
         } catch (error) {
             console.log("Error: ", error);
         }

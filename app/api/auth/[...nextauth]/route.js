@@ -37,10 +37,18 @@ export const authOptions = {
           if (token?.id) {
             session.user.id = token.id; // Add user ID to session
           }
+          if (token?.firstname) {
+            session.user.firstname = token.firstname; // Add user firstname to session
+          }
+          if (token?.lastname) {
+            session.user.lastname = token.lastname; // Add user lastname to session
+          }
           return session;
         },
         async jwt({ token, user }) {
           if (user) {
+            token.firstname = user.firstname
+            token.lastname = user.lastname
             token.id = user.id; // Store user ID in token
           }
           return token;

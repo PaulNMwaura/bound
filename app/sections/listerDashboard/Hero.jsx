@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import { appointments } from "@/app/appointmentTempData";
+// import { appointments } from "@/app/appointmentTempData";
 import { IoCalendar } from "react-icons/io5";
 import { IoMdClock } from "react-icons/io";
 
-export const Hero = ({listerId}) => {
+export const Hero = ({appointments, listerId}) => {
     // const [appointments, setAppointments] = useState([]);
 
     // useEffect(() => {

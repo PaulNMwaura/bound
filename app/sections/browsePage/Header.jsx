@@ -67,21 +67,24 @@ export const Header = ({id, isLister, setFilters}) => {
                 </button>
               </form>
               <div className="flex justify-center items-center">
-                {isLister && (
-                  <div className="hidden md:block md:text-xs border border-black rounded-lg p-2">
-                    <button onClick={() => router.replace(`/dashboard/${id}`)}>
-                      My Dashboard
-                    </button>
-                  </div>
-                )}
+                <div className="flex items-center">
+                  <button onClick={() => signOut({ callbackUrl: "/" })} className="btn">Sign out</button>
+                  {isLister && (
+                    <div className="hidden md:block md:text-xs border border-black rounded-lg p-2">
+                      <button onClick={() => router.replace(`/dashboard/${id}`)}>
+                        My Dashboard
+                      </button>
+                    </div>
+                  )}
+                </div>
                 {/* Mobile Menu Icon */}
                 <div className="flex items-center md:hidden">
-                  <button
+                  {/* <button
                     onClick={() => signOut({ callbackUrl: "/" })}
                     className="btn"
                   >
                     Sign Out
-                  </button>
+                  </button> */}
                   <button
                     onClick={toggleSidebar}
                     className="h-6 w-6 cursor-pointer"

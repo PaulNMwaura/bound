@@ -145,7 +145,7 @@ export const Hero = () => {
                                 filters.service? (
                                     <p className="md:mr-48 text-center">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>
                                 ):(
-                                    <p className="md:mr-48">
+                                    <p className="md:mr-56">
                                         Trouble finding listers.<br/> 
                                         Make sure your spelling is correct
                                     </p>
