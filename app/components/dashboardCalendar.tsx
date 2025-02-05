@@ -1,6 +1,6 @@
-// "use client";
+"use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 interface CalendarState {
   daysInMonth: number[];
@@ -17,33 +17,26 @@ interface Appointment {
 
 interface CalendarProps {
   appointments: Appointment[];
-  onCancel: (date: string) => void;
+  onCancel: (date: string) => void; // Function to handle cancellation
 }
 
 export default function Calendar({ appointments, onCancel }: CalendarProps) {
   const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
-  const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth());
-  const [calendar, setCalendar] = useState<CalendarState>({
-    daysInMonth: [],
-    startDay: 0,
-  });
+  const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth()); // 0-based index
+  const [calendar, setCalendar] = useState<CalendarState>({ daysInMonth: [], startDay: 0 });
   const [acceptedAppointments, setAcceptedAppointments] = useState<Record<number, Appointment[]>>({});
-  const [hoveredDay, setHoveredDay] = useState<number | null>(null);
-  const [tooltipPosition, setTooltipPosition] = useState<{ left: number; top: number }>({ left: 0, top: 0 });
-
-  const tooltipRef = useRef<HTMLDivElement>(null);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const today = new Date();
 
   useEffect(() => {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const startDay = new Date(currentYear, currentMonth, 1).getDay();
 
-    setCalendar({
-      daysInMonth: Array.from({ length: daysInMonth }, (_, i) => i + 1),
-      startDay,
-    });
+    setCalendar({ daysInMonth: Array.from({ length: daysInMonth }, (_, i) => i + 1), startDay });
 
+    // Group accepted appointments by day
     const groupedAppointments: Record<number, Appointment[]> = {};
-    appointments.map((appointment) => {
+    appointments.forEach((appointment) => {
       const appointmentDate = new Date(appointment.date);
       if (
         appointment.status === "accepted" &&
@@ -68,6 +61,7 @@ export default function Calendar({ appointments, onCancel }: CalendarProps) {
     } else {
       setCurrentMonth((prev) => prev - 1);
     }
+    setSelectedDay(null); // Reset selection on month change
   };
 
   const handleNextMonth = () => {
@@ -77,38 +71,21 @@ export default function Calendar({ appointments, onCancel }: CalendarProps) {
     } else {
       setCurrentMonth((prev) => prev + 1);
     }
-  };
-
-  const handleMouseEnter = (event: React.MouseEvent, day: number) => {
-    setHoveredDay(day);
-    const rect = (event.target as HTMLElement).getBoundingClientRect();
-    let left = rect.left + window.scrollX;
-    let top = rect.bottom + window.scrollY + 5;
-
-    if (tooltipRef.current) {
-      const tooltipWidth = tooltipRef.current.offsetWidth;
-      const tooltipHeight = tooltipRef.current.offsetHeight;
-
-      // Ensure tooltip stays within the viewport
-      if (left + tooltipWidth > window.innerWidth) {
-        left = window.innerWidth - tooltipWidth - 1;
-      }
-      if (top + tooltipHeight > window.innerHeight) {
-        top = rect.top + window.scrollY - tooltipHeight - 1;
-      }
-    }
-
-    setTooltipPosition({ left, top });
+    setSelectedDay(null); // Reset selection on month change
   };
 
   return (
-    <section className="mt-4 px-3">
-      <div className="w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <section className="mt-4 px-3 flex flex-col md:flex-row gap-6 justify-center items-start">
+      <div className="w-full md:w-3/4 max-w-4xl p-6 bg-white rounded-lg shadow-lg">
         {/* Month & Year Header with Navigation */}
         <div className="flex justify-between items-center text-xl font-semibold text-gray-700 mb-4">
-          <button onClick={handlePrevMonth} className="px-3 py-1 rounded-md text-gray-700 hover:bg-gray-100 rotate-180">➟</button>
+          <button onClick={handlePrevMonth} className="px-3 py-1 rounded-md text-gray-700 hover:bg-gray-100">
+            ◀
+          </button>
           <span>{new Date(currentYear, currentMonth).toLocaleString("default", { month: "long", year: "numeric" })}</span>
-          <button onClick={handleNextMonth} className="px-3 py-1 rounded-md text-gray-700 hover:bg-gray-100">➟</button>
+          <button onClick={handleNextMonth} className="px-3 py-1 rounded-md text-gray-700 hover:bg-gray-100">
+            ▶
+          </button>
         </div>
 
         {/* Weekday Headers */}
@@ -124,50 +101,67 @@ export default function Calendar({ appointments, onCancel }: CalendarProps) {
 
         {/* Calendar Grid */}
         <div className="grid grid-cols-7 gap-1 mt-2">
+          {/* Empty cells for days before the 1st */}
           {Array.from({ length: calendar.startDay }).map((_, i) => (
-            <div key={`empty-${i}`} className="h-14 md:h-20"></div>
+            <div key={`empty-${i}`} className="h-12 md:h-20"></div>
           ))}
 
-          {calendar.daysInMonth.map((day) => (
-            <div key={day} className="relative">
-              <div
-                className={`relative h-14 md:h-20 border rounded-lg flex items-start p-2 text-sm cursor-pointer ${
-                  acceptedAppointments[day] ? "bg-blue-100 border-blue-500" : "bg-white border-gray-300"
-                }`}
-                onMouseEnter={(event) => handleMouseEnter(event, day)}
-                onMouseLeave={() => setHoveredDay(null)}
-              >
-                <span className="text-gray-700 font-medium">{day}</span>
+          {/* Days of the month */}
+          {calendar.daysInMonth.map((day) => {
+            const isPastDay = new Date(currentYear, currentMonth, day) < today;
 
-                {acceptedAppointments[day] && (
-                  <div className="absolute bottom-2 left-2 right-2 bg-blue-500 text-white text-sm text-center md:py-1 rounded md:rounded-md">
-                    {acceptedAppointments[day].length}
-                  </div>
+            return (
+              <div key={day} className="relative">
+                <div
+                  className={`relative h-12 md:h-16 lg:h-20 border rounded-lg flex items-start p-2 text-xs md:text-sm cursor-pointer
+                    ${isPastDay ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-white text-gray-700 border-gray-300"}
+                    ${acceptedAppointments[day] ? "border-blue-400" : ""}
+                    ${selectedDay === day ? "bg-blue-300" : ""}`}
+                  onClick={() => !isPastDay && setSelectedDay(day)}
+                >
+                  <span className="font-medium">{day}</span>
+
+                  {/* Indicator for accepted appointments */}
+                  {acceptedAppointments[day] && (
+                    <div className="absolute bottom-1 left-2 right-2 bg-blue-500 text-white text-xs text-center md:py-1 rounded-md">
+                      {acceptedAppointments[day].length}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Appointment Details Section */}
+      <div className="w-full md:w-1/4 bg-white rounded-lg shadow-lg p-3">
+        <h2 className="text-md font-semibold mb-4">Appointments</h2>
+        {selectedDay && acceptedAppointments[selectedDay] ? (
+          acceptedAppointments[selectedDay].map((appt, index) => {
+            const apptDate = new Date(appt.date);
+            const isPastAppointment = apptDate < today;
+
+            return (
+              <div key={index} className="mb-4 p-3 border rounded-md bg-gray-50">
+                <p className="font-bold">{appt.firstname} {appt.lastname}</p>
+                <p>Time: {appt.time}</p>
+                {!isPastAppointment ? (
+                  <button
+                    className="mt-1 text-red-600 text-sm hover:underline"
+                    onClick={() => onCancel(appt.date)}
+                  >
+                    Cancel Appointment
+                  </button>
+                ) : (
+                  <p className="text-gray-500 text-xs">Past appointment</p>
                 )}
               </div>
-
-              {hoveredDay === day && acceptedAppointments[day] && (
-                <div
-                  ref={tooltipRef}
-                  className="fixed z-10 bg-white shadow-lg p-3 rounded-md w-52 text-lg text-gray-700 border"
-                  style={{ left: `${tooltipPosition.left}px`, top: `${tooltipPosition.top}px md:${tooltipPosition.top - 5}px` }}
-                  onMouseEnter={() => setHoveredDay(day)}
-                  onMouseLeave={() => setHoveredDay(null)}
-                >
-                  {acceptedAppointments[day].map((appt, index) => (
-                    <div key={index} className="mb-2 last:mb-0">
-                      <p className="font-bold">{appt.firstname} {appt.lastname}</p>
-                      <p>Time: {appt.time}</p>
-                      <button className="mt-1 text-red-600 text-xs hover:underline" onClick={() => onCancel(appt.date)}>
-                        Cancel Appointment
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+            );
+          })
+        ) : (
+          <p className="text-gray-500">Click a date to view its upcoming appointments.</p>
+        )}
       </div>
     </section>
   );
