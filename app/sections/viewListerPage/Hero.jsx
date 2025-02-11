@@ -51,11 +51,11 @@ export const Hero = ({ id }) => {
       <section className="pb-10">
         <div className="container">
           <div className="pt-10 text-sm md:text-lg">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col md:flex-row items-center md:gap-10">
               <div>
                 <Image src={thisLister.picture || Logo} alt="Profile picture goes here" height={100} width={100} className="rounded-full" unoptimized={!!thisLister.imageBase64}/>
               </div>
-              <div className="max-w-[600px]">
+              <div className="w-full">
                 <div className="flex justify-between font-semibold">
                   <a>{thisLister.rating}</a>
                   <a>{thisLister.city}, {thisLister.state}</a>

@@ -7,7 +7,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-export const Navbar = ({session}) => {
+export const Sidenav = ({session}) => {
     return (
         <section className="text-white/90 tracking-tight">
             <div className="h-screen flex flex-col">

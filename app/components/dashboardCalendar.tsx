@@ -160,7 +160,7 @@ export default function Calendar({ appointments, onCancel }: CalendarProps) {
             );
           })
         ) : (
-          <p className="text-gray-500">Click a date to view its upcoming appointments.</p>
+          <p className="text-gray-500">Click a marked date to view its upcoming appointments.</p>
         )}
       </div>
     </section>

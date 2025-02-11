@@ -8,13 +8,25 @@ interface CalendarState {
 }
 interface CalendarProps {
     unavailableDays: number[]; // Array of unavailable day numbers
+    setSelectedDate: (date: string) => void;
 }
   
-export default function Calendar({ unavailableDays }: CalendarProps) {
-    const [calendar, setCalendar] = useState<CalendarState>({
-        daysInMonth: [], // Initial empty array
-        startDay: 0, // Default starting day
-    });
+export default function Calendar({ setSelectedDate, unavailableDays }: CalendarProps) {
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [calendar, setCalendar] = useState<CalendarState>({
+      daysInMonth: [], // Initial empty array
+      startDay: 0, // Default starting day
+  });
+  const handleDateSelection = (day: number) => {
+    if (unavailableDays.includes(day)) return; // Ignore unavailable days
+
+    setSelectedDay(day);
+    const now = new Date();
+    const selectedDate = new Date(now.getFullYear(), now.getMonth(), day).toISOString();
+        // .split("T")[0]; // Format: YYYY-MM-DD
+    
+    setSelectedDate(selectedDate); // Pass selected date to parent component
+  };
 
   useEffect(() => {
     const now = new Date();
@@ -55,7 +67,7 @@ export default function Calendar({ unavailableDays }: CalendarProps) {
 
         {/* Days of the month */}
         {calendar.daysInMonth.map((day) => (
-          <div key={day} className={`py-2 rounded ${unavailableDays.includes(day) ? "bg-purple-500 text-white hover:bg-red-600" : "bg-white text-black"} hover:bg-orange-500`}>
+          <div key={day} className={`py-2 rounded ${unavailableDays.includes(day) ? "bg-purple-500 text-white hover:bg-red-600" : selectedDay===day ? "bg-blue-500 text-white" : "bg-white text-black hover:bg-orange-500"}`} onClick={() => handleDateSelection(day)}>
             {day}
         </div>
         ))}
