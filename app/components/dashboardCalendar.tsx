@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 interface CalendarState {
@@ -12,20 +13,22 @@ interface Appointment {
   lastname: string;
   time: string;
   date: string;
+  id: number;
   status: string;
 }
 
 interface CalendarProps {
   appointments: Appointment[];
-  onCancel: (date: string) => void; // Function to handle cancellation
+  listerId: String;
 }
 
-export default function Calendar({ appointments, onCancel }: CalendarProps) {
+export default function Calendar({ appointments, listerId }: CalendarProps) {
   const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
   const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth()); // 0-based index
   const [calendar, setCalendar] = useState<CalendarState>({ daysInMonth: [], startDay: 0 });
   const [acceptedAppointments, setAcceptedAppointments] = useState<Record<number, Appointment[]>>({});
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const router = useRouter();
   const today = new Date();
 
   useEffect(() => {
@@ -54,6 +57,21 @@ export default function Calendar({ appointments, onCancel }: CalendarProps) {
     setAcceptedAppointments(groupedAppointments);
   }, [appointments, currentMonth, currentYear]);
 
+  const handleAction = async (appointmentId: number, status: string) => {
+    const response = await fetch(`/api/appointments/${listerId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({appointmentId, status }),
+    });
+
+    if (!response.ok) {
+      console.log("Error updated appointment.\n");
+    } else {
+      // refreshes the current page.
+      location.reload();
+    }
+  };
+
   const handlePrevMonth = () => {
     if (currentMonth === 0) {
       setCurrentMonth(11);
@@ -76,7 +94,7 @@ export default function Calendar({ appointments, onCancel }: CalendarProps) {
 
   return (
     <section className="mt-4 px-3 flex flex-col md:flex-row gap-6 justify-center items-start">
-      <div className="w-full md:w-3/4 max-w-4xl p-6 bg-white rounded-lg shadow-lg">
+      <div className="w-full md:w-3/4 max-w-3xl p-6 bg-white rounded-lg shadow-lg">
         {/* Month & Year Header with Navigation */}
         <div className="flex justify-between items-center text-xl font-semibold text-gray-700 mb-4">
           <button onClick={handlePrevMonth} className="px-3 py-1 rounded-md text-gray-700 hover:bg-gray-100">
@@ -138,18 +156,18 @@ export default function Calendar({ appointments, onCancel }: CalendarProps) {
       <div className="w-full md:w-1/4 bg-white rounded-lg shadow-lg p-3">
         <h2 className="text-md font-semibold mb-4">Appointments</h2>
         {selectedDay && acceptedAppointments[selectedDay] ? (
-          acceptedAppointments[selectedDay].map((appt, index) => {
-            const apptDate = new Date(appt.date);
+          acceptedAppointments[selectedDay].map((appointment, index) => {
+            const apptDate = new Date(appointment.date);
             const isPastAppointment = apptDate < today;
 
             return (
               <div key={index} className="mb-4 p-3 border rounded-md bg-gray-50">
-                <p className="font-bold">{appt.firstname} {appt.lastname}</p>
-                <p>Time: {appt.time}</p>
+                <p className="font-bold">{appointment.firstname} {appointment.lastname}</p>
+                <p>Time: {appointment.time}</p>
                 {!isPastAppointment ? (
                   <button
                     className="mt-1 text-red-600 text-sm hover:underline"
-                    onClick={() => onCancel(appt.date)}
+                    onClick={() => handleAction(appointment.id, "canceled")}
                   >
                     Cancel Appointment
                   </button>

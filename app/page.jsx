@@ -10,6 +10,7 @@ import ProductShowcase from "@/app/sections/homePage/ProductShowcase";
 import { RedirectLinks } from "@/app/sections/homePage/RedirectLinks";
 import { CallToAction } from "@/app/sections/homePage/CallToAction";
 import { Footer } from "@/app/sections/homePage/Footer";
+import { useSession } from "next-auth/react";
 
 export default async function Home(){
   // if the user is already signed in, they shouldn't be accessing the login page

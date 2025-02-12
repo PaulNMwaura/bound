@@ -2,12 +2,11 @@ import { IoMenu } from "react-icons/io5";
 import profilePicture from "@/app/assets/logo-holder.png";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import { Navbar } from "./Sidenav";
 
 export const Header = ({session}) => {
     return (
         <section>
-            <div className="py-4 px-10 text-xs md:text-lg md:px-28 flex justify-between items-center">
+            <div className="py-4 px-10 text-xs md:text-xl md:px-28 flex justify-between items-center">
                 <div className="font-semibold">
                     Hello {session?.user?.firstname}!
                 </div>

@@ -7,8 +7,11 @@ import { IoMenu } from "react-icons/io5";
 import { HomeMenu } from "@/app/components/HomeMenu";
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Header() {
+    const {data: session} = useSession();
+  
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     
     const router = useRouter();
@@ -32,7 +35,14 @@ export default function Header() {
               <div className="flex items-center justify-between">
                   <Image src={Logo} alt="Site Logo" height={45} width={45} />
                   <div className="flex ">
-                    <button onClick={() => redirect("/login")} className="btn">Sign in</button>
+                    {session ? (
+                      <div>
+                        <p className="section-description"> Welcome {session?.user?.firstname}!</p>
+                      </div>
+                    ) : ( 
+                      <button onClick={() => redirect("/login")} className="btn">Sign in</button>
+                    )}
+
                     <div className="md:hidden flex items-center">
                       <button onClick={toggleSidebar}>
                         <IoMenu size={30} />

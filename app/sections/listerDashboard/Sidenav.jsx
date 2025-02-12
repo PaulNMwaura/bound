@@ -13,9 +13,8 @@ export const Sidenav = ({session}) => {
             <div className="h-screen flex flex-col">
                 <div className="pl-4 h-[100px] bg-[#740A90] flex items-center justify-start gap-2">
                     {/* <Image src={Logo} width={24} height={24} /> */}
-                    <div className="w-8 h-8 rounded-md shadow-sm bg-yellow-400 flex justify-center items-center">
-                        {/* firstname[0].toUpper */}
-                        Y
+                    <div className="w-8 h-8 rounded-md shadow-sm bg-yellow-400 flex justify-center items-center font-bold text-lg">
+                        {session?.user?.firstname[0]}
                     </div>
                     <a>{session?.user?.firstname} {session?.user?.lastname}</a>
                 </div>

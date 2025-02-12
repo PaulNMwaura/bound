@@ -41,7 +41,7 @@ export const Header = ({ id }) => {
   // console.log("session: ", session);
   const isLister = session?.user?.id === thisLister.userId;
   if(isLister)
-    console.log("session: ", session.user.id, "\nlister: ", thisLister.userId);
+    console.log("session: ", session.user.id, "\nlister's User ID: ", thisLister.userId);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
@@ -59,7 +59,7 @@ export const Header = ({ id }) => {
               </div>
             </div>
             <div className="hidden md:flex md:text-xs border border-black rounded-lg p-2">
-              <button onClick={() => router.replace(`/dashboard/${thisLister.userId}`)}>My Dashboard</button>
+              <button onClick={() => router.replace(`/dashboard/${thisLister._id}`)}>My Dashboard</button>
             </div>
           </div>
         </div>

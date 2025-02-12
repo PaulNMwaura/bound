@@ -11,18 +11,18 @@ import { appointments } from "@/app/appointmentTempData";
 
 export default function Dashboard({params}) {
   const { id } = React.use(params);
-  // const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState([]);
 
-  // useEffect(() => {
-  //   async function fetchAppointments() {
-  //     const response = await fetch(`/api/appointments/${id}`);
-  //     const data = await response.json();
-  //     console.log("appointments:  ", data);
-  //     setAppointments(data);
-  //   }
+  useEffect(() => {
+    async function fetchAppointments() {
+      const response = await fetch(`/api/appointments/${id}`);
+      const data = await response.json();
+      console.log("appointments:  ", data);
+      setAppointments(data);
+    }
 
-  //   fetchAppointments();
-  // }, []);
+    fetchAppointments();
+  }, []);
 
   const { data: session } = useSession();
 
@@ -35,8 +35,8 @@ export default function Dashboard({params}) {
         <div className="md:ml-44 lg:ml-60 flex flex-col w-full">
           <Header session={session}/>
           {/* <Information /> */}
-          <Calendar appointments={appointments} onCancel={(date) => console.log("Canceling appointment on", date)} />
-          <Hero appointments={appointments} listerId={id} />  {/*now we just have to make sure api calls are working correctly.*/}
+          <Calendar appointments={appointments} listerId={id} />
+          <Hero appointments={appointments} listerId={id} />
         </div>
       </div>
     </div>

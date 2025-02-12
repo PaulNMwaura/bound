@@ -1,61 +1,29 @@
-"use client";
-import { useState, useEffect } from "react";
-// import { appointments } from "@/app/appointmentTempData";
 import { IoCalendar } from "react-icons/io5";
 import { IoMdClock } from "react-icons/io";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export const Hero = ({appointments, listerId}) => {
-    // const [appointments, setAppointments] = useState([]);
+    const [updatedAppointments, setUpdatedAppointments] = useState(appointments);
 
-    // useEffect(() => {
-    //     const fetchAppointments = async () => {
-    //     const response = await fetch(`/api/appointments/${listerId}`);
-    //     const data = await response.json();
-    //     console.log("data: ",data);
-    //     setAppointments(Array.isArray(data.appointment) ? data.appointment : [data.appointment]);
-    //     };
+    const router = useRouter();
+    const handleAction = async (appointmentId, status) => {
+        const response = await fetch(`/api/appointments/${listerId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({appointmentId, status }),
+        });
 
-    //     fetchAppointments();
-    // }, [listerId]);
-
-    // console.log(appointments);
-
-    // const handleAction = async (appointmentId, status) => {
-    //     const response = await fetch(`/api/appointments/${appointmentId}`, {
-    //     method: "PUT",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ status }),
-    //     });
-
-    //     if (response.ok) {
-    //     setAppointments((prev) =>
-    //         prev.map((appointment) =>
-    //         appointment._id === appointmentId ? { ...appointment, status } : appointment
-    //         )
-    //     );
-    //     }
-    // };
+        if (!response.ok) {
+            console.log("Error updated appointment.\n");
+        } else {
+            // refreshes the current page.
+            location.reload();
+        }
+    };
 
     return (
-        // <div>
-        //     <h1 className="section-title py-5">Manage Appointments</h1>
-        //     <ul className="flex flex-col md:flex-row md:gap-24 justify-center">
-        //         {appointments.length > 0 && appointments?.map((appointment) => (
-        //         <li key={appointment._id} className="px-4 py-4 shadow-md rounded-md">
-        //             <p>FIRSTNAME LASTNAME</p>
-        //             <p>Requesting SERVICE on: {new Date(appointment.date).toDateString()}</p>
-        //             <p>Request: {appointment.status}</p>
-        //             {appointment.status === "pending" && (
-        //             <div className="flex justify-between">
-        //                 <button onClick={() => handleAction(appointment._id, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
-        //                 <button onClick={() => handleAction(appointment._id, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
-        //             </div>
-        //             )}
-        //         </li>
-        //         ))}
-        //     </ul>
-        // </div>
-        <div className="mt-4">
+        <div className="container max-w-full mt-4">
             <h1 className="section-title py-5">Manage Appointments</h1>
             <div className="h-[300px] overflow-y-scroll">                    
                 <ul className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
@@ -78,8 +46,9 @@ export const Hero = ({appointments, listerId}) => {
                                 </div>
                                 {/* <p>Request: {appointment.status} (ONLY SHOWING THIS FOR TESTING PURPOSES)</p> */}
                                 <div className="flex justify-between">
-                                    <button onClick={() => handleAction(appointment.listerId, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
-                                    <button onClick={() => handleAction(appointment.listerId, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
+                                    {/* handleAction paramaters is not correct */}
+                                    <button onClick={() => handleAction(appointment.id, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
+                                    <button onClick={() => handleAction(appointment.id, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
                                 </div>
                             </li>
                         </div>
