@@ -9,6 +9,8 @@ import { signOut } from "next-auth/react";
 
 export const Header = ({id, isLister, setFilters}) => {
 
+    // console.log("id on browse: ", id);
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar visibility state
 
     const router = useRouter();

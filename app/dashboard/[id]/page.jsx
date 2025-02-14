@@ -7,7 +7,6 @@ import { Sidenav } from "@/app/sections/listerDashboard/Sidenav";
 import Calendar from "@/app/components/dashboardCalendar";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { appointments } from "@/app/appointmentTempData";
 
 export default function Dashboard({params}) {
   const { id } = React.use(params);

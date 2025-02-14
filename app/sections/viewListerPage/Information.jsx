@@ -44,6 +44,7 @@ const generateTimeSlots = () => {
 export const Information = ({id}) => {
   const [thisLister, setLister] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedServices, setSelectedServices] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState(null);
@@ -96,7 +97,7 @@ export const Information = ({id}) => {
                 {thisLister.services.map((service, index) => (
                     <div key={index} className="text-sm md:text-lg">
                     <div className="section-description flex justify-between">
-                        <ul>{service.name}</ul>
+                        <button onClick={() => selectedServices.push(service.name)}>{service.name}</button>
                         {service.price && (
                         <ul className="font-semibold">${service.price}</ul>
                         )}
@@ -107,13 +108,19 @@ export const Information = ({id}) => {
                         key={jndex}
                         className="pl-8 flex flex-row justify-between font-light"
                         >
-                        <ul>{subService.name}</ul>
+                        <button onClick={() => selectedServices.push(service.name)}>{subService.name}</button>
                         <ul className="font-semibold">${subService.price}</ul>
                         </div>
                     ))}
                     </div>
                 ))}
             </div>
+            {/*Selected Services Section */}
+            {selectedServices.map((service, index) => (
+              <div>
+                {service}
+              </div>
+            ))}
 
             {/* Availability section */}
             <div className="lg:flex-col lg:justify-center">

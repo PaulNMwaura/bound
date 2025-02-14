@@ -1,6 +1,5 @@
 "use client";
 
-// import { Lister }from "@/app/listersTempData";
 import Image from "next/image";
 import Logo from "@/app/assets/logo-holder.png";
 import Link from "next/link";
@@ -8,7 +7,7 @@ import { useState, useEffect } from "react";
 import { Header } from "./Header";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { view } from "framer-motion";
+import { Information } from "./Information";
 
 const getListers = async ({ city = "", state = "", service = "" }) => {
     try {
@@ -37,6 +36,7 @@ export const Hero = () => {
     });
     const [listers, setListers] = useState([]);
     const [isLister, setLister] = useState(false);
+    const [listerId, setListerId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { data: session } = useSession();
@@ -55,19 +55,19 @@ export const Hero = () => {
         // Fetch lister data when component mounts
         const checkIfIsLister = async () => {
         try {
-            console.log("id: ", id);
-            const response = await fetch(`/api/findByUserId?id=${id}`);
-        if (!response.ok) {
-            console.log(response.status);
-            throw new Error('Lister not found');
-        }
-        // const data = await response.json();
-        // console.log("data: ", data.lister);
-        setLister(true);
+            const response = await fetch(`/api/findByUserId?id=${id}`);    
+            if (!response.ok) {
+                console.log(response.status);
+                throw new Error('Lister not found');
+            }
+            const data = await response.json();
+            // console.log("data: ", data.lister);
+            setListerId(data.lister._id);
+            setLister(true);
         } catch (error) {
             return;
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -88,7 +88,8 @@ export const Hero = () => {
 
     return (
         <>
-            <Header id={id} isLister={isLister} setFilters={setFilters}/>
+            <Header id={listerId} isLister={isLister} setFilters={setFilters}/>
+            <Information />
             <main className="pt-10">
                 <div className="container max-w-[90%] ">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

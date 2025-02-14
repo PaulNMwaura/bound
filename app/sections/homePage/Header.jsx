@@ -35,11 +35,7 @@ export default function Header() {
               <div className="flex items-center justify-between">
                   <Image src={Logo} alt="Site Logo" height={45} width={45} />
                   <div className="flex ">
-                    {session ? (
-                      <div>
-                        <p className="section-description"> Welcome {session?.user?.firstname}!</p>
-                      </div>
-                    ) : ( 
+                    {!session && (
                       <button onClick={() => redirect("/login")} className="btn">Sign in</button>
                     )}
 

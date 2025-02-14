@@ -4,7 +4,6 @@ import Lister from "@/app/models/lister";
 
 export async function GET(req, { params }) {
   const { id } = await params;
-  console.log("id: ", id);
 
   try {
     await connectMongoDB();
