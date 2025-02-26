@@ -40,29 +40,34 @@ export const Header = ({ id }) => {
 
   // console.log("session: ", session);
   const isLister = session?.user?.id === thisLister.userId;
-  if(isLister)
-    console.log("session: ", session.user.id, "\nlister's User ID: ", thisLister.userId);
+  // if(isLister)
+  //   console.log("session: ", session.user.id, "\nlister's User ID: ", thisLister.userId);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
     <>
-      <section>
-        <div className="container lg:max-w-[90%]">
-          {/*On sm width, we flex by column and justify between. On md we flex row and center items */}
-          <div className="flex flex-col justify-between md:flex-row md:items-center">
-            <div className="pt-2 flex justify-between">
+      <section className="bg-[#D9D9D9]">
+        <div className="container max-w-[90%]">
+            <div className="py-1 flex justify-between items-center">
               <div>
-                <Image src={Logo} alt="Logo place holder" width={60} height={60}/>
+                <p className="">Hello {session?.user?.firstname}!</p>
+                {/* <Image src={Logo} alt="Logo place holder" width={60} height={60}/> */}
               </div>
-              <div className="flex items-center gap-2 md:hidden ">
-                <IoMenu onClick={toggleSidebar} size={25}/>
+              <div className="flex items-center gap-2">
+                <div className="flex flex-row items-center">
+                  <a href="/" className="btn hidden lg:block">Home</a>
+                  <a href="/browse" className="btn hidden lg:block">Browse</a>
+                  {isLister && (
+                    <button onClick={() => router.replace(`/dashboard/${thisLister._id}`)} className="btn hidden lg:block">My Dashboard</button>
+                  )}
+                  <p className="btn">Sign out</p>
+                </div>
+                <div className="block lg:hidden">
+                  <IoMenu onClick={toggleSidebar} size={25}/>
+                </div>
               </div>
-            </div>
-            <div className="hidden md:flex md:text-xs border border-black rounded-lg p-2">
-              <button onClick={() => router.replace(`/dashboard/${thisLister._id}`)}>My Dashboard</button>
             </div>
           </div>
-        </div>
       </section>
       <ViewPageSidebar isLister={isLister} id={thisLister._id} isOpen={isSidebarOpen} onClose={toggleSidebar} />
     </>

@@ -48,29 +48,59 @@ export default function Calendar({ setSelectedDate, unavailableDays }: CalendarP
   return (
     <div className="max-w-md mx-auto p-4 bg-[#E4EBF3]/90 rounded-lg shadow">
       {/* Header: Days of the week */}
-      <div className="grid grid-cols-7 font-bold text-gray-700">
-        <div className="w-12 text-center">Sun</div>
-        <div className="w-12 text-center">Mon</div>
-        <div className="w-12 text-center">Tue</div>
-        <div className="w-12 text-center">Wed</div>
-        <div className="w-12 text-center">Thu</div>
-        <div className="w-12 text-center">Fri</div>
-        <div className="w-12 text-center">Sat</div>
+      <div className="block md:hidden text-xs">
+        <div className="grid grid-cols-7 font-bold text-gray-700 gap-3 px-1">
+          <div className="w-8 text-start">S</div>
+          <div className="w-8 text-start">M</div>
+          <div className="w-8 text-start">T</div>
+          <div className="w-8 text-start">W</div>
+          <div className="w-8 text-start">T</div>
+          <div className="w-8 text-start">F</div>
+          <div className="w-8 text-start">S</div>
+        </div>
+      </div>
+      <div className="hidden md:block">
+        <div className="grid grid-cols-7 font-bold text-gray-700">
+          <div className="w-12 text-center">Sun</div>
+          <div className="w-12 text-center">Mon</div>
+          <div className="w-12 text-center">Tue</div>
+          <div className="w-12 text-center">Wed</div>
+          <div className="w-12 text-center">Thu</div>
+          <div className="w-12 text-center">Fri</div>
+          <div className="w-12 text-center">Sat</div>
+        </div>
       </div>
       
       {/* Calendar Days */}
-      <div className="grid grid-cols-7 gap-1 text-center mt-2 cursor-pointer">
-        {/* Empty boxes for days before the 1st */}
-        {Array.from({ length: calendar.startDay }).map((_, i) => (
-          <div key={`empty-${i}`}></div>
-        ))}
+      <div className="block md:hidden text-xs">
+        <div className="grid grid-cols-7 gap-1 text-center mt-2 cursor-pointer">
+          {/* Empty boxes for days before the 1st */}
+          {Array.from({ length: calendar.startDay }).map((_, i) => (
+            <div key={`empty-${i}`}></div>
+          ))}
 
-        {/* Days of the month */}
-        {calendar.daysInMonth.map((day) => (
-          <div key={day} className={`py-2 rounded ${unavailableDays.includes(day) ? "bg-purple-500 text-white hover:bg-red-600" : selectedDay===day ? "bg-blue-500 text-white" : "bg-white text-black hover:bg-orange-500"}`} onClick={() => handleDateSelection(day)}>
-            {day}
+          {/* Days of the month */}
+          {calendar.daysInMonth.map((day) => (
+            <div key={day} className={`py-1 rounded ${unavailableDays.includes(day) ? "bg-purple-500 text-white hover:bg-red-600" : selectedDay===day ? "bg-blue-500 text-white" : "bg-white text-black hover:bg-orange-500"}`} onClick={() => handleDateSelection(day)}>
+              {day}
+          </div>
+          ))}
         </div>
-        ))}
+      </div>
+      <div className="hidden md:block">
+        <div className="grid grid-cols-7 gap-1 text-center mt-2 cursor-pointer">
+          {/* Empty boxes for days before the 1st */}
+          {Array.from({ length: calendar.startDay }).map((_, i) => (
+            <div key={`empty-${i}`}></div>
+          ))}
+
+          {/* Days of the month */}
+          {calendar.daysInMonth.map((day) => (
+            <div key={day} className={`py-2 rounded ${unavailableDays.includes(day) ? "bg-purple-500 text-white hover:bg-red-600" : selectedDay===day ? "bg-blue-500 text-white" : "bg-white text-black hover:bg-orange-500"}`} onClick={() => handleDateSelection(day)}>
+              {day}
+          </div>
+          ))}
+        </div>
       </div>
     </div>
   );

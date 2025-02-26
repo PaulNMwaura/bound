@@ -37,16 +37,17 @@ const handleAppointmentRequest = async (id, firstname, lastname, selectedDate, s
   }
 };
 
-const generateTimeSlots = () => {
+const generateTimeSlots = (offset) => {
   const times = [];
   let hour = 9; // Start time: 9 AM
+  if(!offset) offset = 2; // Offset is the increment scale (by how many hours);
 
   for (let i = 0; i < 12; i++) {
     const ampm = hour >= 12 && hour < 24 ? "PM" : "AM";
     const formattedHour = hour % 12 === 0 ? 12 : hour % 12; // Convert 24-hour format to 12-hour format
 
     times.push(`${formattedHour}:00 ${ampm}`);
-    hour += 2; // Increment by 2 hours
+    hour += offset;
   }
   return times;
 };
@@ -109,94 +110,79 @@ export const Information = ({id}) => {
 
     return (
       <section>
-        <div className="container bg-[#98F5F9]/30 rounded-xl pb-20">
+        <div className="container max-w-[90%] bg-[#F3F3F3] rounded-xl pb-20">
           <div className="lg:flex lg:flex-row lg:justify-between gap-2">
             <div className="lg:w-[35%] flex flex-col">
-              {/* Services offered by lister section */}
-              <div>
-                  <div className="section-title text-sm text-start pb-3 pt-5 md:text-2xl">Services Offered</div>
+
+              {/* Services offered by lister section and the selection made by the user */}
+              <div className="flex justify-between items-center gap-6">
+                <div className="w-full">
+                  <div className="section-title text-xs text-start pb-3 pt-5 md:text-md">
+                    {thisLister.firstname}'s Services
+                  </div>
                   {thisLister.services.map((service, index) => (
-                      <div key={index} className="text-sm md:text-lg">
-                      <div className="section-description flex justify-between">
-                          <button onClick={() => handleServiceSelection(service.name)}>
-                            {service.name}
-                          </button>
-                          {service.price && (
+                    <div key={index} className="text-xs md:text-md pb-6">
+                      <div className="flex justify-between">
+                        <button onClick={() => handleServiceSelection(service.name)}>
+                          {service.name}
+                        </button>
+                        {service.price && (
                           <ul className="font-semibold">${service.price}</ul>
-                          )}
+                        )}
                       </div>
                       {/* question mark because they may not exists */}
                       {service.subcategories?.map((subService, jndex) => (
-                          <div
-                          key={jndex}
-                          className="pl-8 flex flex-row justify-between font-light"
-                          >
-                            <button onClick={() => handleServiceSelection(subService.name)}>
-                              {subService.name}
-                            </button>
-                            <ul className="font-semibold">${subService.price}</ul>
-                          </div>
+                        <div key={jndex} className="ml-3 flex flex-row justify-between font-light">
+                          <button onClick={() => handleServiceSelection(subService.name)}>
+                            {subService.name}
+                          </button>
+                          <ul className="font-semibold">${subService.price}</ul>
+                        </div>
                       ))}
                       </div>
-                  ))}
-              </div>
-              <div className="my-auto px-2 py-4 bg-[#F89760]/50 rounded-md shadow">
-              {/* If an appointment was requested without error */}
-              {success && error == null ? (
-                <div>
-                  <p>{success}</p>
+                    ))}
                 </div>
-              ):(
-                <div>
-                  {selectedDate === null && selectedServices.length === 0  && selectedTime === null ? (
-                    <p>
-                      To request an appointment, make selections first. <br />
-                      (Select a time, date, and service/s needed) <br />
-                    </p>
-                  ):(
-                    <div>
-                      <div className="font-bold">
-                        Services Selected:
-                        {/*Selected Services Section */}
-                        {selectedServices.map((service, index) => (
-                          <div key={index} className="ml-6 font-normal">
-                            {service}
-                          </div>
-                        ))}
+
+                {/* Service Selection (Might have to turn this to a component!!) */}
+                <div className="w-full text-center">
+                  <p className="text-xs font-semibold">Selected Service/s</p>
+                  <div className="w-full h-fit bg-black text-white text-xs py-5 px-1 rounded-lg">
+                    {selectedServices.length > 0 ? selectedServices.map((service, index) => (
+                      <div key={index} className="font-normal">
+                        {service}
                       </div>
-                      <div className="font-bold">
-                        Time Selected:
-                        <p className="ml-6 font-normal">{selectedTime}</p>
-                      </div>
-                      <div className="font-bold">
-                        Date Selected: <br />
-                        {selectedDate && (
-                          <p className="ml-6 font-normal">{new Date(selectedDate).toLocaleString("default", { month: "long", day: "numeric", year: "numeric" })}</p>
-                        )}
-                      </div>
-                      {selectedDate != null && selectedTime != null && selectedServices.length > 0 ? (
-                        <p className="p-2 text-sm font-semibold text-black bg-[#cefdff] rounded-md shadow">
-                          If everything looks good, click "Request Appointment".
-                        </p>
-                      ):(<div></div>)}
-                    </div>
-                  )}
+                    )):(
+                      <p> No services selected currently</p>
+                    )}
+                  </div>
                 </div>
-              )}
               </div>
             </div>
 
             {/* Availability section */}
-            <div className="lg:flex-col lg:justify-center">
-              <div className="pt-5 flex flex-col items-center">
-                  <h1 className="section-title text-2xl md:text-3xl">{thisLister.firstname}'s Availability</h1>
-                  <h2 className="text-md font-semibold text-center">Select a date</h2>
-                  <div className="pt-6">
-                      <Calendar setSelectedDate={setSelectedDate} unavailableDays={thisLister.unavailableDays}/>
+            <div className="lg:flex-col lg:justify-center pb-6">
+              <div className="flex justify-between items-center gap-6">
+                <div className="pt-5 flex flex-col w-full gap-3">
+                    <h1 className="section-title text-start text-xs md:text-lg">{thisLister.firstname}'s Availability</h1>
+                    <div className="mt-5 scale-[1.2] md:mt-0 md:scale-[1]">
+                        <Calendar setSelectedDate={setSelectedDate} unavailableDays={thisLister.unavailableDays}/>
+                    </div>
+                </div>
+                <div className="w-full text-center">
+                  <p className="text-xs font-semibold">Selected date</p>
+                  <div className="w-full h-fit bg-black text-white text-xs py-5 px-1 rounded-lg">
+                    {selectedDate ? (
+                      <div className="font-normal">
+                        {new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                      </div>
+                    ):(
+                      <p> No date selected currently</p>
+                    )}
                   </div>
+                </div>
               </div>
 
-              <div className="pt-3 flex flex-row gap-2 place-content-center">
+              {/* <div className="pt-3 flex flex-row gap-2 place-content-center">
                 <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded bg-red-600 overflow-y-clip overflow-x-clip">
                     <div className="w-8 h-12 rounded bg-purple-600 rotate-45 my-[15%] mx-[32%]"></div>
@@ -207,32 +193,45 @@ export const Information = ({id}) => {
                     <div className="w-8 h-8 rounded bg-orange-500 "></div>
                     <a> = Available</a>
                 </div>
-              </div>
-              <div className="pt-5 flex justify-center md:gap-20 text-xs md:text-lg">
-                  <button onClick={() => handleAppointmentRequest(id, firstname, lastname, selectedDate, selectedTime, selectedServices, {setSuccess, setError})}className="btn btn-primary">Request An Appointment</button>
-                  <button className="btn">contact</button>
-              </div>
+              </div> */}
             </div>
                               
             {/* Time Selection Section */}
-            <div className="pt-4 md:pt-0 mx-auto my-auto">
-              <h2 className="text-md font-semibold mb-3 text-center">Select a Time Slot</h2>
-              <div className="w-52 h-96 p-4 overflow-y-scroll my-auto mx-auto">
-                <div className="flex flex-col gap-2">
-                  {availableTimes.map((time, index) => (
-                    <button
-                      key={index}
-                      className={`px-4 py-2 rounded-md border ${
-                        selectedTime === time ? "bg-blue-500 text-white" : "bg-white"
-                      }`}
-                      onClick={() => setSelectedTime(time)}
-                    >
-                      {time}
-                    </button>
-                  ))}
+            <div className="mt-4 flex justify-between items-center gap-6">
+              <div className="w-full py-3 bg-white/40 shadow-lg rounded-lg">
+                {/* <h2 className="text-md font-semibold mb-3 text-center">Select a Time Slot</h2> */}
+                <div className="w-32 h-52 overflow-y-scroll mx-auto p-3">
+                  <div className="flex flex-col gap-2">
+                    {availableTimes.map((time, index) => (
+                      <button
+                        key={index}
+                        className={`px-4 py-2 rounded-md ${
+                          selectedTime === time ? "bg-blue-500 text-white" : "bg-none"
+                        }`}
+                        onClick={() => setSelectedTime(time)}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="w-full text-center">
+                <p className="text-xs font-semibold">Selected Time</p>
+                <div className="w-full h-fit bg-black text-white text-xs py-5 px-1 rounded-lg">
+                  {selectedTime ? (
+                    <div className="font-normal">
+                      {selectedTime}
+                    </div>
+                  ):(
+                    <p> No time selected currently</p>
+                  )}
                 </div>
               </div>
             </div>
+          </div>
+          <div className="mt-10 flex justify-center text-xs md:text-lg">
+            <button onClick={() => handleAppointmentRequest(id, firstname, lastname, selectedDate, selectedTime, selectedServices, {setSuccess, setError})} className="btn btn-primary">Request An Appointment</button>
           </div>
         </div>
         {/* {error && (
