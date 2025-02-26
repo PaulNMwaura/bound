@@ -3,11 +3,13 @@
 import Image from "next/image";
 import Logo from "@/app/assets/logo-holder.png";
 import Link from "next/link";
+import { IoMdStar } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { Header } from "./Header";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Information } from "./Information";
+import { ListersFound } from "@/app/components/ListersFound";
 
 const getListers = async ({ city = "", state = "", service = "" }) => {
     try {
@@ -88,54 +90,85 @@ export const Hero = () => {
 
     return (
         <>
-            <Header id={listerId} isLister={isLister} setFilters={setFilters}/>
-            <Information />
-            <main className="pt-10">
-                <div className="container max-w-[90%] ">
+            <Header id={listerId} isLister={isLister} setFilters={setFilters} userFirstname={session?.user?.firstname}/>
+            <Information setFilters={setFilters} />
+            <section className="pt-5 pb-10">
+                <div className="container flex flex-col min-w-full items-center">
+                    <div className="flex justify-between w-full">
+                        <div className="pl-3 w-full md:w-[30%]">
+                            <ListersFound count={listers.length}/>
+                        </div>
+                        <div className="font-semibold">
+                            {filters.city && filters.state && (
+                                <div className="hidden md:block">
+                                    You are searching in {filters.city}, {filters.state}.
+                                </div>
+                            )}
+                            {filters.city && !filters.state && (
+                                <div>
+                                    You are searching in {filters.city}.
+                                </div>
+                            )}
+                            {!filters.city && filters.state && (
+                                <div>
+                                    You are searching in {filters.state}.
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {listers && listers.length > 0 ? (
                             listers.map((lister, index) => (
-                            <div key={index} className="pt-3 md:pt-3 p-3 flex flex-col bg-[#98F5F9]/20 rounded shadow">
+                            <div key={index} className="pt-3 md:pt-3 p-3 flex flex-col">
                                 {/* Card Image */}
                                 <div className="flex justify-center">
-                                    <Image src={lister.picture || Logo} alt="Profile Picture" width={208} height={208} className="object-fit max-w-62 max-h-52 rounded-lg" />
+                                    <div className="w-[336px] h-[189px] bg-[#D9D9D9]">
+                                        PHOTO GOES HERE
+                                    </div>
+                                    {/* <Image src={lister.picture || Logo} alt="Profile Picture" width={208} height={208} className="object-fit max-w-62 max-h-52 rounded-lg" /> */}
                                 </div>
 
                                 {/* Card Content */}
-                                <div className="pt-2 flex justify-between">
-                                    <div className="flex flex-row gap-2 text-xl text-black font-bold tracking-tight">
-                                        <div>{lister.firstname}</div>
-                                        <div>{lister.lastname}</div>
+                                <div className="pt-1 flex justify-between">
+                                    <div className="text-lg text-black font-bold tracking-tight">
+                                        {lister.firstname} {lister.lastname}
                                     </div>
-                                    <div>{"0"}/5</div>
+                                    <div className="flex items-center gap-1">
+                                        <div>
+                                            <IoMdStar />
+                                        </div>
+                                        <div>
+                                            {lister.rating ? (
+                                                <p className="font-semibold">{lister.rating}/5</p>
+                                            ):(
+                                            <p className="font-semibold">{"0"}/5</p>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="text-sm">{lister.location}</div>
-                                <div className="pt-2 text-md">
-                                    <div className="font-semibold">
+                                <div className="text-md">
+                                    <div className="font-bold">
                                         Services offered by {lister.firstname}
                                     </div>
                                     {lister.services.map((service, jndex) => (
-                                        <div key={jndex} className="px-5">{service.name}</div>
+                                        <div key={jndex} className="px-5 font-normal opacity-40">{service.name}</div>
                                     ))}
                                 </div>
-                                <div className="pt-2 font-semibold">
-                                    {lister.firstname} Specializes in:
-                                    <div className="font-normal">{lister.description}</div>
-                                </div>
-                                <div className="pt-2 font-semibold">
-                                    Pricing Info:
-                                    <div className="font-normal">{"EMPTY"}</div>
+                                <div className="pt-1 font-bold">
+                                    About {lister.firstname}
+                                    <div className="font-normal opacity-40">{lister.description}</div>
                                 </div>
 
                                 {/* Buttons Section */}
                                 <div className="mt-auto pt-4 flex flex-row">
-                                    <button className="btn text-purple-500">
-                                        Contact
-                                    </button>
                                     <button className="btn btn-primary">
                                         <Link href={`/viewLister/${lister._id}`}>
                                             View {lister.firstname}'s page
                                         </Link>
+                                    </button>
+                                    <button className="btn">
+                                        Message {lister.firstname}
                                     </button>
                                 </div>
                             </div>
@@ -156,7 +189,7 @@ export const Hero = () => {
                         )}
                     </div>
                 </div>
-            </main>
+            </section>
         </>
     );
 };

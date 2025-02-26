@@ -16,7 +16,7 @@ export const HomeMenu: React.FC<SidebarModalProps> = ({ isOpen, onClose }) => {
         <>
             {/* Sidebar Modal */}
             <div
-                className={`fixed top-0 right-0 h-full w-[50%] flex flex-col bg-[#E2EAF4] shadow-lg z-50 transition-transform duration-300 rounded-lg ${
+                className={`fixed top-0 right-0 h-full w-[30%] flex flex-col bg-[#E2EAF4] shadow-lg z-50 transition-transform duration-300 rounded-lg ${
                     isOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
