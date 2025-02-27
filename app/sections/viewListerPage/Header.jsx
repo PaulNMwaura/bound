@@ -46,8 +46,8 @@ export const Header = ({ id }) => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
     <>
-      <section className="bg-[#D9D9D9]">
-        <div className="container max-w-[90%]">
+      <section>
+        <div className="container md:w-[90%] md:bg-white md:rounded-b-xl">
             <div className="py-1 flex justify-between items-center">
               <div>
                 <p className="">Hello {session?.user?.firstname}!</p>

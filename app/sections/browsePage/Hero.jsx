@@ -89,107 +89,109 @@ export const Hero = () => {
     //     console.log("session: ", session.user.id, "\nlister: ", viewer.id);
 
     return (
-        <>
+        <div className="bg-[#D9D9D9]">
             <Header id={listerId} isLister={isLister} setFilters={setFilters} userFirstname={session?.user?.firstname}/>
-            <Information setFilters={setFilters} />
-            <section className="pt-5 pb-10">
-                <div className="container flex flex-col min-w-full items-center">
-                    <div className="flex justify-between w-full">
-                        <div className="pl-3 w-full md:w-[30%]">
-                            <ListersFound count={listers.length}/>
-                        </div>
-                        <div className="font-semibold">
-                            {filters.city && filters.state && (
-                                <div className="hidden md:block">
-                                    You are searching in {filters.city}, {filters.state}.
-                                </div>
-                            )}
-                            {filters.city && !filters.state && (
-                                <div>
-                                    You are searching in {filters.city}.
-                                </div>
-                            )}
-                            {!filters.city && filters.state && (
-                                <div>
-                                    You are searching in {filters.state}.
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {listers && listers.length > 0 ? (
-                            listers.map((lister, index) => (
-                            <div key={index} className="pt-3 md:pt-3 p-3 flex flex-col">
-                                {/* Card Image */}
-                                <div className="flex justify-center">
-                                    <div className="w-[336px] h-[189px] bg-[#D9D9D9]">
-                                        PHOTO GOES HERE
-                                    </div>
-                                    {/* <Image src={lister.picture || Logo} alt="Profile Picture" width={208} height={208} className="object-fit max-w-62 max-h-52 rounded-lg" /> */}
-                                </div>
-
-                                {/* Card Content */}
-                                <div className="pt-1 flex justify-between">
-                                    <div className="text-lg text-black font-bold tracking-tight">
-                                        {lister.firstname} {lister.lastname}
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <div>
-                                            <IoMdStar />
-                                        </div>
-                                        <div>
-                                            {lister.rating ? (
-                                                <p className="font-semibold">{lister.rating}/5</p>
-                                            ):(
-                                            <p className="font-semibold">{"0"}/5</p>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="text-sm">{lister.location}</div>
-                                <div className="text-md">
-                                    <div className="font-bold">
-                                        Services offered by {lister.firstname}
-                                    </div>
-                                    {lister.services.map((service, jndex) => (
-                                        <div key={jndex} className="px-5 font-normal opacity-40">{service.name}</div>
-                                    ))}
-                                </div>
-                                <div className="pt-1 font-bold">
-                                    About {lister.firstname}
-                                    <div className="font-normal opacity-40">{lister.description}</div>
-                                </div>
-
-                                {/* Buttons Section */}
-                                <div className="mt-auto pt-4 flex flex-row">
-                                    <button className="btn btn-primary">
-                                        <Link href={`/viewLister/${lister._id}`}>
-                                            View {lister.firstname}'s page
-                                        </Link>
-                                    </button>
-                                    <button className="btn">
-                                        Message {lister.firstname}
-                                    </button>
-                                </div>
+            <div className="h-screen">
+                <section className="pt-5 pb-10">
+                    <div className="container flex flex-col items-center bg-white h-screen rounded-t-xl">
+                        <Information setFilters={setFilters} />
+                        <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
+                            <div className="pl-3 w-full md:w-[30%]">
+                                <ListersFound count={listers.length}/>
                             </div>
-                        ))
-                        ) : (
-                        <div className="w-full md:w-screen text-center text-xl">
-                            {
-                                filters.service? (
-                                    <p className="md:mr-48 text-center">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>
-                                ):(
-                                    <p className="md:mr-56">
-                                        Trouble finding listers.<br/> 
-                                        Make sure your spelling is correct
-                                    </p>
-                                )
-                            }
+                            <div className="font-semibold">
+                                {filters.city && filters.state && (
+                                    <div className="hidden md:block">
+                                        You are searching in {filters.city}, {filters.state}.
+                                    </div>
+                                )}
+                                {filters.city && !filters.state && (
+                                    <div>
+                                        You are searching in {filters.city}.
+                                    </div>
+                                )}
+                                {!filters.city && filters.state && (
+                                    <div>
+                                        You are searching in {filters.state}.
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        )}
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {listers && listers.length > 0 ? (
+                                listers.map((lister, index) => (
+                                <div key={index} className="pt-3 md:pt-3 p-3 flex flex-col">
+                                    {/* Card Image */}
+                                    <div className="flex justify-center">
+                                        <div className="w-[336px] h-[189px] bg-[#D9D9D9]">
+                                            PHOTO GOES HERE
+                                        </div>
+                                        {/* <Image src={lister.picture || Logo} alt="Profile Picture" width={208} height={208} className="object-fit max-w-62 max-h-52 rounded-lg" /> */}
+                                    </div>
+
+                                    {/* Card Content */}
+                                    <div className="pt-1 flex justify-between">
+                                        <div className="text-lg text-black font-bold tracking-tight">
+                                            {lister.firstname} {lister.lastname}
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <div>
+                                                <IoMdStar />
+                                            </div>
+                                            <div>
+                                                {lister.rating ? (
+                                                    <p className="font-semibold">{lister.rating}/5</p>
+                                                ):(
+                                                <p className="font-semibold">{"0"}/5</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="text-sm">{lister.location}</div>
+                                    <div className="text-md">
+                                        <div className="font-bold">
+                                            Services offered by {lister.firstname}
+                                        </div>
+                                        {lister.services.map((service, jndex) => (
+                                            <div key={jndex} className="px-5 font-normal opacity-40">{service.name}</div>
+                                        ))}
+                                    </div>
+                                    <div className="pt-1 font-bold">
+                                        About {lister.firstname}
+                                        <div className="font-normal opacity-40">{lister.description}</div>
+                                    </div>
+
+                                    {/* Buttons Section */}
+                                    <div className="mt-auto pt-4 flex flex-row">
+                                        <button className="btn btn-primary">
+                                            <Link href={`/viewLister/${lister._id}`}>
+                                                View {lister.firstname}'s page
+                                            </Link>
+                                        </button>
+                                        <button className="btn">
+                                            Message {lister.firstname}
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                            ) : (
+                            <div className="w-full md:w-screen text-md font-medium">
+                                {
+                                    filters.service? (
+                                        <p className="mt-8 text-start">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>
+                                    ):(
+                                        <p className="mt-8 text-start">
+                                            Trouble finding listers. Either there are no listers in this area 
+                                            or your spelling could is incorrect. <br /> Please double check your spelling.
+                                        </p>
+                                    )
+                                }
+                            </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            </section>
-        </>
+                </section>
+            </div>
+        </div>
     );
 };

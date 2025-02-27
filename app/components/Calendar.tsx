@@ -46,7 +46,7 @@ export default function Calendar({ setSelectedDate, unavailableDays }: CalendarP
     }, []);
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-[#E4EBF3]/90 rounded-lg shadow">
+    <div className="max-w-md mx-auto p-2 md:p-4 bg-[#E4EBF3]/90 rounded-lg shadow">
       {/* Header: Days of the week */}
       <div className="block md:hidden text-xs">
         <div className="grid grid-cols-7 font-bold text-gray-700 gap-3 px-1">
@@ -81,7 +81,7 @@ export default function Calendar({ setSelectedDate, unavailableDays }: CalendarP
 
           {/* Days of the month */}
           {calendar.daysInMonth.map((day) => (
-            <div key={day} className={`py-1 rounded ${unavailableDays.includes(day) ? "bg-purple-500 text-white hover:bg-red-600" : selectedDay===day ? "bg-blue-500 text-white" : "bg-white text-black hover:bg-orange-500"}`} onClick={() => handleDateSelection(day)}>
+            <div key={day} className={`py-0 rounded-sm ${unavailableDays.includes(day) ? "bg-purple-500 text-white hover:bg-red-600" : selectedDay===day ? "bg-blue-500 text-white" : "bg-none text-black hover:bg-orange-500"}`} onClick={() => handleDateSelection(day)}>
               {day}
           </div>
           ))}

@@ -50,8 +50,8 @@ export const Hero = ({ id }) => {
   : Logo;
 
     return (
-      <section className="py-8">
-        <div className="container max-w-[90%]">
+      <section className="py-10">
+        <div className="container lg:max-w-[80%]">
           <div className="text-sm md:text-lg">
             <div className="flex flex-col md:flex-row items-center md:gap-10">
 

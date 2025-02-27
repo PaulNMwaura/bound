@@ -22,7 +22,6 @@ export const Information = ({setFilters}) => {
                     <button onClick={toggleSidebar} className="btn btn-primary">Apply a filter</button>
                 </div>
             </div>
-            {/* <ListersFound /> */}
             <SearchMenu setFilters={setFilters} isOpen={isSidebarOpen} onClose={toggleSidebar} />
         </section>
     );
