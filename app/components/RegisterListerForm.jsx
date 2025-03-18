@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import UnavailableDaysCalendar from "@/app/components/SelectionCalendar"; 
+import UnavailableDaysCalendar from "@/app/components/SelectionCalendar";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 

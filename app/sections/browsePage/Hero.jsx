@@ -91,9 +91,9 @@ export const Hero = () => {
     return (
         <div className="bg-[#D9D9D9]">
             <Header id={listerId} isLister={isLister} setFilters={setFilters} userFirstname={session?.user?.firstname}/>
-            <div className="h-screen">
+            <div>
                 <section className="pt-5 pb-10">
-                    <div className="container flex flex-col items-center bg-white h-screen rounded-t-xl">
+                    <div className="container flex flex-col items-center bg-white h-fit md:h-screen rounded-xl">
                         <Information setFilters={setFilters} />
                         <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
                             <div className="pl-3 w-full md:w-[30%]">

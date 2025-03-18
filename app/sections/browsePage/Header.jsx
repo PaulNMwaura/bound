@@ -30,13 +30,13 @@ export const Header = ({id, isLister, setFilters, userFirstname}) => {
       <header>
         <div className="container py-2 bg-white rounded-b-xl">
           <div className="flex justify-between items-center">
-            <div>
+            {/* <div>
               <p className="hidden md:block">Hello {userFirstname}!</p>
               <div className="block md:hidden">
                 <Image src={Logo} alt="Website Logo" height={50} width={50} />
               </div>
-            </div>
-            <div className="hidden md:flex max-w-3/4 lg:max-w-full text-xs lg:text-md">
+            </div> */}
+            <div className="hidden md:flex max-w-3/4 lg:max-w-full text-xs lg:text-lg">
               <form onSubmit={handleSubmit} className="flex flex-row justify-between gap-1">
                 <input
                   type="text"

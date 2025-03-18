@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { IoMdMail, IoMdStar } from "react-icons/io";
 import { BiSolidCommentEdit } from "react-icons/bi";
+import { RiAlertFill } from "react-icons/ri";
 
 export const Hero = ({ id }) => {
   const [thisLister, setLister] = useState(null);
@@ -49,6 +50,8 @@ export const Hero = ({ id }) => {
   ? thisLister.imageBase64
   : Logo;
 
+  const isLister = session?.user?.id === thisLister.userId;
+
     return (
       <section className="py-10">
         <div className="container lg:max-w-[80%]">
@@ -82,15 +85,23 @@ export const Hero = ({ id }) => {
                 </div>
 
                 {/* Message and reviews buttons*/}
-                <div className="mt-4 w-full flex justify-between">
-                  <div className="flex items-center">
+                <div className="mt-4 w-full flex justify-between text-xs md:text-lg">
+                  <div className="flex -space-x-2 items-center">
                     <IoMdMail size={22}/>
                     <button className="btn hover:cursor-pointer">Message {thisLister.firstname}</button>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex -space-x-2 items-center">
                     <BiSolidCommentEdit size={22}/>
                     <button className="btn hover:cursor-pointer">Reviews</button>
                   </div>
+                  {!isLister && (
+                    // I WANT THIS TO CREATE A POP UP WHERE THE USER CAN SELECT A REASON.
+                    // REPORT REQUEST IS SENT AND STORED IN A DATABASE TABLE.
+                    <div className="flex -space-x-2 items-center">
+                      <RiAlertFill size={22} />
+                      <button className="btn">Report</button>
+                    </div>
+                  )}
                 </div>
 
               </div>

@@ -48,11 +48,13 @@ export const Header = ({ id }) => {
     <>
       <section>
         <div className="container md:w-[90%] md:bg-white md:rounded-b-xl">
-            <div className="py-1 flex justify-between items-center">
+            <div className="py-1 flex justify-end items-center">
+              {/*
               <div>
                 <p className="">Hello {session?.user?.firstname}!</p>
-                {/* <Image src={Logo} alt="Logo place holder" width={60} height={60}/> */}
+                <Image src={Logo} alt="Logo place holder" width={60} height={60}/>
               </div>
+              */}
               <div className="flex items-center gap-2">
                 <div className="flex flex-row items-center">
                   <a href="/" className="btn hidden lg:block">Home</a>

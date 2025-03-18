@@ -4,6 +4,7 @@ import Calendar from "@/app/components/Calendar";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Selections } from "./Selections";
+import { set } from "mongoose";
 
 const handleAppointmentRequest = async (id, firstname, lastname, selectedDate, selectedTime, selectedServices, {setSuccess, setError}) => {
   // if(!id || !firstname || !lastname || !selectedDate || !selectedTime || !selectedServices) {
@@ -38,6 +39,7 @@ const handleAppointmentRequest = async (id, firstname, lastname, selectedDate, s
   }
 };
 
+
 const generateTimeSlots = (offset) => {
   const times = [];
   let hour = 9; // Start time: 9 AM
@@ -58,6 +60,8 @@ export const Information = ({id}) => {
   const [loading, setLoading] = useState(true);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [showInstructionsButton, setShowInstructionsButton] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
@@ -71,6 +75,11 @@ export const Information = ({id}) => {
 
   const availableTimes = generateTimeSlots();
   let date = selectedDate 
+
+  const handleInstructions = () => {
+    setShowInstructions(!showInstructions);
+    setShowInstructionsButton(!showInstructionsButton);
+  }
 
   useEffect(() => {
     // Fetch lister data when component mounts
@@ -113,6 +122,47 @@ export const Information = ({id}) => {
       <div className="flex md:flex-col lg:gap-2 lg:flex-row items-center justify-center">
         <section className="w-full">
           <div className="bg-[#F3F3F3] rounded-xl py-10 px-6">
+
+            {showInstructionsButton && (
+              <div>
+                <button onClick={handleInstructions}>Instructions</button>
+                <p className="text-xs text-black/50">Click to read</p>
+              </div>
+            )}
+
+            {showInstructions && (
+              <div className="flex flex-col justify-between bg-white text-black p-3 rounded-md transition transform duration-1000">
+                <div>
+                  <h1 className="font-semibold">Regarding Services:</h1>
+                  {thisLister.instructions ? (
+                    <p className="pl-3">{thisLister.instructions}</p>
+                  ):(
+                    <p className="pl-3">This lister has left no special instructions for you. Less work for you :)</p>
+                  )}
+                  <h1 className="font-semibold">How to setup your appointment:</h1>
+                  <div className="bg-[#F3F3F3] p-2 rounded-md">
+                    <ul>
+                      <li>
+                        1. From the services displayed, click on the service/s you would like.
+                      </li>
+                      <li>
+                        2. Select any of the available dates on the calendar that work for you.
+                      </li>
+                      <li>
+                        3. Select a time that works for you from the time wheel.
+                      </li>
+                    </ul>
+                    <p className="mt-4 font-medium">After you have made all your desired selections, click "Request An Appointment". The lister will review the request and update you on its confirmation status</p>
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                <button className="btn" onClick={handleInstructions}>
+                  close
+                </button>
+                </div>
+              </div>
+            )}
+             
             <div className="md:flex md:flex-row md:justify-between gap-5">
               <div className="lg:w-[35%] flex flex-col">
 
@@ -148,7 +198,7 @@ export const Information = ({id}) => {
                   {/* Service Selected (Might have to turn this to a component!!) */}
                   <div className="block md:hidden w-full text-center">
                     <p className="text-xs font-semibold">Selected Service/s</p>
-                    <div className="w-full h-fit bg-black text-white text-xs py-5 px-1 rounded-lg">
+                    <div className="w-full h-fit outline outline-1 text-black text-xs py-5 px-1 mt-1 rounded-lg">
                       {selectedServices.length > 0 ? selectedServices.map((service, index) => (
                         <div key={index} className="font-normal">
                           {service}
@@ -175,7 +225,7 @@ export const Information = ({id}) => {
                   {/* Availability Selected */}
                   <div className="block md:hidden w-full text-center">
                     <p className="text-xs font-semibold">Selected date</p>
-                    <div className="w-full h-fit bg-black text-white text-xs py-5 px-1 rounded-lg">
+                    <div className="w-full h-fit outline outline-1 text-black text-xs py-5 px-1 mt-1 rounded-lg">
                       {selectedDate ? (
                         <div className="font-normal">
                           {new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
@@ -226,7 +276,7 @@ export const Information = ({id}) => {
                 {/* Time selected */}
                 <div className="block md:hidden w-full text-center">
                   <p className="text-xs font-semibold">Selected Time</p>
-                  <div className="w-full h-fit bg-black text-white text-xs py-5 px-1 rounded-lg">
+                  <div className="w-full h-fit outline outline-1 text-black text-xs py-5 px-1 mt-1 rounded-lg">
                     {selectedTime ? (
                       <div className="font-normal">
                         {selectedTime}

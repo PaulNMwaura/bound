@@ -71,7 +71,7 @@ export default function LoginForm(){
                     </div>
                 </form>
                 <button 
-                // onClick={() => router.replace("/home")} 
+                onClick={() => router.replace("/")} 
                 className="mt-4 text-gray-500 hover:text-gray-700">
                 Cancel
                 </button>
