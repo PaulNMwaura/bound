@@ -29,7 +29,7 @@ const getListers = async ({ city = "", state = "", service = "" }) => {
     }
 };
 
-export const Hero = () => {
+export const Hero = ({}) => {
     const searchParams = useSearchParams();
     const [filters, setFilters] = useState({
         city: searchParams.get("city") || "",

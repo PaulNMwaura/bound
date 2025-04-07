@@ -8,35 +8,35 @@ import { IoMdMail, IoMdStar } from "react-icons/io";
 import { BiSolidCommentEdit } from "react-icons/bi";
 import { RiAlertFill } from "react-icons/ri";
 
-export const Hero = ({ id }) => {
-  const [thisLister, setLister] = useState(null);
+export const Hero = ({ id, thisLister}) => {
+  // const [thisLister, setLister] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
-  useEffect(() => {
-    // Fetch lister data when component mounts
-    const fetchLister = async () => {
-      try {
-        const response = await fetch(`/api/findListers/${id}`);
-        if (!response.ok) {
-          throw new Error('Lister not found');
-        }
-        const data = await response.json();
-        // console.log("data: ", data.lister);
-        setLister(data.lister);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   // Fetch lister data when component mounts
+  //   const fetchLister = async () => {
+  //     try {
+  //       const response = await fetch(`/api/findListers/${id}`);
+  //       if (!response.ok) {
+  //         throw new Error('Lister not found');
+  //       }
+  //       const data = await response.json();
+  //       // console.log("data: ", data.lister);
+  //       setLister(data.lister);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchLister();
-  }, [id]);
+  //   fetchLister();
+  // }, [id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (error) {
     return <div>Error: {error}</div>;

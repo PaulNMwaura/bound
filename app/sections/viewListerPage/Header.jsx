@@ -7,35 +7,35 @@ import { useState, useEffect} from "react";
 import { useSession } from "next-auth/react";
 import { IoMenu } from "react-icons/io5";
 
-export const Header = ({ id }) => {
+export const Header = ({ id, thisLister}) => {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar visibility state
-  const [thisLister, setLister] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [thisLister, setLister] = useState(null);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
-  useEffect(() => {
-    // Fetch lister data when component mounts
-    const fetchLister = async () => {
-      try {
-        const response = await fetch(`/api/findListers/${id}`);
-        if (!response.ok) {
-          throw new Error('Lister not found');
-        }
-        const data = await response.json();
-        // console.log("data: ", data.lister);
-        setLister(data.lister);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   // Fetch lister data when component mounts
+  //   const fetchLister = async () => {
+  //     try {
+  //       const response = await fetch(`/api/findListers/${id}`);
+  //       if (!response.ok) {
+  //         throw new Error('Lister not found');
+  //       }
+  //       const data = await response.json();
+  //       // console.log("data: ", data.lister);
+  //       setLister(data.lister);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchLister();
-  }, [id]);
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  //   fetchLister();
+  // }, [id]);
+  // if (loading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error}</div>;
   if (!thisLister) return <div>No lister found</div>;
 
   // console.log("session: ", session);

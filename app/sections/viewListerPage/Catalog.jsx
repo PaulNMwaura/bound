@@ -28,7 +28,7 @@ const posts = [
     // },
 ];
 
-export const Catalog = ({firstname}) => {
+export const Catalog = ({firstname, isLister, thisLister}) => {
     return (
         <section>
             <div className="pt-10 pb-20">

@@ -55,8 +55,8 @@ const generateTimeSlots = (offset) => {
   return times;
 };
 
-export const Information = ({id}) => {
-  const [thisLister, setLister] = useState(null);
+export const Information = ({id, thisLister}) => {
+  // const [thisLister, setLister] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -81,26 +81,26 @@ export const Information = ({id}) => {
     setShowInstructionsButton(!showInstructionsButton);
   }
 
-  useEffect(() => {
-    // Fetch lister data when component mounts
-    const fetchLister = async () => {
-      try {
-        const response = await fetch(`/api/findListers/${id}`);
-        if (!response.ok) {
-          throw new Error('Lister not found');
-        }
-        const data = await response.json();
-        // console.log("data: ", data.lister);
-        setLister(data.lister);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   // Fetch lister data when component mounts
+  //   const fetchLister = async () => {
+  //     try {
+  //       const response = await fetch(`/api/findListers/${id}`);
+  //       if (!response.ok) {
+  //         throw new Error('Lister not found');
+  //       }
+  //       const data = await response.json();
+  //       // console.log("data: ", data.lister);
+  //       setLister(data.lister);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchLister();
-  }, [id]);
+  //   fetchLister();
+  // }, [id]);
 
   const handleServiceSelection = (e) => {
     setSelectedServices((prev) =>
@@ -110,9 +110,9 @@ export const Information = ({id}) => {
     )
   }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (!thisLister) {
     return <div>No lister found</div>;
