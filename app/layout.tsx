@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ETCHEDINTARA",
-  description: "ETCHEDINTARA (EIT)",
+  title: "EtchedInTara",
+  description: "EtchedInTara (EIT) is a dynamic platform for service freelancers looking to create and grow their online presence. Whether you're building a side hustle or a full-time career, EIT helps freelancers market their services effectively and gain visibility on the web. Helping you do what you do, but do it precisely.",
 };
 
 export default function RootLayout({
