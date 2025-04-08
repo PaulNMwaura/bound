@@ -11,9 +11,9 @@ const authOptions: AuthOptions = {
           credentials: {
             email: { label: "Email", type: "text" },
             password: { label: "Password", type: "password" }
-          },
+        },
     
-          async authorize(credentials) {
+        async authorize(credentials) {
             const email = credentials?.email;
             const password = credentials?.password;
     
