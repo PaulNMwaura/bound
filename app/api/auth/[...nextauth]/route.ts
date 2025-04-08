@@ -42,7 +42,7 @@ const authOptions: AuthOptions = {
     ],
     callbacks: {
         async session({ session, token }) {
-          if (token?.id) {
+          if (token?.id && session.user) {
             session.user.id = token.id; // Add user ID to session
           }
           if (token?.firstname) {
