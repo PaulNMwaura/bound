@@ -43,21 +43,21 @@ const authOptions: AuthOptions = {
     callbacks: {
         async session({ session, token }) {
           if (token?.id && session.user) {
-            session.user.id = token.id; // Add user ID to session
+            session.user.id = token.id as string; // Add user ID to session
           }
           if (token?.firstname) {
-            session.user.firstname = token.firstname; // Add user firstname to session
+            session.user.firstname = token.firstname as string; // Add user firstname to session
           }
           if (token?.lastname) {
-            session.user.lastname = token.lastname; // Add user lastname to session
+            session.user.lastname = token.lastname as string; // Add user lastname to session
           }
           return session;
         },
         async jwt({ token, user }) {
           if (user) {
-            token.firstname = user.firstname;
-            token.lastname = user.lastname;
-            token.id = user.id; // Store user ID in token
+            token.firstname = user.firstname as string;
+            token.lastname = user.lastname as string;
+            token.id = user.id as string; // Store user ID in token
           }
           return token;
         },
