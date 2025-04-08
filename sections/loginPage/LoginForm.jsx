@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 
 function validateCredentials (email, password, setError) {
     let status = 0
@@ -23,7 +23,7 @@ function validateCredentials (email, password, setError) {
     return status;
 }
 
-export default function Form(){
+export default function LoginForm(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -33,25 +33,29 @@ export default function Form(){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        console.log("submitted login form.");
         // If email of password is missing, don't even try to authenticate. Just display the error
-        if (validateCredentials(email, password, setError) != 0) {
-            return;
-        } else {
+        // if (validateCredentials(email, password, setError) != 0) {
+        //     console.log("Attempting validation.");
+        //     return;
+        // } else {
             try {
+                console.log("attempting to login user.");
                 const res = await signIn("credentials", {
                     email, password, redirect:false,
                 });
                 
-                if(res.error) {
+                if(!res || res.error) {
                     setError("Invalid Credentials.");
                     return;
                 }
-    
-                router.replace("browse");
+                
+                if (res.ok && !res.error)
+                    router.replace("/browse");
             } catch (error) {
                 console.log("Error: ", error);
             }
-        };
+        // };
     }
 
     return (

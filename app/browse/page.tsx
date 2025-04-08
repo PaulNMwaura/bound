@@ -1,6 +1,6 @@
 // import { Hero } from "@/sections/browsePage/Hero";
 
-export default function Dashboard () {
+export default async function Browse () {
     return (
         <>
             browse
