@@ -16,6 +16,7 @@ export default function listerPage ({params}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
+  
   useEffect(() => {
     // Fetch lister data when component mounts
     const fetchLister = async () => {
@@ -36,9 +37,13 @@ export default function listerPage ({params}) {
 
     fetchLister();
   }, [id]);
+
+  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!thisLister) return <div>No lister found</div>;
+  
+  const isLister = session?.user?.id === thisLister.userId;
 
   return (
     <div className="bg-[#D9D9D9] flex flex-col items-center pb-10">
@@ -48,7 +53,7 @@ export default function listerPage ({params}) {
       <div className="md:container md:w-[90%] bg-white md:mt-10 md:rounded-lg pb-20">
         <Hero id={id} thisLister={thisLister} />
         <Information id={id} thisLister={thisLister} />
-        <Catalog firstname={"NAME"} thisLister={thisLister}/>
+        <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister}/>
         <Reviews />
       </div>
     </div>

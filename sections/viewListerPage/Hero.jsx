@@ -35,7 +35,7 @@ export const Hero = ({ id, thisLister}) => {
 
               {/* Lister's profile picture and rating */}
               <div className="flex flex-col items-center gap-2">
-                <Image src={thisLister.picture || Logo} alt="Profile picture goes here" height={100} width={100} className="rounded-full" unoptimized={!!thisLister.imageBase64}/>
+                <Image src={Logo} alt="Profile picture goes here" height={100} width={100} className="rounded-full" unoptimized={!!thisLister.imageBase64}/>
                 <div className="flex flex-row items-center">
                   <IoMdStar size={22}/>
                   {thisLister.rating ? (

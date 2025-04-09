@@ -79,18 +79,6 @@ export const Hero = () => {
         }
     };
 
-    // const handleCropSave = () => {
-    //     if (cropperRef.current && cropperRef.current.cropper) {
-    //       const canvas = cropperRef.current.cropper.getCroppedCanvas();
-    //       const croppedImage = canvas.toDataURL("image/jpeg");
-    //       setCroppedImage(croppedImage);
-    //       setImagePreview(croppedImage);
-    //       setCropModalOpen(false);
-    //     } else {
-    //       console.error("Cropper instance not ready.");
-    //     }
-    // };
-
     const handleReset = () => {
         formData.picture = "",
         formData.firstname = session?.user?.firstname || "",
