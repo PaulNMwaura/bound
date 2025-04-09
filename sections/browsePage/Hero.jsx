@@ -112,12 +112,15 @@ export const Hero = () => {
                             {listers && listers.length > 0 ? (
                                 listers.map((lister, index) => (
                                 <div key={index} className="pt-3 md:pt-3 p-3 flex flex-col">
+                                    
                                     {/* Card Image */}
                                     <div className="flex justify-center">
-                                        <div className="w-[336px] h-[189px] bg-[#D9D9D9]">
-                                            PHOTO GOES HERE
-                                        </div>
-                                        {/* <Image src={lister.picture || Logo} alt="Profile Picture" width={208} height={208} className="object-fit max-w-62 max-h-52 rounded-lg" /> */}
+                                        {lister.picture ? (
+                                            <Image src={lister.picture} alt="Profile Picture" width={352} height={198} className="object-fit rounded-lg" />
+                                        ):(
+                                            <div className="w-[352px] h-[198px] bg-[#a2a2a2] rounded-lg">
+                                            </div> 
+                                        )}
                                     </div>
 
                                     {/* Card Content */}
