@@ -57,7 +57,7 @@ export const Hero = () => {
         // Fetch lister data when component mounts
         const checkIfIsLister = async () => {
         try {
-            const response = await fetch(`/api/findByUserId?id=${id}`);    
+            const response = await fetch(`/api/listers/findByUserId?id=${id}`);    
             if (!response.ok) {
                 console.log(response.status);
                 throw new Error('Lister not found');
