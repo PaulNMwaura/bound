@@ -1,9 +1,11 @@
 // THIS IS THE FORM COMPONENT OF THE APPLY LISTER PAGE //
 
 import UnavailableDaysCalendar from "@/components/AvailabilitySelectionCalendar";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSession } from "next-auth/react";
-// import cloudinary from "@/lib/cloudinary";  // Add your Cloudinary setup file
+import cloudinary from "@/lib/cloudinary";
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css'; 
 
 
 export const Hero = () => {
@@ -20,6 +22,11 @@ export const Hero = () => {
         services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
         unavailableDays: [],
     });
+    const [imagePreview, setImagePreview] = useState(null);
+
+    const [cropData, setCropData] = useState(null);
+    const cropperRef = useRef(null);
+    const fileInputRef = useRef(null);
 
     const handleImageUpload = async (e) => {
         if (e.target.files) {
@@ -28,10 +35,10 @@ export const Hero = () => {
             // Upload to Cloudinary
             const formData = new FormData();
             formData.append("file", file);
-            formData.append("upload_preset", "your_upload_preset");  // Make sure you set up your upload preset in Cloudinary
+            formData.append("upload_preset", "ml_default");
     
             try {
-                const res = await fetch("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", {
+                const res = await fetch("https://api.cloudinary.com/v1_1/djreop8la/image/upload", {
                     method: "POST",
                     body: formData,
                 });
@@ -42,6 +49,8 @@ export const Hero = () => {
                         ...prev,
                         picture: data.secure_url,  // Save the Cloudinary URL
                     }));
+                    console.log("url", data.secure_url);
+                    setImagePreview(data.secure_url); 
                 }
             } catch (error) {
                 console.error("Error uploading image to Cloudinary", error);
@@ -54,8 +63,36 @@ export const Hero = () => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
+
+    const getCroppedImage = () => {
+        if (cropperRef.current && cropperRef.current.cropper) {
+            const canvas = cropperRef.current.cropper.getCroppedCanvas();
+            const croppedImage = canvas.toDataURL("image/jpeg");
+            setCropData(croppedImage);
+            setImagePreview(croppedImage);
+            setFormData((prev) => ({
+                ...prev,
+                picture: croppedImage,
+            }));
+        } else {
+            console.error("Cropper instance not ready.");
+        }
+    };
+
+    // const handleCropSave = () => {
+    //     if (cropperRef.current && cropperRef.current.cropper) {
+    //       const canvas = cropperRef.current.cropper.getCroppedCanvas();
+    //       const croppedImage = canvas.toDataURL("image/jpeg");
+    //       setCroppedImage(croppedImage);
+    //       setImagePreview(croppedImage);
+    //       setCropModalOpen(false);
+    //     } else {
+    //       console.error("Cropper instance not ready.");
+    //     }
+    // };
+
     const handleReset = () => {
-        formData.picture = session?.user?.bannerPicture ||"",
+        formData.picture = "",
         formData.firstname = session?.user?.firstname || "",
         formData.lastname = session?.user?.lastname || "",
         formData.email = session?.user?.email || "",
@@ -64,6 +101,11 @@ export const Hero = () => {
         formData.description = "",
         formData.services = [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
         formData.unavailableDays = []
+        setImagePreview(null);
+        setCropData(null);
+        setError("");
+        if (fileInputRef.current)
+            fileInputRef.current.value = null;
     };
 
     // Handles adding a new service
@@ -120,11 +162,31 @@ export const Hero = () => {
                     <label className="block text-sm font-medium">
                     Banner Picture:
                     <div className="flex justify-center">
-                        <input type="file" accept="image/*" onChange={handleImageUpload} className="fixed opacity-0 h-10 w-[75px] bg-red-500 block" />
+                        <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageUpload} className="fixed opacity-0 h-10 w-[75px] bg-red-500 block" />
                         <button className="btn btn-primary">Upload</button>
                     </div>
                     </label>
-                    {formData.picture && <img src={formData.picture} alt="Preview" className="w-28 h-28 mt-2 object-cover rounded-full border-2" />}
+                    {/* Image Preview */}
+                    {imagePreview && !cropData && (
+                        <div>
+                            <Cropper
+                                src={imagePreview}
+                                style={{ height: 400, width: "100%" }}
+                                initialAspectRatio={16 / 9}
+                                aspectRatio={16 / 9}
+                                guides={true}
+                                ref={cropperRef}
+                            />
+                            <button onClick={getCroppedImage} className="mt-2 btn btn-primary">Save Crop</button>
+                        </div>
+                    )}
+
+                    {/* Display Cropped Image */}
+                    {cropData && (
+                        <div className="mt-2">
+                            <img src={cropData} alt="Cropped Image" className="w-[400px] h-[225px] object-cover"/>
+                        </div>
+                    )}
                 </div>
 
                 <div className="md:mt-2 md:bg-[#D9D9D9] md:px-4 md:py-4 md:rounded-t-lg md:rounded-br-lg">
