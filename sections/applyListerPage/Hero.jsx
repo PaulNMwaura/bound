@@ -3,12 +3,14 @@
 import UnavailableDaysCalendar from "@/components/AvailabilitySelectionCalendar";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+// import cloudinary from "@/lib/cloudinary";  // Add your Cloudinary setup file
+
 
 export const Hero = () => {
     const {data: session } = useSession();
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
-        picture: session?.user?.profilePicture ||"",
+        picture: session?.user?.bannerPicture ||"",
         firstname: session?.user?.firstname || "",
         lastname: session?.user?.lastname || "",
         email: session?.user?.email || "",
@@ -19,14 +21,32 @@ export const Hero = () => {
         unavailableDays: [],
     });
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         if (e.target.files) {
-          const file = e.target.files[0];
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setFormData((prev) => ({ ...prev, picture: reader.result }));
-          };
-          reader.readAsDataURL(file);
+            const file = e.target.files[0];
+            
+            // Upload to Cloudinary
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "your_upload_preset");  // Make sure you set up your upload preset in Cloudinary
+    
+            try {
+                const res = await fetch("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+                const data = await res.json();
+                if (data.secure_url) {
+                    // Once the image is uploaded, save the URL in the formData
+                    setFormData((prev) => ({
+                        ...prev,
+                        picture: data.secure_url,  // Save the Cloudinary URL
+                    }));
+                }
+            } catch (error) {
+                console.error("Error uploading image to Cloudinary", error);
+                setError("Failed to upload image");
+            }
         }
     };
     
@@ -35,7 +55,7 @@ export const Hero = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
     const handleReset = () => {
-        formData.picture = session?.user?.profilePicture ||"",
+        formData.picture = session?.user?.bannerPicture ||"",
         formData.firstname = session?.user?.firstname || "",
         formData.lastname = session?.user?.lastname || "",
         formData.email = session?.user?.email || "",

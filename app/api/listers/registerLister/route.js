@@ -2,13 +2,12 @@ import { NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb"; // MongoDB connection utility
 import Lister from "@/models/lister"; // Import your Mongoose model for Lister
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/route.js";
 
 export async function POST(req) {
   try {
     // Connect to MongoDB
     await connectMongoDB();
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
