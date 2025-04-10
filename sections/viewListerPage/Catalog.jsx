@@ -2,39 +2,31 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
 
-export const Catalog = ({ firstname, isLister, thisLister }) => {
+export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) => {
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
 
-    // Fetch photos for this lister when the component mounts
-    useEffect(() => {
-    const fetchPhotos = async () => {
-        try {
-        const res = await fetch(`/api/photos/list/${thisLister._id}`);
-        const data = await res.json();
-        setPosts(data.photos.map((photo) => ({ url: photo.photo })));
-        } catch (err) {
-        console.error("Error loading photos:", err);
-        }
-    };
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const photosPerPage = isMobile ? 1 : 3;
+  const totalPages = Math.ceil(posts.length / photosPerPage);
 
-    if (thisLister?._id) {
-        fetchPhotos();
-    }
-    }, [thisLister?._id]);
+  const currentPosts = posts.slice(
+    currentPage * photosPerPage,
+    currentPage * photosPerPage + photosPerPage
+  );
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     setUploading(true);
-
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "ml_default"); // Replace with your actual preset
+      formData.append("upload_preset", "ml_default");
 
       const cloudinaryRes = await fetch("https://api.cloudinary.com/v1_1/djreop8la/image/upload", {
         method: "POST",
@@ -42,26 +34,22 @@ export const Catalog = ({ firstname, isLister, thisLister }) => {
       });
 
       const cloudinaryData = await cloudinaryRes.json();
-      console.log(cloudinaryData);
       const imageUrl = cloudinaryData.secure_url;
 
-      const apiRes = await fetch("/api/photos/upload", {
+      const res = await fetch("/api/photos/upload", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           listerId: thisLister._id,
           photo: imageUrl,
         }),
       });
 
-      
       if (res.ok) {
-        // Fetch updated photos after upload
         const updated = await fetch(`/api/photos/list/${thisLister._id}`);
         const data = await updated.json();
         setPosts(data.photos.map((photo) => ({ url: photo.photo })));
+        setCurrentPage(0);
       } else {
         console.error("Upload failed");
       }
@@ -69,6 +57,14 @@ export const Catalog = ({ firstname, isLister, thisLister }) => {
       console.error("Upload error:", err);
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleSwipe = (direction) => {
+    if (direction === "left" && currentPage < totalPages - 1) {
+      setCurrentPage((prev) => prev + 1);
+    } else if (direction === "right" && currentPage > 0) {
+      setCurrentPage((prev) => prev - 1);
     }
   };
 
@@ -80,30 +76,38 @@ export const Catalog = ({ firstname, isLister, thisLister }) => {
             {thisLister.firstname}&apos;s Work
           </div>
 
-          <div className="w-full md:w-fit relative">
-            <div className="pt-10 pb-20 flex flex-col md:flex-row justify-center items-center gap-1 bg-[#F3F3F3] rounded-lg px-10 min-h-[400px]">
-              {posts.length === 0 ? (
+          <div className="relative w-fit">
+            <div
+              className="pt-10 pb-20 flex flex-wrap justify-center items-center gap-3 bg-[#F3F3F3] rounded-lg px-10 min-w-[300px] min-h-[400px]"
+              onTouchStart={(e) => (window.touchStartX = e.changedTouches[0].clientX)}
+              onTouchEnd={(e) => {
+                const delta = e.changedTouches[0].clientX - window.touchStartX;
+                if (Math.abs(delta) > 50) handleSwipe(delta < 0 ? "left" : "right");
+              }}
+            >
+              {currentPosts.length === 0 ? (
                 <p className="text-gray-500">No posts yet.</p>
               ) : (
-                posts.map(({ url }, index) => (
+                currentPosts.map(({ url }, index) => (
                   <div
                     key={index}
-                    className="w-fit h-[400px] hover:scale-[1.01] transition transform duration-300"
+                    className="w-full md:w-[360px] h-auto aspect-video transition transform duration-300"
                   >
                     <Image
                       src={url}
                       alt="a lister's post"
-                      width={225}
-                      height={400}
-                      className="w-[225px] h-[400px] object-cover rounded-lg"
+                      width={1080}
+                      height={1920}
+                      className="w-[225px] h-[400px] md:w-[360px] md:h-[640px] object-cover rounded-lg"
                     />
                   </div>
                 ))
               )}
             </div>
 
+            {/* Upload Button */}
             {isLister && (
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+              <div className={`absolute ${totalPages == 1 ? "bottom-4" : "bottom-15"} left-1/2 transform -translate-x-1/2`}>
                 <button
                   onClick={() => fileInputRef.current.click()}
                   className="bg-black text-white px-4 py-2 text-sm rounded hover:bg-gray-800 transition"
@@ -118,6 +122,34 @@ export const Catalog = ({ firstname, isLister, thisLister }) => {
                   onChange={handleFileChange}
                   className="hidden"
                 />
+              </div>
+            )}
+
+            {/* Pagination Controls */}
+            {!isMobile && totalPages > 1 && (
+              <div className="flex justify-center gap-4 mt-4">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
+                  disabled={currentPage === 0}
+                  className="text-sm bg-black px-3 py-1 rounded disabled:opacity-50"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages - 1))}
+                  disabled={currentPage >= totalPages - 1}
+                  className="text-sm bg-black px-3 py-1 rounded disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+
+            {isMobile && totalPages > 1 && (
+              <div className="text-black flex justify-center items-center gap-2 mt-4">
+                <BiSolidLeftArrow onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages - 1))}/>
+                  View more
+                <BiSolidRightArrow onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}/>
               </div>
             )}
           </div>

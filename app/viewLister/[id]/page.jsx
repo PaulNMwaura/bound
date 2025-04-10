@@ -16,6 +16,24 @@ export default function listerPage ({params}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
+  const [posts, setPosts] = useState([]);
+
+  // Fetch photos for this lister when the component mounts
+  useEffect(() => {
+    const fetchPhotos = async () => {
+        try {
+        const res = await fetch(`/api/photos/list/${thisLister._id}`);
+        const data = await res.json();
+        setPosts(data.photos.map((photo) => ({ url: photo.photo })));
+        } catch (err) {
+        console.error("Error loading photos:", err);
+        }
+    };
+
+    if (thisLister?._id) {
+        fetchPhotos();
+    }
+  }, [thisLister?._id]);
   
   useEffect(() => {
     // Fetch lister data when component mounts
@@ -53,7 +71,7 @@ export default function listerPage ({params}) {
       <div className="md:container md:w-[90%] bg-white md:mt-10 md:rounded-lg pb-20">
         <Hero id={id} thisLister={thisLister} />
         <Information id={id} thisLister={thisLister} />
-        <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister}/>
+        <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
         <Reviews />
       </div>
     </div>
