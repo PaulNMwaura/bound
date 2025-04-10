@@ -9,7 +9,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
   const [uploading, setUploading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const photosPerPage = isMobile ? 1 : 3;
   const totalPages = Math.ceil(posts.length / photosPerPage);
 

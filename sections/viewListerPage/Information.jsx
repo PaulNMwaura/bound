@@ -7,10 +7,6 @@ import { Selections } from "./Selections";
 import { set } from "mongoose";
 
 const handleAppointmentRequest = async (id, firstname, lastname, selectedDate, selectedTime, selectedServices, {setSuccess, setError}) => {
-  // if(!id || !firstname || !lastname || !selectedDate || !selectedTime || !selectedServices) {
-  //   setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment");
-  //   return;
-  // }
   try {
     const response = await fetch("/api/appointments", {
       method: "POST",
@@ -29,7 +25,7 @@ const handleAppointmentRequest = async (id, firstname, lastname, selectedDate, s
     if (response.ok) {
       setSuccess(`${firstname}, your appointment for ${new Date(selectedDate).toLocaleString("default", { month: "long", day: "numeric", year: "numeric" })} at ${selectedTime} has been requested. Keep an eye on your inbox for updates.`)
     } else {
-      alert(`Error: ${data.message}`);
+      alert(`${data.message}. Make sure you've made service, date, and time selections before requesting.`);
       // setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment");
     }
   } catch (error) {
@@ -140,15 +136,15 @@ export const Information = ({id, thisLister}) => {
               <div className="lg:w-[35%] flex flex-col">
 
                 {/* Services offered by lister section and the selection made by the user */}
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-col gap-6">
                   <div className="w-full">
-                    <div className="section-title text-xs text-start pb-3 pt-5 md:text-xl xl:text-2xl">
+                    <div className="section-title text-sm text-start pb-3 pt-5 md:text-xl xl:text-2xl">
                       {thisLister.firstname}'s Services
                     </div>
                     {thisLister.services.map((service, index) => (
-                      <div key={index} className="text-xs md:text-md xl:text-lg pb-6">
+                      <div key={index} className="text-sm md:text-md xl:text-lg pb-6">
                         <div className="flex justify-between min-w-[120px]">
-                          <button onClick={() => handleServiceSelection(service.name)}>
+                          <button className="cursor-pointer" onClick={() => handleServiceSelection(service.name)}>
                             {service.name}
                           </button>
                           {service.price && (
@@ -157,8 +153,8 @@ export const Information = ({id, thisLister}) => {
                         </div>
                         {/* question mark because they may not exists */}
                         {service.subcategories?.map((subService, jndex) => (
-                          <div key={jndex} className="ml-3 flex flex-row justify-between font-light">
-                            <button onClick={() => handleServiceSelection(subService.name)}>
+                          <div key={jndex} className="mt-1 ml-3 flex flex-row justify-between font-light">
+                            <button className="cursor-pointer" onClick={() => handleServiceSelection(subService.name)}>
                               {subService.name}
                             </button>
                             <ul className="font-semibold">${subService.price}</ul>
@@ -186,9 +182,9 @@ export const Information = ({id, thisLister}) => {
 
               {/* Availability section */}
               <div className="lg:flex-col lg:justify-center pb-6">
-                <div className="flex justify-between items-center gap-6">
+                <div className="flex flex-col justify-between items-center gap-6">
                   <div className="pt-5 flex flex-col w-full gap-3">
-                      <h1 className="section-title text-start text-xs md:text-lg xl:text-2xl">{thisLister.firstname}'s Availability</h1>
+                      <h1 className="section-title text-start text-sm md:text-lg xl:text-2xl">{thisLister.firstname}'s Availability</h1>
                       <div className="mt-5 md:min-w-[250px]">
                         {/* Maybe make this an expandable feature, so it isnt so small */}
                           <Calendar setSelectedDate={setSelectedDate} unavailableDays={thisLister.unavailableDays}/>
@@ -208,25 +204,11 @@ export const Information = ({id, thisLister}) => {
                       )}
                     </div>
                   </div>
-
                 </div>
-
-                {/* <div className="pt-3 flex flex-row gap-2 place-content-center">
-                  <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded bg-red-600 overflow-y-clip overflow-x-clip">
-                      <div className="w-8 h-12 rounded bg-purple-600 rotate-45 my-[15%] mx-[32%]"></div>
-                      </div>
-                      <a> = Unavailable</a>
-                  </div>
-                  <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded bg-orange-500 "></div>
-                      <a> = Available</a>
-                  </div>
-                </div> */}
               </div>
                                 
               {/* Time selection section */}
-              <div className="mt-4 flex justify-between items-center gap-6">
+              <div className="mt-4 flex flex-col justify-center items-center gap-6">
                 <div className="w-full py-3 bg-white/40 shadow-lg rounded-lg">
                   {/* <h2 className="text-md font-semibold mb-3 text-center">Select a Time Slot</h2> */}
                   <div className="w-32 h-52 overflow-y-scroll mx-auto p-2">
