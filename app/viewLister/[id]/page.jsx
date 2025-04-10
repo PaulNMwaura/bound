@@ -72,7 +72,7 @@ export default function listerPage ({params}) {
         <Hero id={id} thisLister={thisLister} />
         <Information id={id} thisLister={thisLister} />
         <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
-        <Reviews />
+        <Reviews listerId={thisLister._id}/>
       </div>
     </div>
   );

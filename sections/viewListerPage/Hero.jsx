@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Logo from "@/assets/logo-holder.png";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -12,6 +12,11 @@ export const Hero = ({ id, thisLister}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
+  // At top of Hero.jsx
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [review, setReview] = useState("");
+  const [rating, setRating] = useState(0);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -26,6 +31,38 @@ export const Hero = ({ id, thisLister}) => {
   : Logo;
 
   const isLister = session?.user?.id === thisLister.userId;
+  
+  const handleSubmitReview = async () => {
+    if (!review || rating < 0 || rating > 5) return alert("Enter valid review and rating");
+    setSubmitLoading(true);
+
+    try {
+      const res = await fetch("/api/listers/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          listerId: thisLister._id,
+          reviewerName: session?.user?.firstname || "Anonymous",
+          review,
+          rating,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setShowReviewForm(false);
+        setReview("");
+        setRating(0);
+        window.location.reload();
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      alert("Failed to submit review.");
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
 
     return (
       <section className="py-10">
@@ -66,9 +103,12 @@ export const Hero = ({ id, thisLister}) => {
                     <button className="btn hover:cursor-pointer">Message {thisLister.firstname}</button>
                   </div>
                   <div className="flex -space-x-2 items-center">
-                    <BiSolidCommentEdit size={22}/>
-                    <button className="btn hover:cursor-pointer">Reviews</button>
+                    <BiSolidCommentEdit size={22} />
+                    <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
+                      Leave a review
+                    </button>
                   </div>
+
                   {!isLister && (
                     // I WANT THIS TO CREATE A POP UP WHERE THE USER CAN SELECT A REASON.
                     // REPORT REQUEST IS SENT AND STORED IN A DATABASE TABLE.
@@ -83,6 +123,44 @@ export const Hero = ({ id, thisLister}) => {
             </div>
           </div>
         </div>
+        {showReviewForm && (
+          <div className="fixed inset-0 bg-black/20 flex justify-center items-center z-50 text-black">
+            <div className="bg-white rounded-xl p-6 w-11/12 md:w-[600px] shadow-xl">
+              <h3 className="text-lg font-semibold mb-3">Leave a Review</h3>
+              <textarea
+                className="w-full p-2 border rounded mb-3"
+                rows="4"
+                placeholder="Write your review..."
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+              />
+              <input
+                type="number"
+                min="0"
+                max="5"
+                value={rating}
+                onChange={(e) => setRating(parseFloat(e.target.value))}
+                className="w-full p-2 border rounded mb-4"
+                placeholder="Rating (0 - 5)"
+              />
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setShowReviewForm(false)}
+                  className="text-gray-600 hover:underline"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmitReview}
+                  disabled={submitLoading}
+                  className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+                >
+                  {submitLoading ? "Submitting..." : "Submit"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     );
 };
