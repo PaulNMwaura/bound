@@ -1,5 +1,6 @@
 import { connectMongoDB }from "@/lib/mongodb";
 import Lister from "@/models/lister";
+import Review from "@/models/review";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
@@ -19,7 +20,20 @@ export async function GET(req) {
 
         // Fetch matching listers
         const listers = await Lister.find(query);
-        return NextResponse.json({ listers });        
+
+        // For each lister, calculate average rating
+        const listersWithRatings = await Promise.all(
+            listers.map(async (lister) => {
+            const reviews = await Review.find({ listerId: lister._id });
+            const averageRating =
+                reviews.reduce((sum, r) => sum + r.rating, 0) / (reviews.length || 1);
+            return {
+                ...lister.toObject(),
+                rating: parseFloat(averageRating.toFixed(0)),
+            };
+            })
+        );
+        return NextResponse.json({ listers: listersWithRatings });        
     } catch (error) {
         return NextResponse.json({ error: "Server error" }, { status: 500 });       
     }

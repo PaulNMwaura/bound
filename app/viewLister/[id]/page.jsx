@@ -59,6 +59,11 @@ export default function listerPage ({params}) {
       const res = await fetch(`/api/listers/reviews/${thisLister._id}`);
       const data = await res.json();
       setReviews(data.reviews);
+
+      setLister((prev) => ({
+        ...prev,
+        rating: parseFloat(data.averageRating),
+      }));
     };
 
     if (thisLister?._id) fetchReviews();
@@ -77,7 +82,7 @@ export default function listerPage ({params}) {
       <div className="w-full">
         <Header id={id} thisLister={thisLister}/>
       </div>
-      <div className="md:container md:w-[90%] bg-white h-screen md:h-fit md:mt-10 md:rounded-lg pb-20">
+      <div className="container bg-white h-screen md:h-fit md:mt-10 md:rounded-lg pb-20">
         <Hero id={id} thisLister={thisLister} />
         <Information id={id} thisLister={thisLister} />
         <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>

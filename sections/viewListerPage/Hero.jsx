@@ -11,6 +11,7 @@ import { RiAlertFill } from "react-icons/ri";
 export const Hero = ({ id, thisLister}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reviewError, setReviewError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
   // At top of Hero.jsx
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -33,7 +34,7 @@ export const Hero = ({ id, thisLister}) => {
   const isLister = session?.user?.id === thisLister.userId;
   
   const handleSubmitReview = async () => {
-    if (!review || rating < 0 || rating > 5) return alert("Enter valid review and rating");
+    if (!review || rating < 1 || rating > 5) return setError("Enter valid review and rating");
     setSubmitLoading(true);
 
     try {
@@ -55,7 +56,7 @@ export const Hero = ({ id, thisLister}) => {
         setRating(0);
         window.location.reload();
       } else {
-        alert(data.message);
+        setReviewError(data.message);
       }
     } catch (err) {
       alert("Failed to submit review.");
@@ -129,20 +130,24 @@ export const Hero = ({ id, thisLister}) => {
               <h3 className="text-lg font-semibold mb-3">Leave a Review</h3>
               <textarea
                 className="w-full p-2 border rounded mb-3"
-                rows="4"
+                rows="5"
                 placeholder="Write your review..."
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
               />
+              <h3 className="text-md font-semibold mb-3">Rating (1 - 5)</h3>
               <input
                 type="number"
-                min="0"
+                min="1"
                 max="5"
                 value={rating}
                 onChange={(e) => setRating(parseFloat(e.target.value))}
                 className="w-full p-2 border rounded mb-4"
-                placeholder="Rating (0 - 5)"
+                placeholder="Enter a rating"
               />
+              {reviewError && (
+                <div className="w-fit px-3 text-white bg-red-500 rounded">{reviewError}</div>
+              )}
               <div className="flex justify-between">
                 <button
                   onClick={() => setShowReviewForm(false)}
