@@ -2,18 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export const Reviews = ({ listerId }) => {
-  const [reviews, setReviews] = useState([]);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      const res = await fetch(`/api/listers/reviews/${listerId}`);
-      const data = await res.json();
-      setReviews(data.reviews);
-    };
-
-    if (listerId) fetchReviews();
-  }, [listerId]);
+export const Reviews = ({ reviews }) => {
 
     return (
         <section className="py-4">

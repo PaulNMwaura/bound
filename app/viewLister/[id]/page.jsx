@@ -5,7 +5,6 @@ import { Hero } from "@/sections/viewListerPage/Hero";
 import { Catalog } from "@/sections/viewListerPage/Catalog";
 import { Header } from "@/sections/viewListerPage/Header";
 import { Reviews } from "@/sections/viewListerPage/Reviews";
-import { Selections } from "@/sections/viewListerPage/Selections";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
@@ -17,6 +16,7 @@ export default function listerPage ({params}) {
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
   const [posts, setPosts] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   // Fetch photos for this lister when the component mounts
   useEffect(() => {
@@ -48,13 +48,22 @@ export default function listerPage ({params}) {
         setLister(data.lister);
       } catch (error) {
         setError(error.message);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchLister();
   }, [id]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const res = await fetch(`/api/listers/reviews/${thisLister._id}`);
+      const data = await res.json();
+      setReviews(data.reviews);
+    };
+
+    if (thisLister?._id) fetchReviews();
+    setLoading(false); // Last thing to be loaded so it should finish the loading process.
+  }, [thisLister?._id]);
 
   
   if (loading) return <div>Loading...</div>;
@@ -72,7 +81,7 @@ export default function listerPage ({params}) {
         <Hero id={id} thisLister={thisLister} />
         <Information id={id} thisLister={thisLister} />
         <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
-        <Reviews listerId={thisLister._id}/>
+        <Reviews reviews={reviews}/>
       </div>
     </div>
   );
