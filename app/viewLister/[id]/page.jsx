@@ -68,7 +68,7 @@ export default function listerPage ({params}) {
       <div className="w-full">
         <Header id={id} thisLister={thisLister}/>
       </div>
-      <div className="md:container md:w-[90%] bg-white md:mt-10 md:rounded-lg pb-20">
+      <div className="md:container md:w-[90%] bg-white h-screen md:h-fit md:mt-10 md:rounded-lg pb-20">
         <Hero id={id} thisLister={thisLister} />
         <Information id={id} thisLister={thisLister} />
         <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>

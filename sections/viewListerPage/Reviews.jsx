@@ -16,7 +16,7 @@ export const Reviews = ({ listerId }) => {
   }, [listerId]);
 
     return (
-        <section className="py-3">
+        <section className="py-4">
             <div className="container text-black">
                 <div className="flex flex-col justify-center items-center gap-6 lg:gap-10">
                     {reviews.length === 0 ? (
@@ -34,7 +34,7 @@ export const Reviews = ({ listerId }) => {
                                     <div className="text-md md:text-lg lg:text-xl font-semibold">
                                         {review.reviewerName}
                                     </div>
-                                    <div className="text-yellow-500 text-sm mt-1">⭐ {review.rating}/5</div>
+                                    <div className="text-yellow-500 text-sm md:text-md mt-1">⭐ {review.rating}/5</div>
                                     <div className="text-xs md:text-md lg:text-lg text-gray-600">
                                         {review.review}
                                     </div>

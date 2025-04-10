@@ -88,7 +88,7 @@ export const Information = ({id, thisLister}) => {
   }
 
     return (
-      <div className="flex md:flex-col lg:gap-2 lg:flex-row items-center justify-center text-black">
+      <div className="flex md:flex-col lg:gap-2 lg:flex-row items-center justify-center text-black md:px-3">
         <section className="w-full">
           <div className="bg-[#F3F3F3] md:rounded-xl py-10 px-6">
 
