@@ -80,7 +80,7 @@ export const Hero = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="bg-[#D9D9D9] text-black dark:bg-[#5A5A5A] dark:text-white  ">
+        <div className="bg-[#D9D9D9] text-black ">
             <Header id={listerId} isLister={isLister} setFilters={setFilters} userFirstname={session?.user?.firstname}/>
             <div>
                 <section className="pt-5 pb-10">
@@ -116,10 +116,10 @@ export const Hero = () => {
                                     {/* Card Image */}
                                     <div className="flex justify-center">
                                         {lister.picture ? (
-                                            <Image src={lister.picture} alt="Lister Banner Picture" width={1920} height={1080} className="object-fit rounded-lg" />
+                                            <Image src={lister.picture} alt="Lister Banner Picture" width={1920} height={1080} className="object-fit w-[368px] h-[207px] rounded-lg" />
                                         ):(
-                                            <div className="w-[352px] h-[198px] bg-[#a2a2a2] rounded-lg">
-                                            </div> 
+                                            <div className="w-[368px] h-[207px] bg-[#a2a2a2] rounded-lg">
+                                            </div>
                                         )}
                                     </div>
 

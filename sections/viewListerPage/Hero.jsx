@@ -87,8 +87,8 @@ export const Hero = ({ id, thisLister}) => {
               <div className="w-full">
                 <div className="flex justify-between font-semibold border border-[#B5B5B5] rounded-lg px-3 mb-2">
                   <div className="flex flex-row space-x-1">
-                    <a className="font-semibold">{thisLister.firstname} {thisLister.lastname} |</a>
-                    <a className="font-light">English</a>
+                    <a className="font-semibold">{thisLister.firstname} {thisLister.lastname}</a>
+                    <a className="font-light">{thisLister.language ? `| ${thisLister.language}` : "| English"}</a>
                   </div>
                   <a>{thisLister.city}, {thisLister.state}</a>
                 </div>
