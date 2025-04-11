@@ -1,24 +1,26 @@
 import { IoCalendar } from "react-icons/io5";
 import { IoMdClock } from "react-icons/io";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useState } from "react";
 
-export const Hero = ({appointments, listerId}) => {
+export const Hero = ({appointments, listerId, session}) => {
     const [updatedAppointments, setUpdatedAppointments] = useState(appointments);
 
     const router = useRouter();
-    const handleAction = async (appointmentId, date, time, status) => {
+    const handleAction = async (appointmentId, date, time, status, firstname, lastname, email) => {
+        const formattedDate = new Date(date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
         const response = await fetch(`/api/appointments/${listerId}`, {
+        cache: "no-store",
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({appointmentId, date, time, status }),
+        body: JSON.stringify({appointmentId, date, formattedDate, time, status, firstname, lastname, email }),
         });
 
         if (!response.ok) {
             console.log("Error updating appointment.\n");
         } else {
             // refreshes the current page.
-            location.reload();
+            window.location.reload();
         }
     };
 
@@ -47,8 +49,8 @@ export const Hero = ({appointments, listerId}) => {
                                 {/* <p>Request: {appointment.status} (ONLY SHOWING THIS FOR TESTING PURPOSES)</p> */}
                                 <div className="flex justify-between">
                                     {/* handleAction paramaters is not correct */}
-                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
-                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
+                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "accepted", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs bg-green-500">Accept</button>
+                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "declined", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs bg-red-500">Decline</button>
                                 </div>
                             </li>
                         </div>

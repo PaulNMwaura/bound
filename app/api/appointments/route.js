@@ -5,8 +5,8 @@ import Lister from "@/models/lister";
 export async function POST(req) {
   try {
     await connectMongoDB();
-    const { listerId, firstname, lastname, date, time, services } = await req.json();
-    if (!listerId || !firstname || !lastname || !date || !time || !services) {
+    const { listerId, firstname, lastname, email, date, time, services } = await req.json();
+    if (!listerId || !firstname || !lastname || !email || !date || !time || !services) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
 
@@ -22,6 +22,7 @@ export async function POST(req) {
       listerId, 
       firstname,
       lastname,
+      email,
       time,
       date,
       services,

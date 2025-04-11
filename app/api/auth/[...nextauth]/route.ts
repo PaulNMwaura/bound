@@ -51,13 +51,17 @@ const authOptions: AuthOptions = {
           if (token?.lastname) {
             session.user.lastname = token.lastname as string; // Add user lastname to session
           }
+          if (token?.email) {
+            session.user.email = token.email as string; // Add user email to session
+          }
           return session;
         },
         async jwt({ token, user }) {
           if (user) {
             token.firstname = user.firstname as string;
             token.lastname = user.lastname as string;
-            token.id = user.id as string; // Store user ID in token
+            token.id = user.id as string;
+            token.email = user.email as string;
           }
           return token;
         },

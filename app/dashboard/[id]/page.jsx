@@ -34,7 +34,7 @@ export default function Dashboard({params}) {
           <Header session={session}/>
           {/* <Information /> */}
           <Calendar appointments={appointments} listerId={id} />
-          <Hero appointments={appointments} listerId={id} />
+          <Hero appointments={appointments} listerId={id} session={session}/>
         </div>
       </div>
     </div>

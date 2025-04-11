@@ -1,4 +1,4 @@
-export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname, setSuccess, setError}) =>{
+export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname, email, setSuccess, setError}) =>{
     return (
         <section className="hidden md:block md:mt-10 lg:mt-0 md:min-w-full lg:min-w-[150px]">
             <div className="container bg-[#F3F3F3] rounded-xl pt-5 pb-10 px-4">
@@ -48,7 +48,7 @@ export const Selections = ({selectedServices, selectedDate, selectedTime, handle
                 
                 {/* Request appointment button */}
                 <div className="flex mt-10 justify-center">
-                    <button onClick={() => handleAppointmentRequest(id, firstname, lastname, selectedDate, selectedTime, selectedServices, {setSuccess, setError})} className="btn btn-primary text-xs">Request An Appointment</button>
+                    <button onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, {setSuccess, setError})} className="btn btn-primary text-xs">Request An Appointment</button>
                 </div>
             </div>
         </section>

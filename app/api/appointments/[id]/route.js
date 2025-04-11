@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import Lister from "@/models/lister";
+import postmarkClient from "@/lib/postmark";
+import { GiMailShirt } from "react-icons/gi";
 
 export async function GET(req, { params }) {
   const { id } = await params;
@@ -25,9 +27,10 @@ export async function GET(req, { params }) {
 
 export async function PUT(request,{ params }) {
   const { id } = await params;
-  const { appointmentId, date, time, status } = await request.json();
+  const { appointmentId, date, formattedDate, time, status, firstname, lastname, email } = await request.json();
   console.log("Lister: ", id);
   console.log("Appt: ", appointmentId);
+  console.log("Firstname: ", firstname, " lastname: ", lastname, " Email: ", email);
   try {
     await connectMongoDB();
     if (status == "accepted") {
@@ -35,6 +38,27 @@ export async function PUT(request,{ params }) {
     }
     if (status == "declined" || status == "canceled") {
       await Lister.findOneAndUpdate({_id: id}, {$pull: {appointments: {_id: appointmentId, date: date, time: time}}}, {new: true});
+    }
+    try {
+      await postmarkClient.sendEmailWithTemplate({
+        From: process.env.POSTMARK_SENDER_EMAIL,
+        To: email,
+        TemplateId: process.env.POSTMARK_TEMPLATE_ID,
+        TemplateModel: {
+          product_name: "etchedintara.com",
+          company_name: "etchedintara (EIT)",
+          firstname,
+          date: formattedDate,
+          time,
+          status,
+          statusAccepted: status === "accepted",
+          statusDeclinedOrCanceled: status === "declined" || status === "canceled",
+          businessName: "EIT",
+        },
+      });
+      console.log("Email sent successfully");
+    } catch (error) {
+      console.error("Email failed:", emailError);
     }
 
     return NextResponse.json({message: "Appointment updated."}, {status: 200});
