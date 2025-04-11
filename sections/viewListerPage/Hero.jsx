@@ -34,7 +34,7 @@ export const Hero = ({ id, thisLister}) => {
   const isLister = session?.user?.id === thisLister.userId;
   
   const handleSubmitReview = async () => {
-    if (!review || rating < 1 || rating > 5) return setError("Enter valid review and rating");
+    if (!review || rating < 1 || rating > 5) return setReviewError("Enter valid review and rating");
     setSubmitLoading(true);
 
     try {
@@ -141,7 +141,7 @@ export const Hero = ({ id, thisLister}) => {
                 min="1"
                 max="5"
                 value={rating}
-                onChange={(e) => setRating(parseFloat(e.target.value))}
+                onChange={(e) => setRating(parseInt(e.target.value))}
                 className="w-full p-2 border rounded mb-4"
                 placeholder="Enter a rating"
               />
