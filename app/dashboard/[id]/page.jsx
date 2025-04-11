@@ -16,7 +16,6 @@ export default function Dashboard({params}) {
     async function fetchAppointments() {
       const response = await fetch(`/api/appointments/${id}`);
       const data = await response.json();
-      console.log("appointments:  ", data);
       setAppointments(data);
     }
 

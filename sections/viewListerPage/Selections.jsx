@@ -1,4 +1,4 @@
-export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname}) =>{
+export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname, setSuccess, setError}) =>{
     return (
         <section className="hidden md:block md:mt-10 lg:mt-0 md:min-w-full lg:min-w-[150px]">
             <div className="container bg-[#F3F3F3] rounded-xl pt-5 pb-10 px-4">

@@ -25,14 +25,16 @@ export async function GET(req, { params }) {
 
 export async function PUT(request,{ params }) {
   const { id } = await params;
-  const { appointmentId, status } = await request.json()
+  const { appointmentId, date, time, status } = await request.json();
+  console.log("Lister: ", id);
+  console.log("Appt: ", appointmentId);
   try {
     await connectMongoDB();
     if (status == "accepted") {
-      await Lister.findOneAndUpdate({_id: id, "appointments.id": appointmentId}, { $set:{"appointments.$.status": status}}, {new: true});
+      await Lister.findOneAndUpdate({_id: id, "appointments._id": appointmentId}, { $set:{"appointments.$.status": status}}, {new: true});
     }
     if (status == "declined" || status == "canceled") {
-      await Lister.findOneAndUpdate({_id: id}, {$pull: {appointments: {id: appointmentId}}}, {new: true});
+      await Lister.findOneAndUpdate({_id: id}, {$pull: {appointments: {_id: appointmentId, date: date, time: time}}}, {new: true});
     }
 
     return NextResponse.json({message: "Appointment updated."}, {status: 200});
@@ -41,6 +43,6 @@ export async function PUT(request,{ params }) {
   }
 }
 
-export async function DELETE(params) {
+export async function DELETE(req, {params}) {
   // we need to get the correct variable to find the appointment that needs to be deleted.
 }

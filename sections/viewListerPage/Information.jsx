@@ -4,7 +4,6 @@ import Calendar from "@/components/Calendar";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Selections } from "./Selections";
-import { set } from "mongoose";
 
 const handleAppointmentRequest = async (id, firstname, lastname, selectedDate, selectedTime, selectedServices, {setSuccess, setError}) => {
   try {
@@ -68,7 +67,7 @@ export const Information = ({id, thisLister}) => {
 
 
   const availableTimes = generateTimeSlots();
-  let date = selectedDate 
+  let date = selectedDate;
 
   const handleInstructions = () => {
     setShowInstructions(!showInstructions);
@@ -247,6 +246,18 @@ export const Information = ({id, thisLister}) => {
               <button onClick={() => handleAppointmentRequest(id, firstname, lastname, selectedDate, selectedTime, selectedServices, {setSuccess, setError})} className="btn btn-primary">Request An Appointment</button>
             </div>
           </div>
+          {success && (
+            <div className="fixed inset-0 h-fit flex justify-center z-10">
+                <div className="flex flex-col justify-between items-center text-white p-3 bg-green-500 rounded-b-lg outline outline-offset-2 outline-[#868686]">
+                  <div>
+                    {success}
+                  </div>
+                  <div>
+                    <button className="px-2 bg-[#868686] rounded-md" onClick={() => setSuccess("")}>Close</button>
+                  </div>
+                </div>
+            </div>
+          )}
           {/* {error && (
             <div className="absolute w-screen h-screen top-0 left-0 z-10 flex items-center justify-center bg-black/40">
               <div className="w-[20%] bg-white p-6 z-20 text-center rounded-xl shadow-sm">
@@ -256,7 +267,7 @@ export const Information = ({id, thisLister}) => {
             </div>
           )} */}
         </section>
-        <Selections selectedServices={selectedServices} selectedDate={selectedDate} selectedTime={selectedTime} handleAppointmentRequest={handleAppointmentRequest} id={id} firstname={firstname} lastname={lastname}/>
+        <Selections selectedServices={selectedServices} selectedDate={selectedDate} selectedTime={selectedTime} handleAppointmentRequest={handleAppointmentRequest} id={id} firstname={firstname} lastname={lastname} setSuccess={setSuccess} setError={setError}/>
       </div>
     );
 };

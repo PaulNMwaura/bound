@@ -5,6 +5,7 @@ const AppointmentSchema = new mongoose.Schema({
   listerId: { type: mongoose.Schema.Types.ObjectId, ref: "Lister", required: true },
   status: { type: String, enum: ["pending", "accepted", "declined"], default: "pending" },
   date: { type: Date, required: true }, // date is the day that the user has requested for the appointment
+  time: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 

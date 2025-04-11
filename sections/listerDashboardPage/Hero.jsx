@@ -7,15 +7,15 @@ export const Hero = ({appointments, listerId}) => {
     const [updatedAppointments, setUpdatedAppointments] = useState(appointments);
 
     const router = useRouter();
-    const handleAction = async (appointmentId, status) => {
+    const handleAction = async (appointmentId, date, time, status) => {
         const response = await fetch(`/api/appointments/${listerId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({appointmentId, status }),
+        body: JSON.stringify({appointmentId, date, time, status }),
         });
 
         if (!response.ok) {
-            console.log("Error updated appointment.\n");
+            console.log("Error updating appointment.\n");
         } else {
             // refreshes the current page.
             location.reload();
@@ -47,8 +47,8 @@ export const Hero = ({appointments, listerId}) => {
                                 {/* <p>Request: {appointment.status} (ONLY SHOWING THIS FOR TESTING PURPOSES)</p> */}
                                 <div className="flex justify-between">
                                     {/* handleAction paramaters is not correct */}
-                                    <button onClick={() => handleAction(appointment.id, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
-                                    <button onClick={() => handleAction(appointment.id, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
+                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "accepted")} className="btn btn-primary text-xs bg-green-500">Accept</button>
+                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "declined")} className="btn btn-primary text-xs bg-red-500">Decline</button>
                                 </div>
                             </li>
                         </div>
