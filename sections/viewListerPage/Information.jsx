@@ -51,8 +51,7 @@ const generateTimeSlots = (offset) => {
   return times;
 };
 
-export const Information = ({id, thisLister}) => {
-  // const [thisLister, setLister] = useState(null);
+export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing}) => {
   const [loading, setLoading] = useState(true);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -61,7 +60,6 @@ export const Information = ({id, thisLister}) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
-  const curr_user = session?.user?.id;
   const [selectedServices, setSelectedServices] = useState([]);
   const firstname = session?.user?.firstname;
   const lastname = session?.user?.lastname;
@@ -74,6 +72,11 @@ export const Information = ({id, thisLister}) => {
   const handleInstructions = () => {
     setShowInstructions(!showInstructions);
     setShowInstructionsButton(!showInstructionsButton);
+  }
+
+  const handleEditAvailability = () =>{
+    // unavailable days update logic here.
+    toggleEditing();
   }
 
   const handleServiceSelection = (e) => {
@@ -187,8 +190,7 @@ export const Information = ({id, thisLister}) => {
                   <div className="pt-5 flex flex-col w-full gap-3">
                       <h1 className="section-title text-start text-sm md:text-lg xl:text-2xl">{thisLister.firstname}'s Availability</h1>
                       <div className="mt-5 md:min-w-[250px]">
-                        {/* Maybe make this an expandable feature, so it isnt so small */}
-                          <Calendar setSelectedDate={setSelectedDate} unavailableDays={thisLister.unavailableDays}/>
+                          <Calendar isLister={isLister} setSelectedDate={setSelectedDate} unavailableDays={thisLister.unavailableDays}/>
                       </div>
                   </div>
 
@@ -206,6 +208,15 @@ export const Information = ({id, thisLister}) => {
                     </div>
                   </div>
                 </div>
+                {isLister && (
+                  <div className="pt-3 flex justify-center text-xs md:text-sm">
+                    {editingEnabled ? (
+                      <button className="btn btn-primary" onClick={() => toggleEditing()}>Edit Availability</button>
+                    ):(
+                      <button className="btn btn-primary" onClick={() => toggleEditing()}>Save Edits</button>
+                    )}
+                  </div>
+                )}
               </div>
                                 
               {/* Time selection section */}
@@ -243,6 +254,7 @@ export const Information = ({id, thisLister}) => {
                   </div>
                 </div>
               </div>
+
             </div>
             <div className="flex md:hidden mt-10 justify-center text-xs md:text-lg">
               <button onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, {setSuccess, setError})} className="btn btn-primary">Request An Appointment</button>

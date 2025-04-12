@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 export default function listerPage ({params}) {
   const [thisLister, setLister] = useState(null);
   const {id} = React.use(params);
-  // console.log("id: ", id);
+  const [editingEnabled, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
@@ -70,6 +70,11 @@ export default function listerPage ({params}) {
     setLoading(false); // Last thing to be loaded so it should finish the loading process.
   }, [thisLister?._id]);
 
+  const toggleEditing = () => {
+    setEditing(!editingEnabled);
+    console.log(editingEnabled);
+  }
+
   
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -84,7 +89,7 @@ export default function listerPage ({params}) {
       </div>
       <div className="container bg-white h-fit md:h-fit md:mt-10 md:rounded-lg pb-20">
         <Hero id={id} thisLister={thisLister} />
-        <Information id={id} thisLister={thisLister} />
+        <Information id={id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} />
         <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
         <Reviews reviews={reviews}/>
       </div>

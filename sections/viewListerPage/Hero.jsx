@@ -98,28 +98,24 @@ export const Hero = ({ id, thisLister}) => {
                 </div>
 
                 {/* Message and reviews buttons*/}
+                {!isLister && (
                 <div className="mt-4 w-full flex justify-between text-xs md:text-lg">
                   <div className="flex -space-x-2 items-center">
                     <IoMdMail size={22}/>
                     <button className="btn hover:cursor-pointer">Message {thisLister.firstname}</button>
                   </div>
-                  <div className="flex -space-x-2 items-center">
-                    <BiSolidCommentEdit size={22} />
-                    <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
-                      Leave a review
-                    </button>
-                  </div>
-
-                  {!isLister && (
-                    // I WANT THIS TO CREATE A POP UP WHERE THE USER CAN SELECT A REASON.
-                    // REPORT REQUEST IS SENT AND STORED IN A DATABASE TABLE.
+                    <div className="flex -space-x-2 items-center">
+                      <BiSolidCommentEdit size={22} />
+                      <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
+                        Leave a review
+                      </button>
+                    </div>
                     <div className="flex -space-x-2 items-center">
                       <RiAlertFill size={22} />
                       <button className="btn">Report</button>
                     </div>
-                  )}
                 </div>
-
+                )}
               </div>
             </div>
           </div>

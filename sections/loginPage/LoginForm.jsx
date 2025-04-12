@@ -34,28 +34,22 @@ export default function LoginForm(){
         e.preventDefault();
 
         console.log("submitted login form.");
-        // If email of password is missing, don't even try to authenticate. Just display the error
-        // if (validateCredentials(email, password, setError) != 0) {
-        //     console.log("Attempting validation.");
-        //     return;
-        // } else {
-            try {
-                console.log("attempting to login user.");
-                const res = await signIn("credentials", {
-                    email, password, redirect:false,
-                });
-                
-                if(!res || res.error) {
-                    setError("Invalid Credentials.");
-                    return;
-                }
-                
-                if (res.ok && !res.error)
-                    router.replace("/browse");
-            } catch (error) {
-                console.log("Error: ", error);
+        try {
+            console.log("attempting to login user.");
+            const res = await signIn("credentials", {
+                email, password, redirect:false,
+            });
+            
+            if(!res || res.error) {
+                setError("Invalid Credentials.");
+                return;
             }
-        // };
+            
+            if (res.ok && !res.error)
+                router.replace("/browse");
+        } catch (error) {
+            console.log("Error: ", error);
+        }
     }
 
     return (
