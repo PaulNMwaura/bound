@@ -72,7 +72,6 @@ export default function listerPage ({params}) {
 
   const toggleEditing = () => {
     setEditing(!editingEnabled);
-    console.log(editingEnabled);
   }
 
   

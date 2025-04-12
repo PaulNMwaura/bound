@@ -53,6 +53,7 @@ const generateTimeSlots = (offset) => {
 
 export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing}) => {
   const [loading, setLoading] = useState(true);
+  const [unavailableDays, setUnavailableDays] = useState(thisLister.unavailableDays || []);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -74,8 +75,22 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
     setShowInstructionsButton(!showInstructionsButton);
   }
 
-  const handleEditAvailability = () =>{
-    // unavailable days update logic here.
+  const handleEditAvailability = async () =>{
+    if (editingEnabled) {
+      // Save changes
+      try {
+        const res = await fetch(`/api/listers/${id}/availability`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ unavailableDays }),
+        });
+        if (!res.ok) throw new Error('Failed to update availability');
+        alert("Availability updated successfully!");
+      } catch (err) {
+        console.error(err);
+        alert("Failed to update availability");
+      }
+    }
     toggleEditing();
   }
 
@@ -190,7 +205,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                   <div className="pt-5 flex flex-col w-full gap-3">
                       <h1 className="section-title text-start text-sm md:text-lg xl:text-2xl">{thisLister.firstname}'s Availability</h1>
                       <div className="mt-5 md:min-w-[250px]">
-                          <Calendar isLister={isLister} setSelectedDate={setSelectedDate} unavailableDays={thisLister.unavailableDays}/>
+                          <Calendar isLister={isLister} setSelectedDate={setSelectedDate} editingEnabled={editingEnabled }unavailableDays={unavailableDays}  onAvailabilityChange={setUnavailableDays}/>
                       </div>
                   </div>
 
@@ -210,11 +225,9 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                 </div>
                 {isLister && (
                   <div className="pt-3 flex justify-center text-xs md:text-sm">
-                    {editingEnabled ? (
-                      <button className="btn btn-primary" onClick={() => toggleEditing()}>Edit Availability</button>
-                    ):(
-                      <button className="btn btn-primary" onClick={() => toggleEditing()}>Save Edits</button>
-                    )}
+                    <button className="btn btn-primary" onClick={handleEditAvailability}>
+                      {editingEnabled ? "Save Edits" : "Edit Availability"}
+                    </button>
                   </div>
                 )}
               </div>
