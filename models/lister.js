@@ -20,7 +20,7 @@ const ListerSchema = new mongoose.Schema ({
     ],
     rating: {type: Number},
     description: {type: String, required: true},
-    unavailableDays: {type: [Number], default: []},
+    unavailableDays: [String],
     appointments: [
         {
             firstname: {type: String, required: true},
