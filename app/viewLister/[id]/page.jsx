@@ -46,6 +46,7 @@ export default function listerPage ({params}) {
         const data = await response.json();
         // console.log("data: ", data.lister);
         setLister(data.lister);
+        setLoading(false);
       } catch (error) {
         setError(error.message);
       }
@@ -67,7 +68,7 @@ export default function listerPage ({params}) {
     };
 
     if (thisLister?._id) fetchReviews();
-    setLoading(false); // Last thing to be loaded so it should finish the loading process.
+    // Last thing to be loaded so it should finish the loading process.
   }, [thisLister?._id]);
 
   const toggleEditing = () => {

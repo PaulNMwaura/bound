@@ -307,7 +307,7 @@ export const Hero = () => {
                         ))}
                         <div className="flex justify-between items-center pt-2">
                             <button type="button" onClick={addService} className="btn btn-primary text-sm">Add another service</button>
-                            <button className="btn border border-black text-sm">Add service instructions</button>
+                            <button className="btn border border-black text-sm">Add service instructions<strong className="text-red-500">Needs configuration</strong></button>
                         </div>
                     </div>
                 </div>

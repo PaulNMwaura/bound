@@ -88,17 +88,17 @@ export default function Calendar({ isLister, editingEnabled, setSelectedDate, un
 
       <div className="flex justify-between items-center mb-2">
         <button
-          className="text-sm px-2 py-1 bg-gray-200 rounded disabled:opacity-50"
+          className="text-sm px-2 py-1 bg-orange-400 rounded disabled:opacity-50"
           onClick={() => setViewDate(new Date())}
           disabled={viewDate.getMonth() === new Date().getMonth()}
         >
           Current
         </button>
-        <div className="font-semibold">
+        <div className="font-semibold text-gray-700">
           {viewDate.toLocaleString('default', { month: 'long' })} {viewDate.getFullYear()}
         </div>
         <button
-          className="text-sm px-2 py-1 bg-gray-200 rounded disabled:opacity-50"
+          className="text-sm px-2 py-1 bg-orange-400 rounded disabled:opacity-50"
           onClick={() => {
             const nextMonth = new Date();
             nextMonth.setMonth(new Date().getMonth() + 1);
