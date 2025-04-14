@@ -12,7 +12,7 @@ export const Hero = () => {
     const {data: session } = useSession();
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
-        picture: session?.user?.bannerPicture ||"",
+        bannerPicture: session?.user?.bannerPicture ||"",
         firstname: session?.user?.firstname || "",
         lastname: session?.user?.lastname || "",
         email: session?.user?.email || "",
@@ -80,7 +80,7 @@ export const Hero = () => {
     };
 
     const handleReset = () => {
-        formData.picture = "",
+        formData.bannerPicture = "",
         formData.firstname = session?.user?.firstname || "",
         formData.lastname = session?.user?.lastname || "",
         formData.email = session?.user?.email || "",

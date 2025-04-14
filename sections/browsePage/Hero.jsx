@@ -115,8 +115,8 @@ export const Hero = () => {
                                     
                                     {/* Card Image */}
                                     <div className="flex justify-center">
-                                        {lister.picture ? (
-                                            <Image src={lister.picture} alt="Lister Banner Picture" width={1920} height={1080} className="object-fit w-[368px] h-[207px] rounded-lg" />
+                                        {lister.bannerPicture ? (
+                                            <Image src={lister.bannerPicture} alt="Lister Banner Picture" width={1920} height={1080} className="object-cover w-[368px] h-[207px] rounded-lg" />
                                         ):(
                                             <div className="w-[368px] h-[207px] bg-[#a2a2a2] rounded-lg">
                                             </div>
