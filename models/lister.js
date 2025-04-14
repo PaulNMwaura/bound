@@ -34,6 +34,7 @@ const ListerSchema = new mongoose.Schema ({
             time: {type: String, required: true},
             listerId: { type: mongoose.Schema.Types.ObjectId, required: true },
             status: {type: String , default: "pending"},
+            status: {type: String , required: false},
         },
     ],
 });

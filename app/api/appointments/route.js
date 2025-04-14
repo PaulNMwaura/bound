@@ -5,7 +5,7 @@ import Lister from "@/models/lister";
 export async function POST(req) {
   try {
     await connectMongoDB();
-    const { listerId, firstname, lastname, email, date, time, services } = await req.json();
+    const { listerId, firstname, lastname, email, date, time, services, specialNote } = await req.json();
     if (!listerId || !firstname || !lastname || !email || !date || !time || !services) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
@@ -26,6 +26,7 @@ export async function POST(req) {
       time,
       date,
       services,
+      specialNote,
       status: "pending"
     };
     // Add the appointment to the lister's appointments array

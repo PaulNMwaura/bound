@@ -50,7 +50,7 @@ export default async function Dashboard({ params }) {
         <Sidenav session={session} />
       </div>
       <div className="md:ml-44 lg:ml-60 flex flex-col w-full">
-        <Header session={session} />
+        <Header session={session} profilePicture={lister.profilePicture} />
         <Calendar appointments={appointments} listerId={id} />
         <Hero appointments={appointments} listerId={id} session={session} />
       </div>

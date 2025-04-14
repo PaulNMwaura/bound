@@ -27,10 +27,8 @@ export async function GET(req, { params }) {
 
 export async function PUT(request,{ params }) {
   const { id } = await params;
-  const { appointmentId, date, formattedDate, time, status, firstname, lastname, email } = await request.json();
-  console.log("Lister: ", id);
-  console.log("Appt: ", appointmentId);
-  console.log("Firstname: ", firstname, " lastname: ", lastname, " Email: ", email);
+  const { appointmentId, date, formattedDate, time, status, firstname, lastname, email, specialNote } = await request.json();
+
   try {
     await connectMongoDB();
     if (status == "accepted") {

@@ -1,12 +1,12 @@
 "use client";
 import { IoMenu } from "react-icons/io5";
-import profilePicture from "@/assets/logo-holder.png";
+import Logo from "@/assets/logo-holder.png";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { HomeMenu } from "@/components/HomeMenu";
 
-export const Header = ({session}) => {
+export const Header = ({session, profilePicture}) => {
     const [isOpen, setMenuOpen] = useState(false);
 
     const toggleHomeMenu = () => setMenuOpen(!isOpen);
@@ -22,7 +22,7 @@ export const Header = ({session}) => {
                         <button onClick={() => signOut({callbackUrl:"/"})} className="btn cursor-pointer">Sign out</button>
                     </div>
                     <div className="hidden md:block">
-                        <Image src={profilePicture} alt="Profile Picture" width={30} height={30} />
+                        <Image src={profilePicture || Logo} alt="Profile Picture" width={40} height={40} className="object-cover rounded-full" style={{ aspectRatio: 1 }}/>
                     </div>
                     <div className="block md:hidden">
                         <IoMenu onClick={toggleHomeMenu}/>

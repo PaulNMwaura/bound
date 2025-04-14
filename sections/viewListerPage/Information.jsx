@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Selections } from "./Selections";
 
-const handleAppointmentRequest = async (id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, {setSuccess, setError}) => {
+const handleAppointmentRequest = async (id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, specialNote, {setSuccess, setError}) => {
   try {
     const response = await fetch("/api/appointments", {
       method: "POST",
@@ -17,7 +17,8 @@ const handleAppointmentRequest = async (id, firstname, lastname, email, selected
         email: email,
         date: selectedDate,
         time: selectedTime,
-        services: selectedServices
+        services: selectedServices,
+        specialNote: specialNote
       }),
     });
 
@@ -60,6 +61,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
   const [showInstructionsButton, setShowInstructionsButton] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [specialNote, setSpecialNote] = useState(null);
   const { data: session } = useSession(); // Get logged-in user session
   const [selectedServices, setSelectedServices] = useState([]);
   const firstname = session?.user?.firstname;
@@ -270,7 +272,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
 
             </div>
             <div className="flex md:hidden mt-10 justify-center text-xs md:text-lg">
-              <button onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, {setSuccess, setError})} className="btn btn-primary">Request An Appointment</button>
+              <button onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, specialNote, {setSuccess, setError})} className="btn btn-primary">Request An Appointment</button>
             </div>
           </div>
           {success && (

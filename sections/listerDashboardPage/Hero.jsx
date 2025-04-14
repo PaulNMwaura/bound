@@ -8,13 +8,12 @@ export const Hero = ({appointments, listerId, session}) => {
     const [updatedAppointments, setUpdatedAppointments] = useState(appointments);
 
     const router = useRouter();
-    const handleAction = async (appointmentId, date, time, status, firstname, lastname, email) => {
+    const handleAction = async (appointmentId, date, time, status, firstname, lastname, email, specialNote) => {
         const formattedDate = new Date(date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
         const response = await fetch(`/api/appointments/${listerId}`, {
-        cache: "no-store",
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({appointmentId, date, formattedDate, time, status, firstname, lastname, email }),
+        body: JSON.stringify({appointmentId, date, formattedDate, time, status, firstname, lastname, email, specialNote }),
         });
 
         if (!response.ok) {
@@ -34,9 +33,28 @@ export const Hero = ({appointments, listerId, session}) => {
                     .filter(appointment => appointment.status === "pending")
                     .map((appointment, index) => (
                         <div key={index}>
-                            <li key={appointment.index} className="px-4 py-4 shadow-md rounded-md">
-                                <p>{appointment.firstname} {appointment.lastname}</p>
-                                <p>Requesting {appointment.service}</p> 
+                            <li className="px-4 py-4 shadow-md rounded-md">
+                                <div className="flex justify-between">
+                                    <div>
+                                        <strong>Client</strong>
+                                        <p>Name: {appointment.firstname} {appointment.lastname}</p>
+                                        <p>Email: {appointment.email}</p>
+                                    </div>
+                                    <div>
+                                        <strong>Requesting</strong>
+                                        {appointment.services.map((service) => (
+                                            <p key={appointment._id}>
+                                                {service}
+                                            </p>
+                                        ))}
+                                    </div>
+                                </div>
+                                {appointment.specialNote && (
+                                    <div className="pt-1 flex flex-col">
+                                        <strong className="text-center">Note from {appointment.firstname}</strong>
+                                        <p className="text-start">{appointment.specialNote}</p>
+                                    </div>
+                                )}
                                 <div className="py-4 flex flex-row justify-center gap-4 text-sm">
                                     <div className="flex flex-row items-center gap-2">
                                         <IoCalendar />
