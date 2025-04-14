@@ -1,3 +1,4 @@
+"use client";
 import { IoCalendar } from "react-icons/io5";
 import { IoMdClock } from "react-icons/io";
 import { useRouter } from 'next/navigation';
