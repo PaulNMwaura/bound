@@ -25,29 +25,27 @@ export const Hero = ({appointments, listerId, session}) => {
     };
 
     return (
-        <div className="container max-w-full mt-4">
+        <div className="container max-w-full mt-4 pb-20">
             <h1 className="section-title text-center text-xl py-5">Manage Appointments</h1>
-            <div className="h-[300px] overflow-y-scroll">                    
+            <div className="h-[315px] overflow-y-scroll">                    
                 <ul className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
                     {appointments
                     .filter(appointment => appointment.status === "pending")
                     .map((appointment, index) => (
                         <div key={index}>
                             <li className="px-4 py-4 shadow-md rounded-md">
-                                <div className="flex justify-between">
-                                    <div>
-                                        <strong>Client</strong>
-                                        <p>Name: {appointment.firstname} {appointment.lastname}</p>
-                                        <p>Email: {appointment.email}</p>
-                                    </div>
-                                    <div>
-                                        <strong>Requesting</strong>
-                                        {appointment.services.map((service) => (
-                                            <p key={appointment._id}>
-                                                {service}
-                                            </p>
-                                        ))}
-                                    </div>
+                                <div>
+                                    <strong>Client</strong>
+                                    <p>Name: {appointment.firstname} {appointment.lastname}</p>
+                                    <p>Email: {appointment.email}</p>
+                                </div>
+                                <div className="py-1">
+                                    <strong>Requesting</strong>
+                                    {appointment.services.map((service) => (
+                                        <p key={appointment._id}>
+                                            {service}
+                                        </p>
+                                    ))}
                                 </div>
                                 {appointment.specialNote && (
                                     <div className="pt-1 flex flex-col">
