@@ -6,7 +6,7 @@ import Link from "next/link";
 import { IoMdStar } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { Header } from "./Header";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Information } from "./Information";
 import { ListersFound } from "@/components/ListersFound";
@@ -162,7 +162,7 @@ export const Hero = () => {
                                                 View {lister.firstname}'s page
                                             </Link>
                                         </button>
-                                        <button className="btn">
+                                        <button className="btn" onClick={() => redirect(`/messages/${lister.userId}`)}>
                                             Message {lister.firstname}
                                         </button>
                                     </div>
