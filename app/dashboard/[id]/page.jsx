@@ -47,7 +47,7 @@ export default async function Dashboard({ params }) {
   return (
     <div className="flex flex-row bg-white text-black">
       <div className="fixed hidden h-screen md:block md:min-w-44 lg:min-w-60 border-r-4">
-        <Sidenav session={session} />
+        <Sidenav session={session} id={id}/>
       </div>
       <div className="md:ml-44 lg:ml-60 flex flex-col w-full">
         <Header session={session} profilePicture={lister.profilePicture} />
