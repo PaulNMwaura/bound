@@ -14,6 +14,8 @@ export async function GET(req) {
 
   const { searchParams } = new URL(req.url);
   const otherUserId = searchParams.get('otherUserId');
+  const limit = parseInt(searchParams.get('limit') || '20', 10);
+  const skip = parseInt(searchParams.get('skip') || '0', 10);
 
   if (!otherUserId) {
     return NextResponse.json({ message: 'Missing otherUserId' }, { status: 400 });
@@ -26,8 +28,11 @@ export async function GET(req) {
       { senderId: session.user.id, receiverId: otherUserId },
       { senderId: otherUserId, receiverId: session.user.id },
     ],
-  }).sort({ timestamp: 1 });
+  })
+    .sort({ timestamp: -1 }) // Newest messages first
+    .skip(skip)
+    .limit(limit);
 
-  // Wrap messages in an object for consistency with the frontend
-  return NextResponse.json({ messages }, { status: 200 });
+  // Send in chronological order (oldest → newest)
+  return NextResponse.json({ messages: messages.reverse() }, { status: 200 });
 }

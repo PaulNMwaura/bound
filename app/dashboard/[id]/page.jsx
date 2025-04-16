@@ -5,28 +5,33 @@ import { Header } from "@/sections/listerDashboardPage/Header";
 import { Sidenav } from "@/sections/listerDashboardPage/Sidenav";
 import Calendar from "@/components/DashboardCalendar";
 import { authOptions } from "@/app/api/auth/auth.config";
-
+import { connectMongoDB } from "@/lib/mongodb";
+import Lister from "@/models/lister";
+import Appointment from "@/models/appointment";
 
 
 async function getListerById(id) {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/listers/findListers/${id}`, {
-    cache: "no-store",
-  });
+  await connectMongoDB();
 
-  if (!res.ok) return null;
-
-  const data = await res.json();
-  return data?.lister || null;
+  try {
+    const lister = await Lister.findById(id).lean();
+    return lister;
+  } catch (err) {
+    console.error('Failed to fetch lister:', err);
+    return null;
+  }
 }
 
-async function getAppointments(id) {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/appointments/${id}`, {
-    cache: "no-store",
-  });
+async function getAppointments(listerId) {
+  await connectMongoDB();
 
-  if (!res.ok) return [];
-
-  return res.json();
+  try {
+    const appointments = await Appointment.find({ listerId }).lean();
+    return appointments;
+  } catch (err) {
+    console.error('Failed to fetch appointments:', err);
+    return [];
+  }
 }
 
 export default async function Dashboard({ params }) {
@@ -37,9 +42,8 @@ export default async function Dashboard({ params }) {
   if(!session || !lister)
     return <div>Loading...</div>
   
-  if (session.user.id !== lister.userId) {
-    console.log(session.user.id, lister.userId);
-    return redirect("/unauthorized"); // Create this page or change as needed
+  if (session.user.id !== lister.userId.toString()) {
+    return redirect("/unauthorized");
   }
 
   const appointments = await getAppointments(id);

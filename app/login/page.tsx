@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 export default async function Login() {
     // if the user is already signed in, they shouldn't be accessing the login page
     const session = await getServerSession();
-    console.log("Session: ", session)
     if (session) redirect("/browse");
     //__________________________________________________
     return <LoginForm />
