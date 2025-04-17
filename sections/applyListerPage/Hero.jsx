@@ -10,33 +10,26 @@ import 'cropperjs/dist/cropper.css';
 import { useRouter } from "next/navigation";
 
 
-export const Hero = () => {
-    const {data: session, status } = useSession();
+export const Hero = ({session, status}) => {
     const [error, setError] = useState("");
-    const [formData, setFormData] = useState(null);
+    const [formData, setFormData] = useState({
+        userId: session?.user?.id || "",
+        bannerPicture: session.user.bannerPicture || "",
+        firstname: session.user.firstname || "",
+        lastname: session.user.lastname || "",
+        email: session.user.email || "",
+        profilePicture: session.user.profilePicture || "",
+        city: "",
+        state: "",
+        description: "",
+        services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+        unavailableDays: [],
+    });
     const [imagePreview, setImagePreview] = useState(null);
     const [cropData, setCropData] = useState(null);
     const cropperRef = useRef(null);
     const fileInputRef = useRef(null);
     const router = useRouter();
-
-    useEffect(() => {
-        if (status === "authenticated" && session) {
-            setFormData({
-                userId: session?.user?.id || "",
-                bannerPicture: session.user.bannerPicture || "",
-                firstname: session.user.firstname || "",
-                lastname: session.user.lastname || "",
-                email: session.user.email || "",
-                profilePicture: session.user.profilePicture || "",
-                city: "",
-                state: "",
-                description: "",
-                services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
-                unavailableDays: [],
-            });
-        }
-    }, [session, status]);
 
     const handleFileSelect = (e) => {
         if (e.target.files) {
@@ -189,8 +182,6 @@ export const Hero = () => {
         }
     };
 
-    if(!session || !formData) return <div>Loading...</div>
-
     return (
         <section className="md:container bg-white text-black pt-4 pb-20 md:rounded-lg md:mt-5">
             <form className="px-2">
@@ -214,7 +205,7 @@ export const Hero = () => {
                                 guides={true}
                                 ref={cropperRef}
                             />
-                            <button onClick={getCroppedImage} className="mt-2 btn btn-primary">Save Crop</button>
+                            <button type="button" onClick={getCroppedImage} className="mt-2 btn btn-primary">Save Crop</button>
                         </div>
                     )}
 
@@ -228,20 +219,20 @@ export const Hero = () => {
 
                 <div className="md:mt-2 md:bg-[#D9D9D9] md:px-4 md:py-4 md:rounded-t-lg md:rounded-br-lg">
                     {/* <h2 className="font-medium text-sm">General Information</h2> */}
-                    <div className="flex flex-col md:flex-row gap-1">
-                        <div>
+                    <div className="flex flex-col md:flex-row  md:justify-between gap-1">
+                        <div className="w-full">
                             <label className="font-medium">firstname</label>
                             <input type="text" name="firstname" value={formData.firstname} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
                         </div>
-                        <div>
+                        <div className="w-full">
                             <label className="font-medium">lastname</label>
                             <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
                         </div>
-                        <div>
+                        <div className="w-full">
                             <label className="font-medium">city</label>
                             <input type="text" name="city" value={formData.city} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
                         </div>
-                        <div>
+                        <div className="w-full">
                             <label className="font-medium">state</label>
                             <select name="state" value={formData.state} onChange={handleChange} className="border border-black/25 p-2 rounded w-full text-xs" required>
                             <option value="">Select State</option>
