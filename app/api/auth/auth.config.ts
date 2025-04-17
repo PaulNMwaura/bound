@@ -32,7 +32,7 @@ const authOptions: AuthOptions = {
               if (!passwordsMatch) return null;
     
               // Return the user object (can include additional fields as needed)
-              return { id: user._id, firstname: user.firstname, lastname: user.lastname, email: user.email };
+              return { id: user._id, firstname: user.firstname, lastname: user.lastname, email: user.email, profilePicture: user.profilePicture };
             } catch (error) {
               console.log("Error: ", error);
               return null; // Return null if an error occurs
@@ -54,6 +54,9 @@ const authOptions: AuthOptions = {
           if (token?.email) {
             session.user.email = token.email as string; // Add user email to session
           }
+          if (token?.profilePicture) {
+            session.user.profilePicture = token.profilePicture as string; // Add user profilePicture to session
+          }
           return session;
         },
         async jwt({ token, user }) {
@@ -62,6 +65,7 @@ const authOptions: AuthOptions = {
             token.lastname = user.lastname as string;
             token.id = user.id as string;
             token.email = user.email as string;
+            token.profilePicture = user.profilePicture as string;
           }
           return token;
         },

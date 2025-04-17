@@ -1,61 +1,51 @@
 // THIS IS THE FORM COMPONENT OF THE APPLY LISTER PAGE //
+"use client";
 
 import UnavailableDaysCalendar from "@/components/AvailabilitySelectionCalendar";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import cloudinary from "@/lib/cloudinary";
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css'; 
+import { useRouter } from "next/navigation";
 
 
 export const Hero = () => {
-    const {data: session } = useSession();
+    const {data: session, status } = useSession();
     const [error, setError] = useState("");
-    const [formData, setFormData] = useState({
-        bannerPicture: session?.user?.bannerPicture ||"",
-        firstname: session?.user?.firstname || "",
-        lastname: session?.user?.lastname || "",
-        email: session?.user?.email || "",
-        city: "",
-        state: "",
-        description: "",
-        services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
-        unavailableDays: [],
-    });
+    const [formData, setFormData] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
-
     const [cropData, setCropData] = useState(null);
     const cropperRef = useRef(null);
     const fileInputRef = useRef(null);
+    const router = useRouter();
 
-    const handleImageUpload = async (e) => {
+    useEffect(() => {
+        if (status === "authenticated" && session) {
+            setFormData({
+                userId: session?.user?.id || "",
+                bannerPicture: session.user.bannerPicture || "",
+                firstname: session.user.firstname || "",
+                lastname: session.user.lastname || "",
+                email: session.user.email || "",
+                profilePicture: session.user.profilePicture || "",
+                city: "",
+                state: "",
+                description: "",
+                services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+                unavailableDays: [],
+            });
+        }
+    }, [session, status]);
+
+    const handleFileSelect = (e) => {
         if (e.target.files) {
             const file = e.target.files[0];
-            
-            // Upload to Cloudinary
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", "ml_default");
-    
-            try {
-                const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                    method: "POST",
-                    body: formData,
-                });
-                const data = await res.json();
-                if (data.secure_url) {
-                    // Once the image is uploaded, save the URL in the formData
-                    setFormData((prev) => ({
-                        ...prev,
-                        picture: data.secure_url,  // Save the Cloudinary URL
-                    }));
-                    console.log("url", data.secure_url);
-                    setImagePreview(data.secure_url); 
-                }
-            } catch (error) {
-                console.error("Error uploading image to Cloudinary", error);
-                setError("Failed to upload image");
+            if(file) {
+                const imageURL = URL.createObjectURL(file);
+                setImagePreview(imageURL); // This shows up in Cropper
             }
+            return;
         }
     };
     
@@ -66,24 +56,41 @@ export const Hero = () => {
 
     const getCroppedImage = () => {
         if (cropperRef.current && cropperRef.current.cropper) {
-            const canvas = cropperRef.current.cropper.getCroppedCanvas();
-            const croppedImage = canvas.toDataURL("image/jpeg");
-            setCropData(croppedImage);
-            setImagePreview(croppedImage);
-            setFormData((prev) => ({
-                ...prev,
-                picture: croppedImage,
-            }));
-        } else {
-            console.error("Cropper instance not ready.");
+          const canvas = cropperRef.current.cropper.getCroppedCanvas();
+      
+          canvas.toBlob(async (blob) => {
+            const formData = new FormData();
+            formData.append("file", blob);
+            formData.append("upload_preset", "ml_default");
+      
+            try {
+              const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                method: "POST",
+                body: formData,
+              });
+      
+              const data = await res.json();
+              if (data.secure_url) {
+                setFormData((prev) => ({
+                  ...prev,
+                  bannerPicture: data.secure_url, // ✅ Clean URL stored
+                }));
+                setCropData(data.secure_url); // for preview display
+              }
+            } catch (err) {
+              console.error("Error uploading cropped image", err);
+              setError("Image upload failed.");
+            }
+          }, "image/jpeg");
         }
     };
-
     const handleReset = () => {
         formData.bannerPicture = "",
+        formData.userId = session?.user?.id || "",
         formData.firstname = session?.user?.firstname || "",
         formData.lastname = session?.user?.lastname || "",
         formData.email = session?.user?.email || "",
+        formData.profilePicture = session?.user?.profilePicture || "",
         formData.city = "",
         formData.state = "",
         formData.description = "",
@@ -142,6 +149,48 @@ export const Hero = () => {
         }));
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const {userId, firstname, lastname, city, state, description, profilePicture} = formData;
+
+        if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture) {
+            if(!city) {
+                setError("Please input the city you operate within.");
+                return;
+            }
+            else if(!state) {
+                setError("Please select the state you operate within.");
+                return;
+            }
+            else if(!description) {
+                setError("Please provide a description of what services you provide, and what is required of your client for you to perfom said services.");
+                return;
+            }
+            setError("Missing one or more required fields.");
+            return;
+        }
+
+        try {
+            const res = await fetch("/api/listers/registerLister", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+    
+            if (res.ok) {
+                const data = await res.json();
+                router.replace(`/viewLister/${data.lister._id}`);
+            }    
+        } catch (err) {
+            console.error("Error registering lister:", err);
+            setError("There was an issue submitting your form. Please try again.");
+        }
+    };
+
+    if(!session || !formData) return <div>Loading...</div>
+
     return (
         <section className="md:container bg-white text-black pt-4 pb-20 md:rounded-lg md:mt-5">
             <form className="px-2">
@@ -150,7 +199,7 @@ export const Hero = () => {
                     <label className="block text-sm font-medium">
                     Banner Picture:
                     <div className="flex justify-center">
-                        <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageUpload} className="fixed opacity-0 h-10 w-[75px] bg-red-500 block" />
+                        <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileSelect} className="fixed opacity-0 h-10 w-[75px] bg-red-500 block" />
                         <button className="btn btn-primary">Upload</button>
                     </div>
                     </label>
@@ -322,7 +371,7 @@ export const Hero = () => {
                 
                 {/* Submit Button */}
                 <div className="flex flex-col">
-                    <button type="submit" className="bg-black text-white px-4 py-2 rounded mt-4 w-[45%] place-self-center">Register</button>
+                    <button type="submit" className="bg-black text-white px-4 py-2 rounded mt-4 w-[45%] place-self-center" onClick={handleSubmit}>Register</button>
                     <button onClick={handleReset} className="p-2 place-self-start">Clear All</button>
                 </div>
                 {error && (
