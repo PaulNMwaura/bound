@@ -5,15 +5,16 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req) {
     try {
-        const {firstname, lastname, phone, email, password, profilePicture} = await req.json();
+        const {username, firstname, lastname, phone, email, password, profilePicture} = await req.json();
 
         const hashedPass = await bcrypt.hash(password, 10);
         
         await connectMongoDB();
-        await User.create({firstname, lastname, phone, email, password: hashedPass, profilePicture})
+        await User.create({username, firstname, lastname, phone, email, password: hashedPass, profilePicture})
 
         return NextResponse.json({message: "User Registered."}, { status: 201 });
     } catch (error) {
+        console.log("Error could be from non unique username.");
         return NextResponse.json({message: "Error occured while registering the user."}, { status: 500});
     }
 }

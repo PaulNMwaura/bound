@@ -4,6 +4,7 @@ const ListerSchema = new mongoose.Schema ({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     bannerPicture: { type: String, default: "" },
     profilePicture: { type: String, default: "" },
+    username: {type: String, required: true},
     firstname: {type: String, required: true},
     lastname: {type: String, required: true},
     email: {type: String, required: true},

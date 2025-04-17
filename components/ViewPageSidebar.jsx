@@ -3,7 +3,7 @@ import { FaSignOutAlt, FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn  
 import React from "react";
 import { signOut } from "next-auth/react";
 
-export const ViewPageSidebar = ({isLister, id, isOpen, onClose }) => {
+export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
     return (
         <>
             {/* Sidebar Modal */}
@@ -32,7 +32,7 @@ export const ViewPageSidebar = ({isLister, id, isOpen, onClose }) => {
                         </li>
                         <li>
                             {isLister && (
-                                <a href={`/dashboard/${id}`} className="hover:underline">
+                                <a href={`/dashboard/${username}`} className="hover:underline">
                                     My Dashboard
                                 </a>
                             )}

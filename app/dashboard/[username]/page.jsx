@@ -10,11 +10,11 @@ import Lister from "@/models/lister";
 import Appointment from "@/models/appointment";
 
 
-async function getListerById(id) {
+async function getLister(username) {
   await connectMongoDB();
 
   try {
-    const lister = await Lister.findById(id).lean();
+    const lister = await Lister.findOne({username: username}).lean();
     return lister;
   } catch (err) {
     console.error('Failed to fetch lister:', err);
@@ -35,9 +35,10 @@ async function getAppointments(listerId) {
 }
 
 export default async function Dashboard({ params }) {
-  const {id} = await params;
+  const {username} = await params;
   const session = await getServerSession(authOptions);
-  const lister = await getListerById(id);
+  const lister = await getLister(username);
+  const thisListerId = lister._id.toString();
 
   if(!session || !lister)
     return <div>Loading...</div>
@@ -46,17 +47,17 @@ export default async function Dashboard({ params }) {
     return redirect("/unauthorized");
   }
 
-  const appointments = await getAppointments(id);
+  const appointments = await getAppointments(thisListerId);
 
   return (
     <div className="flex flex-row bg-white text-black">
       <div className="fixed hidden h-screen md:block md:min-w-44 lg:min-w-60 border-r-4">
-        <Sidenav session={session} id={id}/>
+        <Sidenav session={session} id={thisListerId}/>
       </div>
       <div className="md:ml-44 lg:ml-60 flex flex-col w-full">
         <Header session={session} profilePicture={lister.profilePicture} />
-        <Calendar appointments={appointments} listerId={id} />
-        <Hero appointments={appointments} listerId={id} session={session} />
+        <Calendar appointments={appointments} listerId={thisListerId} />
+        <Hero appointments={appointments} listerId={thisListerId} session={session} />
       </div>
     </div>
   );

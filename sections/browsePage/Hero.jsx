@@ -158,7 +158,7 @@ export const Hero = () => {
                                     {/* Buttons Section */}
                                     <div className="mt-auto pt-4 flex flex-row">
                                         <button className="btn btn-primary">
-                                            <Link href={`/viewLister/${lister._id}`}>
+                                            <Link href={`/${lister.username}`}>
                                                 View {lister.firstname}'s page
                                             </Link>
                                         </button>

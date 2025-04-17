@@ -13,6 +13,7 @@ export default function RegisterForm() {
   const [imagePreview, setImagePreview] = useState(DEFAULT_IMAGE);
   const [formData, setFormData] = useState({
     profilePicture: DEFAULT_IMAGE,
+    username: "",
     firstname: "",
     lastname: "",
     phone: "",
@@ -58,9 +59,9 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const { firstname, lastname, phone, email, password, profilePicture } = formData;
+    const {username, firstname, lastname, phone, email, password, profilePicture } = formData;
   
-    if (!firstname || !lastname || !phone || !email || !password) {
+    if (!username || !firstname || !lastname || !phone || !email || !password) {
       setError("All fields are necessary.");
       return;
     }
@@ -70,15 +71,20 @@ export default function RegisterForm() {
       const resUserExists = await fetch("api/validation/userExists", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, username }),  // Send both email and username
       });
   
-      const { user } = await resUserExists.json();
-      if (user) {
-        setError("User already exists.");
+      const data = await resUserExists.json();
+  
+      if (data.user) {
+        if (data.user.email === email) {
+          setError("Email already exists.");
+        } else if (data.user.username === username) {
+          setError("Username already exists.");
+        }
         return;
       }
-  
+      
       let finalImageURL = profilePicture;
   
       // If the image is not the default and not already uploaded, upload to Cloudinary
@@ -101,6 +107,7 @@ export default function RegisterForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          username,
           firstname,
           lastname,
           phone,
@@ -112,7 +119,7 @@ export default function RegisterForm() {
   
       if (res.ok) {
         e.target.reset();
-        router.push("/");
+        router.push("/login");
       } else {
         console.log("User registration failed.");
       }
@@ -124,6 +131,7 @@ export default function RegisterForm() {
   const handleReset = () => {
     setFormData({
       profilePicture: DEFAULT_IMAGE,
+      username: "",
       firstname: "",
       lastname: "",
       phone: "",
@@ -207,6 +215,11 @@ export default function RegisterForm() {
           </div>
 
           {/* Form Fields */}
+          <div className="mb-4 mt-4">
+            <label className="block text-sm font-medium">Username</label>
+            <input name="username" type="text" value={formData.username} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
+          </div>
+
           <div className="mb-4 mt-4">
             <label className="block text-sm font-medium">First Name</label>
             <input name="firstname" type="text" value={formData.firstname} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />

@@ -29,7 +29,7 @@ export const Header = ({ id, thisLister}) => {
                   <a href="/" className="btn">Home</a>
                   <a href="/browse" className="btn">Browse</a>
                   {isLister && (
-                    <button onClick={() => router.replace(`/dashboard/${thisLister._id}`)} className="btn cursor-pointer">My Dashboard</button>
+                    <button onClick={() => router.replace(`/dashboard/${thisLister.username}`)} className="btn cursor-pointer">My Dashboard</button>
                   )}
                 </div>
                 <button onClick={() => signOut({callbackUrl:"/"})} className="btn cursor-pointer">Sign out</button>
@@ -40,7 +40,7 @@ export const Header = ({ id, thisLister}) => {
             </div>
           </div>
       </section>
-      <ViewPageSidebar isLister={isLister} id={thisLister._id} isOpen={isSidebarOpen} onClose={toggleSidebar} />
+      <ViewPageSidebar isLister={isLister} username={thisLister.username} isOpen={isSidebarOpen} onClose={toggleSidebar} />
     </>
   );
 };

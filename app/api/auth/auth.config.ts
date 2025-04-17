@@ -32,7 +32,7 @@ const authOptions: AuthOptions = {
               if (!passwordsMatch) return null;
     
               // Return the user object (can include additional fields as needed)
-              return { id: user._id, firstname: user.firstname, lastname: user.lastname, email: user.email, profilePicture: user.profilePicture };
+              return { id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, profilePicture: user.profilePicture };
             } catch (error) {
               console.log("Error: ", error);
               return null; // Return null if an error occurs
@@ -44,6 +44,9 @@ const authOptions: AuthOptions = {
         async session({ session, token }) {
           if (token?.id && session.user) {
             session.user.id = token.id as string; // Add user ID to session
+          }
+          if (token?.username) {
+            session.user.username = token.username as string; // Add user username to session
           }
           if (token?.firstname) {
             session.user.firstname = token.firstname as string; // Add user firstname to session
@@ -61,9 +64,10 @@ const authOptions: AuthOptions = {
         },
         async jwt({ token, user }) {
           if (user) {
+            token.id = user.id as string;
+            token.username = user.username as string;
             token.firstname = user.firstname as string;
             token.lastname = user.lastname as string;
-            token.id = user.id as string;
             token.email = user.email as string;
             token.profilePicture = user.profilePicture as string;
           }

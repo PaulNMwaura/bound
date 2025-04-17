@@ -2,8 +2,7 @@
 "use client";
 
 import UnavailableDaysCalendar from "@/components/AvailabilitySelectionCalendar";
-import { useState, useEffect, useRef } from "react";
-import { useSession } from "next-auth/react";
+import { useState, useRef } from "react";
 import cloudinary from "@/lib/cloudinary";
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css'; 
@@ -15,6 +14,7 @@ export const Hero = ({session, status}) => {
     const [formData, setFormData] = useState({
         userId: session?.user?.id || "",
         bannerPicture: session.user.bannerPicture || "",
+        username: session.user.username || "",
         firstname: session.user.firstname || "",
         lastname: session.user.lastname || "",
         email: session.user.email || "",
@@ -80,6 +80,7 @@ export const Hero = ({session, status}) => {
     const handleReset = () => {
         formData.bannerPicture = "",
         formData.userId = session?.user?.id || "",
+        formData.username = session.user.username || "",
         formData.firstname = session?.user?.firstname || "",
         formData.lastname = session?.user?.lastname || "",
         formData.email = session?.user?.email || "",
@@ -144,7 +145,7 @@ export const Hero = ({session, status}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const {userId, firstname, lastname, city, state, description, profilePicture} = formData;
+        const {userId, username, firstname, lastname, city, state, description, profilePicture} = formData;
 
         if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture) {
             if(!city) {

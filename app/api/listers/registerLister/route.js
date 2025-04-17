@@ -24,6 +24,7 @@ export async function POST(req) {
     // Create a new Lister document
     const newLister = new Lister({
       userId: body.userId,
+      username: body.username,
       profilePicture: body.profilePicture,
       bannerPicture: body.bannerPicture || "", // Optional picture field
       firstname: body.firstname,
