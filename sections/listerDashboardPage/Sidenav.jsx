@@ -35,7 +35,7 @@ export const Sidenav = ({session, id}) => {
                         <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
                             <AiOutlineMessage />
                             <li>
-                                <a href={`/messages/${id}`}>messages</a>
+                                <a href={`/messages`}>messages</a>
                             </li>
                         </div>
                         <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">

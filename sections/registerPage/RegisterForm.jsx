@@ -1,135 +1,259 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
+
+const DEFAULT_IMAGE = "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg";
+
 
 export default function RegisterForm() {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [phone, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [imagePreview, setImagePreview] = useState(DEFAULT_IMAGE);
+  const [formData, setFormData] = useState({
+    profilePicture: DEFAULT_IMAGE,
+    firstname: "",
+    lastname: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
 
+  const [error, setError] = useState("");
+  const [cropData, setCropData] = useState(null);
+  const [rawImageFile, setRawImageFile] = useState(null);
 
   const router = useRouter();
+  const cropperRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = (e) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+      setRawImageFile(file);
+    }
+  };
+
+  const getCroppedImage = () => {
+    if (cropperRef.current && cropperRef.current.cropper) {
+      const canvas = cropperRef.current.cropper.getCroppedCanvas();
+      const croppedImage = canvas.toDataURL("image/jpeg");
+      setCropData(croppedImage);
+      setImagePreview(croppedImage);
+      setFormData((prev) => ({
+        ...prev,
+        profilePicture: croppedImage, // Set this for submission
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const { firstname, lastname, phone, email, password, profilePicture } = formData;
+  
     if (!firstname || !lastname || !phone || !email || !password) {
       setError("All fields are necessary.");
       return;
     }
-
+  
     try {
+      // Check if user exists
       const resUserExists = await fetch("api/validation/userExists", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-      });
-
-      const {user} = await resUserExists.json();
-
-      if(user) {
-          setError("User already exists.");
-          return;
-      }
-
-      const res = await fetch("api/register", {
-        // cache: "no-store",
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+  
+      const { user } = await resUserExists.json();
+      if (user) {
+        setError("User already exists.");
+        return;
+      }
+  
+      let finalImageURL = profilePicture;
+  
+      // If the image is not the default and not already uploaded, upload to Cloudinary
+      if (profilePicture !== DEFAULT_IMAGE && profilePicture.startsWith("data:image")) {
+        const cloudinaryFormData = new FormData();
+        cloudinaryFormData.append("file", profilePicture);
+        cloudinaryFormData.append("upload_preset", "ml_default");
+  
+        const uploadRes = await fetch("https://api.cloudinary.com/v1_1/djreop8la/image/upload", {
+          method: "POST",
+          body: cloudinaryFormData,
+        });
+  
+        const uploadData = await uploadRes.json();
+        finalImageURL = uploadData.secure_url;
+      }
+  
+      // Register user
+      const res = await fetch("api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstname, lastname, phone, email, password,
+          firstname,
+          lastname,
+          phone,
+          email,
+          password,
+          profilePicture: finalImageURL,
         }),
-      })
-
-      if(res.ok) {
-        const form = e.target;
-        form.reset();
+      });
+  
+      if (res.ok) {
+        e.target.reset();
         router.push("/");
       } else {
         console.log("User registration failed.");
       }
     } catch (error) {
-      console.log("Error during registration: ", error);
+      console.log("Error during registration:", error);
     }
+  };  
+
+  const handleReset = () => {
+    setFormData({
+      profilePicture: DEFAULT_IMAGE,
+      firstname: "",
+      lastname: "",
+      phone: "",
+      email: "",
+      password: "",
+    });
+    setImagePreview(DEFAULT_IMAGE);
+    setCropData(null);
+    setError("");
+    if (fileInputRef.current) fileInputRef.current.value = null;
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-white text-black dark:bg-black dark:text-white">
+    <div className="min-h-screen flex justify-center items-center bg-white text-black dark:bg-black dark:text-white pt-6 pb-20">
       <div className="rounded-lg shadow-lg p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4">Create Account</h1>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">First Name</label>
-            <input
-              type="text"
-              className="w-full border rounded px-3 py-2 mt-1"
-              onChange={(e) => setFirstname(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Last Name</label>
-            <input
-              type="text"
-              className="w-full border rounded px-3 py-2 mt-1"
-              onChange={(e) => setLastname(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Phone Number</label>
-            <input
-              type="text"
-              className="w-full border rounded px-3 py-2 mt-1"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Email</label>
-            <input
-              type="email"
-              className="w-full border rounded px-3 py-2 mt-1"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Password</label>
-            <input
-              type="password"
-              className="w-full border rounded px-3 py-2 mt-1"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded w-full"
-          >
-            Sign Up
-          </button>
-          <div>
-            {error && (
-              <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-                {error}
+
+          {/* Profile Picture */}
+          <div className="flex flex-col justify-center items-center">
+            <label className="block text-sm font-medium">
+              Profile Picture:
+              <div className="flex justify-center mt-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  id="upload-input"
+                />
+                <label htmlFor="upload-input" className="btn btn-primary cursor-pointer">
+                  Upload
+                </label>
+              </div>
+            </label>
+
+            {/* Show default or cropped image preview */}
+            {!rawImageFile && (
+              <div className="mt-2">
+                <img
+                  src={imagePreview}
+                  alt="Default Preview"
+                  className="w-40 h-40 object-cover rounded-full"
+                />
+              </div>
+            )}
+
+            {/* Show cropper ONLY if the user uploaded a new image */}
+            {rawImageFile && !cropData && (
+              <div className="mt-4 w-full">
+                <Cropper
+                  src={imagePreview}
+                  style={{ height: 400, width: "100%" }}
+                  initialAspectRatio={1}
+                  aspectRatio={1}
+                  guides={true}
+                  viewMode={1}
+                  ref={cropperRef}
+                />
+                <button
+                  type="button"
+                  onClick={getCroppedImage}
+                  className="mt-2 btn btn-primary"
+                >
+                  Save Crop
+                </button>
+              </div>
+            )}
+
+            {/* Show cropped result after saving */}
+            {cropData && (
+              <div className="mt-2">
+                <img
+                  src={cropData}
+                  alt="Profile Preview"
+                  className="w-40 h-40 object-cover rounded-full"
+                />
               </div>
             )}
           </div>
+
+          {/* Form Fields */}
+          <div className="mb-4 mt-4">
+            <label className="block text-sm font-medium">First Name</label>
+            <input name="firstname" type="text" value={formData.firstname} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Last Name</label>
+            <input name="lastname" type="text" value={formData.lastname} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Phone Number</label>
+            <input name="phone" type="text" value={formData.phone} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Email</label>
+            <input name="email" type="email" value={formData.email} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Password</label>
+            <input name="password" type="password" value={formData.password} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
+          </div>
+
+          <button type="submit" className="bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded w-full">
+            Sign Up
+          </button>
+
+          {error && (
+            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
+              {error}
+            </div>
+          )}
+
           <div className="flex justify-center items-center">
-            <Link href={"/"} className="text-sm lg:text-lg mt-3 font-bold">
-              Already have an account?{" "}
-              <span className="underline">Login</span>
+            <Link href="/" className="text-sm lg:text-lg mt-3 font-bold">
+              Already have an account? <span className="underline">Login</span>
             </Link>
           </div>
         </form>
-        <button className="mt-4 bg-white text-black dark:text-gray-300 dark:bg-black dark:hover:text-gray-50">
-          Cancel
-        </button>
+
+        <div className="flex flex-row items-center justify-between">
+          <button type="button" className="mt-4 text-sm" onClick={() => router.push("/")}>Cancel</button>
+          <button type="button" className="mt-4 text-sm" onClick={handleReset}>Clear All</button>
+        </div>
       </div>
     </div>
   );
-};
+}
