@@ -258,7 +258,7 @@ export default function RegisterForm() {
           )}
 
           <div className="flex justify-center items-center">
-            <Link href="/" className="text-sm lg:text-lg mt-3 font-bold">
+            <Link href="/login" className="text-sm lg:text-lg mt-3 font-bold">
               Already have an account? <span className="underline">Login</span>
             </Link>
           </div>
