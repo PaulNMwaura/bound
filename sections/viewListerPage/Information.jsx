@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Selections } from "./Selections";
 
-const handleAppointmentRequest = async (id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, specialNote, {setSuccess, setError}) => {
+const handleAppointmentRequest = async (id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, specialNote) => {
   try {
     const response = await fetch("/api/appointments", {
       method: "POST",
@@ -24,14 +24,14 @@ const handleAppointmentRequest = async (id, firstname, lastname, email, selected
 
     const data = await response.json();
     if (response.ok) {
-      setSuccess(`${firstname}, your appointment for ${new Date(selectedDate).toLocaleString("default", { month: "long", day: "numeric", year: "numeric" })} at ${selectedTime} has been requested. Keep an eye on your inbox for updates.`)
+      alert(`${firstname}, your appointment for ${new Date(selectedDate).toLocaleString("default", { month: "long", day: "numeric", year: "numeric" })} at ${selectedTime} has been requested. Keep an eye on your inbox for updates.`)
     } else {
       alert(`${data.message}. Make sure you've made service, date, and time selections before requesting.`);
       // setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment");
     }
   } catch (error) {
     console.error(error);
-    setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment");
+    // setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment");
     alert("Something went wrong.");
   }
 };
@@ -75,6 +75,8 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
   const handleInstructions = () => {
     setShowInstructions(!showInstructions);
     setShowInstructionsButton(!showInstructionsButton);
+    setSuccess(null);
+    setError(null);
   }
 
   const handleEditAvailability = async () =>{
@@ -163,7 +165,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                       {thisLister.firstname}'s Services
                     </div>
                     {thisLister.services.map((service, index) => (
-                      <div key={index} className="text-sm md:text-md xl:text-lg pb-6">
+                      <div key={index} className="text-sm md:text-md xl:text-lg pb-3 md:pb-0">
                         <div className="flex justify-between min-w-[120px]">
                           <button className="cursor-pointer" onClick={() => handleServiceSelection(service.name)}>
                             {service.name}
@@ -174,7 +176,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                         </div>
                         {/* question mark because they may not exists */}
                         {service.subcategories?.map((subService, jndex) => (
-                          <div key={jndex} className="mt-1 ml-3 flex flex-row justify-between font-light">
+                          <div key={jndex} className="mt-1 md:mt-0 ml-3 flex flex-row justify-between font-light">
                             <button className="cursor-pointer" onClick={() => handleServiceSelection(subService.name)}>
                               {subService.name}
                             </button>
@@ -296,7 +298,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
             </div>
           )} */}
         </section>
-        <Selections selectedServices={selectedServices} selectedDate={selectedDate} selectedTime={selectedTime} handleAppointmentRequest={handleAppointmentRequest} id={id} firstname={firstname} lastname={lastname} email={email} setSuccess={setSuccess} setError={setError}/>
+        <Selections selectedServices={selectedServices} selectedDate={selectedDate} selectedTime={selectedTime} handleAppointmentRequest={handleAppointmentRequest} id={id} firstname={firstname} lastname={lastname} email={email}/>
       </div>
     );
 };

@@ -2,6 +2,7 @@
 import SEO from "../components/SEO";
 
 export default function Home() {
+  // CREATE PAGE THAT REGULAR USERS CAN PUBLICIZE A REQUEST!!! then listers can browse the page and claim requests!!
   return (
     <>
       {/* this needs to be adjusted depending on the page. */}

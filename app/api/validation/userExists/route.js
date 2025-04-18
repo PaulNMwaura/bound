@@ -14,7 +14,7 @@ export async function POST(req) {
     const existingUser = await User.findOne({ $or: [{ email }, { username }] }).select("_id email username");
     
     // If a user is found, return the user details (either email or username is already taken)
-    return NextResponse.json({ user: existingUser });
+    return NextResponse.json({ user: existingUser }, {status: 200});
   } catch (error) {
     console.log("Couldn't match email or usernames properly");
     return NextResponse.json({ error: "An error occurred while checking user data" }, { status: 500 });

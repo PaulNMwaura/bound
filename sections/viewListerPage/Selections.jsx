@@ -1,4 +1,4 @@
-export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname, email, setSuccess, setError}) =>{
+export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname, email}) => {
     return (
         <section className="hidden md:block md:mt-10 lg:mt-0 md:min-w-full lg:min-w-[150px]">
             <div className="container bg-[#F3F3F3] rounded-xl pt-5 pb-10 px-4">
@@ -11,7 +11,7 @@ export const Selections = ({selectedServices, selectedDate, selectedTime, handle
                             <div key={index} className="font-normal">
                                 {service}
                             </div>
-                            )):(
+                            )) : (
                             <p> No services selected currently</p>
                             )}
                         </div>
@@ -21,13 +21,13 @@ export const Selections = ({selectedServices, selectedDate, selectedTime, handle
                     <div className="w-full text-center">
                         <p className="text-xs font-semibold">Selected date</p>
                         <div className="w-full h-fit outline-1 text-black text-xs py-5 px-1 mt-1 rounded-lg">
-                        {selectedDate ? (
-                            <div className="font-normal">
-                            {new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-                            </div>
-                        ):(
-                            <p> No date selected currently</p>
-                        )}
+                            {selectedDate ? (
+                                <div className="font-normal">
+                                    {new Date(selectedDate).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                                </div>
+                            ) : (
+                                <p> No date selected currently</p>
+                            )}
                         </div>
                     </div>
 
@@ -36,21 +36,25 @@ export const Selections = ({selectedServices, selectedDate, selectedTime, handle
                         <p className="text-xs font-semibold">Selected Time</p>
                         <div className="w-full h-fit outline-1 text-black text-xs py-5 px-1 mt-1 rounded-lg">
                             {selectedTime ? (
-                            <div className="font-normal">
-                                {selectedTime}
-                            </div>
-                            ):(
-                            <p> No time selected currently</p>
+                                <div className="font-normal">
+                                    {selectedTime}
+                                </div>
+                            ) : (
+                                <p> No time selected currently</p>
                             )}
                         </div>
                     </div>
                 </div>
-                
+
                 {/* Request appointment button */}
                 <div className="flex mt-10 justify-center">
-                    <button onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, {setSuccess, setError})} className="btn btn-primary text-xs">Request An Appointment</button>
+                    <button 
+                        onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices)} 
+                        className="btn btn-primary text-xs">
+                        Request An Appointment
+                    </button>
                 </div>
             </div>
         </section>
-    )
+    );
 };

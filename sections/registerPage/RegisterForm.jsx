@@ -75,6 +75,8 @@ export default function RegisterForm() {
       });
   
       const data = await resUserExists.json();
+
+      console.log(data.user);
   
       if (data.user) {
         if (data.user.email === email) {
