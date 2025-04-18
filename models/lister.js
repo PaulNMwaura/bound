@@ -22,18 +22,6 @@ const ListerSchema = new mongoose.Schema ({
     rating: {type: Number},
     description: {type: String, required: true},
     unavailableDays: [String],
-    appointments: [
-        {
-            firstname: {type: String, required: true},
-            lastname: {type: String, required: true},
-            services: [{ type: String, required: true }],
-            email: { type: String, required: true },
-            date: {type: String, required: true},
-            time: {type: String, required: true},
-            listerId: { type: mongoose.Schema.Types.ObjectId, required: true },
-            status: {type: String , default: "pending"},
-        },
-    ],
 });
 
 export default mongoose.models.Lister || mongoose.model("Lister", ListerSchema);
