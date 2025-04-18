@@ -155,7 +155,7 @@ export default function RegisterForm() {
           {/* Profile Picture */}
           <div className="flex flex-col justify-center items-center">
             <label className="block text-sm font-medium">
-              Profile Picture:
+              Current Profile Picture:
               <div className="flex justify-center mt-2">
                 <input
                   type="file"
@@ -165,8 +165,8 @@ export default function RegisterForm() {
                   className="hidden"
                   id="upload-input"
                 />
-                <label htmlFor="upload-input" className="btn btn-primary cursor-pointer">
-                  Upload
+                <label htmlFor="upload-input" className="btn btn-primary-alt cursor-pointer">
+                  Upload New
                 </label>
               </div>
             </label>
@@ -197,7 +197,7 @@ export default function RegisterForm() {
                 <button
                   type="button"
                   onClick={getCroppedImage}
-                  className="mt-2 btn btn-primary"
+                  className="mt-2 btn btn-primary-alt"
                 >
                   Save Crop
                 </button>
@@ -247,7 +247,7 @@ export default function RegisterForm() {
             <input name="password" type="password" value={formData.password} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
           </div>
 
-          <button type="submit" className="bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded w-full">
+          <button type="submit" className="btn-primary-alt px-4 py-2 rounded w-full">
             Sign Up
           </button>
 
@@ -265,8 +265,8 @@ export default function RegisterForm() {
         </form>
 
         <div className="flex flex-row items-center justify-between">
-          <button type="button" className="mt-4 text-sm" onClick={() => router.push("/")}>Cancel</button>
-          <button type="button" className="mt-4 text-sm" onClick={handleReset}>Clear All</button>
+          <button type="button" className="mt-4 text-sm dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer" onClick={() => router.push("/")}>Cancel</button>
+          <button type="button" className="mt-4 text-sm dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer" onClick={handleReset}>Clear All</button>
         </div>
       </div>
     </div>

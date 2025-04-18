@@ -4,26 +4,38 @@ import { useSearchParams } from 'next/navigation';
 import { ViewAllMessages } from '@/sections/messagesPage/ViewAllMessages';
 import { OpenMessage } from '@/sections/messagesPage/OpenMessage';
 import { Suspense } from 'react';
+import { Sidenav } from '@/sections/messagesPage/Sidenav';
+import { useSession } from 'next-auth/react';
+
 
 function MessagesInner() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
+  const {data: session} = useSession();
+
+  if(!session) return <div>Loadin...</div>
 
   return (
-    <div className="md:flex md:flex-row justify-between h-screen">
-      <div className={`w-full ${id ? 'hidden md:block' : 'block'}`}>
-        <ViewAllMessages />
+    <div className='md:flex'>
+      <div className='hidden md:block h-screen md:min-w-44 lg:min-w-60 border-r-2 border-gray-600/15'>
+        <Sidenav session={session} />
       </div>
-
-      {id ? (
-        <div className="w-full fixed inset-0 md:static">
-          <OpenMessage reciverId={id} />
+      <div className="w-full">
+        <div className="md:flex md:flex-row justify-between">
+          <div className={`w-full ${id ? 'hidden md:block' : 'block'}`}>
+            <ViewAllMessages session={session}/>
+          </div>
+          <div className="w-full h-screen flex justify-center items-center border-l-2 border-gray-600/15">
+            {id ? (
+              <div className="w-full h-full fixed inset-0 md:static">
+                <OpenMessage reciverId={id} session={session} />
+              </div>
+            ) : (
+                <h1 className="hidden md:block">Click on a message to chat</h1>
+            )}
+          </div>
         </div>
-      ) : (
-        <div className="hidden md:flex w-full justify-center items-center">
-          <h1>Click on a message to chat</h1>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

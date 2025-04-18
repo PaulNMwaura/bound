@@ -162,9 +162,11 @@ export const Hero = () => {
                                                 View {lister.firstname}'s page
                                             </Link>
                                         </button>
-                                        <button className="btn" onClick={() => redirect(`/messages?id=${lister.userId}`)}>
-                                            Message {lister.firstname}
-                                        </button>
+                                        {lister.userId != session.user.id && (
+                                            <button className="btn" onClick={() => redirect(`/messages?id=${lister.userId}`)}>
+                                                Message {lister.firstname}
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             ))

@@ -1,9 +1,9 @@
 import ChatBox from "@/components/ChatBox";
 
-export const OpenMessage = ({ reciverId }) => {
+export const OpenMessage = ({ reciverId, session }) => {
     return (
-        <div className="w-full h-screen flex justify-center items-center">
-            <ChatBox otherUserId={reciverId} />
+        <div className="w-full h-screen">
+            <ChatBox otherUserId={reciverId} session={session} />
         </div>
     )
 }

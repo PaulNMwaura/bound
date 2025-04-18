@@ -62,8 +62,12 @@ body {
 }
 
 .btn-primary {
+  @apply bg-black text-white;
+}
+
+.btn-primary-alt {
   @apply bg-black text-white dark:bg-white dark:text-black;
 }
 .btn-text {
-  @apply text-black bg-transparent;
+  @apply text-black dark:text-white bg-transparent;
 }

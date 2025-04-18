@@ -75,7 +75,7 @@ export default function LoginForm(){
                     </div>
                     <button
                         type="submit"
-                        className="bg-black text-white dark:bg-white dark:text-black px-4 py-2 rounded w-full cursor-pointer">
+                        className="btn-primary-alt px-4 py-2 rounded w-full cursor-pointer">
                         Login
                     </button>
                     <div>
@@ -94,7 +94,7 @@ export default function LoginForm(){
                 </form>
                 <button 
                 onClick={() => router.replace("/")} 
-                className="mt-4 bg-white text-black dark:text-gray-300 dark:bg-black dark:hover:text-gray-50 cursor-pointer">
+                className="mt-4 dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer">
                 Cancel
                 </button>
             </div>
