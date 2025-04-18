@@ -33,7 +33,7 @@ export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
                         <li>
                             {isLister && (
                                 <a href={`/dashboard/${username}`} className="hover:underline">
-                                    My Dashboard
+                                    Dashboard
                                 </a>
                             )}
                         </li>

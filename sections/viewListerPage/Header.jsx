@@ -29,7 +29,7 @@ export const Header = ({ id, thisLister}) => {
                   <a href="/" className="btn">Home</a>
                   <a href="/browse" className="btn">Browse</a>
                   {isLister && (
-                    <button onClick={() => router.replace(`/dashboard/${thisLister.username}`)} className="btn cursor-pointer">My Dashboard</button>
+                    <button onClick={() => router.replace(`/dashboard/${thisLister.username}`)} className="btn cursor-pointer">Dashboard</button>
                   )}
                 </div>
                 <button onClick={() => signOut({callbackUrl:"/"})} className="btn cursor-pointer">Sign out</button>

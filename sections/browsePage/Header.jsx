@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { HomeMenu } from "@/components/HomeMenu";
 
-export const Header = ({id, isLister, setFilters, userFirstname}) => {
+export const Header = ({username, isLister, setFilters}) => {
     const [isOpen, setMenuOpen] = useState(false);
 
     const toggleHomeMenu = () => setMenuOpen(!isOpen);
@@ -63,8 +63,14 @@ export const Header = ({id, isLister, setFilters, userFirstname}) => {
               </form>
             </div>
             <div className="flex">
-              <button onClick={() => signOut({ callbackUrl: "/" })} className="btn">Sign out</button>
-              <button onClick={toggleHomeMenu}>
+              {isLister && (
+                <div className="flex">
+                  <button onClick={() => router.replace(`/${username}`)} className="btn cursor-pointer">Profile</button>
+                  <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
+                </div>
+              )}
+              <button onClick={() => signOut({ callbackUrl: "/" })} className="btn cursor-pointer">Sign out</button>
+              <button onClick={toggleHomeMenu} className="cursor-pointer">
                 <IoMenu size={24}/>
               </button>
             </div>

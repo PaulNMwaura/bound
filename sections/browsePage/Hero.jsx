@@ -38,7 +38,7 @@ export const Hero = () => {
     });
     const [listers, setListers] = useState([]);
     const [isLister, setLister] = useState(false);
-    const [listerId, setListerId] = useState(null);
+    const [username, setListerUsername] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { data: session } = useSession();
@@ -64,7 +64,7 @@ export const Hero = () => {
             }
             const data = await response.json();
             // console.log("data: ", data.lister);
-            setListerId(data.lister._id);
+            setListerUsername(data.lister.username);
             setLister(true);
         } catch (error) {
             return;
@@ -81,7 +81,7 @@ export const Hero = () => {
 
     return (
         <div className="bg-[#D9D9D9] text-black ">
-            <Header id={listerId} isLister={isLister} setFilters={setFilters} userFirstname={session?.user?.firstname}/>
+            <Header username={username} isLister={isLister} setFilters={setFilters}/>
             <div>
                 <section className="pt-5 pb-10">
                     <div className="container flex flex-col items-center bg-white text-black h-fit md:h-screen rounded-xl">
