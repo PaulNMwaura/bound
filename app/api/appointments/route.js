@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import Lister from "@/models/lister";
+import Appointment from "@/models/appointment";
 
 export async function POST(req) {
   try {
@@ -10,11 +11,11 @@ export async function POST(req) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
 
-    // Find the lister
-    const lister = await Lister.findOne({_id: listerId});
-    if (!lister) {
-      return NextResponse.json({ message: "Lister not found" }, { status: 404 });
-    }
+    // // Find the lister
+    // const lister = await Lister.findOne({_id: listerId});
+    // if (!lister) {
+    //   return NextResponse.json({ message: "Lister not found" }, { status: 404 });
+    // }
 
 
     // Create a new appointment object
@@ -30,9 +31,9 @@ export async function POST(req) {
       status: "pending"
     };
     // Add the appointment to the lister's appointments array
-    lister.appointments.push(newAppointment);
-    // Save the updated lister document
-    await lister.save();
+    await Appointment.create(newAppointment);
+    // // Save the updated lister document
+    // await Appointment.save();
 
     return NextResponse.json({ message: "Appointment request sent", appointment: newAppointment }, { status: 200 });
   } catch (error) {

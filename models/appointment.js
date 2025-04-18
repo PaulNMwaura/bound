@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
 const AppointmentSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  listerId: { type: mongoose.Schema.Types.ObjectId, ref: "Lister", required: true },
-  status: { type: String, enum: ["pending", "accepted", "declined"], default: "pending" },
-  date: { type: Date, required: true }, // date is the day that the user has requested for the appointment
-  time: { type: String, required: true },
+  firstname: {type: String, required: true},
+  lastname: {type: String, required: true},
+  services: [{ type: String, required: true }],
+  email: { type: String, required: true },
+  date: {type: String, required: true},
+  time: {type: String, required: true},
+  listerId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  status: {type: String , default: "pending"},
   createdAt: { type: Date, default: Date.now },
 });
 

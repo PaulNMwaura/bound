@@ -16,7 +16,6 @@ const ListerSchema = new mongoose.Schema ({
             price: {type: String},
             subcategories: [
                 { name: {type: String}, price: {type: String}},
-                { name: {type: String}, price: {type: String}},
             ],
         },
     ],
@@ -29,13 +28,10 @@ const ListerSchema = new mongoose.Schema ({
             lastname: {type: String, required: true},
             services: [{ type: String, required: true }],
             email: { type: String, required: true },
-            firstname: { type: String, required: true },
-            lastname: { type: String, required: true },
             date: {type: String, required: true},
             time: {type: String, required: true},
             listerId: { type: mongoose.Schema.Types.ObjectId, required: true },
             status: {type: String , default: "pending"},
-            status: {type: String , required: false},
         },
     ],
 });

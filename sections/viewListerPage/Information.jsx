@@ -68,7 +68,6 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
   const lastname = session?.user?.lastname;
   const email = session?.user?.email;
 
-
   const availableTimes = generateTimeSlots();
   let date = selectedDate;
 

@@ -27,7 +27,15 @@ async function getAppointments(listerId) {
 
   try {
     const appointments = await Appointment.find({ listerId }).lean();
-    return appointments;
+
+    // Convert ObjectId fields to strings for each appointment
+    const stringFormattedAppointments = appointments.map((appointment) => {
+      appointment._id = appointment._id.toString();
+      appointment.listerId = appointment.listerId.toString();
+      return appointment;
+    });
+
+    return stringFormattedAppointments;
   } catch (err) {
     console.error('Failed to fetch appointments:', err);
     return [];

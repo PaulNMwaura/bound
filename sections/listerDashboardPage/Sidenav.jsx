@@ -7,7 +7,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-export const Sidenav = ({session, id}) => {
+export const Sidenav = ({session}) => {
     return (
         <section className="bg-black text-white tracking-tight">
             <div className="h-screen flex flex-col">
@@ -41,7 +41,7 @@ export const Sidenav = ({session, id}) => {
                         <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
                             <IoSettingsOutline />
                             <li>
-                                <a href={`/viewLister/${id}`}>view profile</a>
+                                <a href={`/${session.user.username}`}>view profile</a>
                             </li>
                         </div>
                     </ul>

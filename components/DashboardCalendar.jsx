@@ -40,11 +40,11 @@ export default function Calendar({ appointments, listerId }) {
     setAcceptedAppointments(groupedAppointments);
   }, [appointments, currentMonth, currentYear]);
 
-  const handleAction = async (appointmentId, date, time, status) => {
+  const handleAction = async (appointmentId, date, time, email, status) => {
     const response = await fetch(`/api/appointments/${listerId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({appointmentId, date, time, status }),
+    body: JSON.stringify({appointmentId, date, time, email, status }),
     });
 
     if (!response.ok) {
@@ -147,10 +147,18 @@ export default function Calendar({ appointments, listerId }) {
               <div key={index} className="mb-4 p-3 border rounded-md bg-gray-50">
                 <p className="font-bold">{appointment.firstname} {appointment.lastname}</p>
                 <p>Time: {appointment.time}</p>
+                <div className="flex gap-1">
+                  <p>Requesting: </p>
+                  {appointment.services.map((service) => (
+                    <p key={appointment._id}>
+                        {service}
+                    </p>
+                  ))}
+                </div>
                 {!isPastAppointment ? (
                   <button
                     className="mt-1 text-red-600 text-sm hover:underline"
-                    onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "canceled")}
+                    onClick={() => handleAction(appointment._id, appointment.date, appointment.time, appointment.email, "canceled")}
                   >
                     Cancel Appointment
                   </button>
