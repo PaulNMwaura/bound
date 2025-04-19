@@ -41,6 +41,13 @@ const authOptions: AuthOptions = {
         }),
     ],
     callbacks: {
+        async signIn({ user }) {
+          const dbUser = await User.findOne({ email: user.email });
+          if (!dbUser.verified) {
+            throw new Error("Please verify your email address before logging in.");
+          }
+          return true;
+        },
         async session({ session, token }) {
           if (token?.id && session.user) {
             session.user.id = token.id as string; // Add user ID to session

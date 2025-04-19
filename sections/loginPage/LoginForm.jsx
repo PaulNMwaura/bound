@@ -26,6 +26,7 @@ function validateCredentials (email, password, setError) {
 export default function LoginForm(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [verifyEmailButton, setToggle] = useState(false); 
     const [error, setError] = useState("");
 
     const router = useRouter();
@@ -33,15 +34,18 @@ export default function LoginForm(){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log("submitted login form.");
         try {
-            console.log("attempting to login user.");
             const res = await signIn("credentials", {
                 email, password, redirect:false,
             });
             
             if(!res || res.error) {
-                setError("Invalid Credentials.");
+                if (res.error == "Please verify your email address before logging in."){
+                    setError(res.error);
+                    setToggle(true);
+                } else {
+                    setError("Invalid credentials.");
+                }
                 return;
             }
             
@@ -79,11 +83,14 @@ export default function LoginForm(){
                         Login
                     </button>
                     <div>
-                    {error && (
-                        <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-                        {error}
-                        </div>
-                    )}
+                        {verifyEmailButton && (
+                            <button className="mt-1 btn cursor-pointer px-4 py-2 border-1" onClick={() => router.replace("/verifyEmail")}>Click to verify your account</button>
+                        )}
+                        {error && (
+                            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
+                            {error}
+                            </div>
+                        )}
                     </div>
                     <div className="flex justify-center items-center">
                         <Link href={"/register"} className="text-sm lg:text-lg mt-3 font-bold">

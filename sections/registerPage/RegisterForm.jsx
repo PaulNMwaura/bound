@@ -76,8 +76,6 @@ export default function RegisterForm() {
   
       const data = await resUserExists.json();
 
-      console.log(data.user);
-  
       if (data.user) {
         if (data.user.email === email) {
           setError("Email already exists.");
@@ -121,7 +119,7 @@ export default function RegisterForm() {
   
       if (res.ok) {
         e.target.reset();
-        router.push("/login");
+        router.push("/verifyEmail");
       } else {
         console.log("User registration failed.");
       }
