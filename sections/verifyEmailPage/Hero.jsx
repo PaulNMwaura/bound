@@ -7,6 +7,8 @@ export const Hero = () => {
   const [status, setStatus] = useState('idle' | 'loading' | 'success' | 'error');
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
+  const [registerPageButton, setToggleRegister] = useState(false); 
+  const [loginPageButton, setToggleLogin] = useState(false); 
   const router = useRouter();
 
   const handleResend = async () => {
@@ -26,10 +28,21 @@ export const Hero = () => {
 
       if (!res.ok) {
         setStatus('error');
-        setMessage(data.error || 'Something went wrong.');
+        if(data.error == "User not found") {
+          setToggleRegister(true);
+          setMessage('This user does not exist. Make sure to register first.');
+        } else {
+          setMessage(data.error || 'Something went wrong.');
+        }
+
       } else {
         setStatus('success');
-        setMessage(data.message);
+        if(data.message == "Already verified") {
+          setToggleLogin(true);
+          setMessage('You are already verified. You can login right away');
+        } else {
+          setMessage(data.message);
+        }
       }
     } catch (err) {
       setStatus('error');
@@ -61,11 +74,19 @@ export const Hero = () => {
           {status === 'loading' ? 'Sending...' : 'Resend Verification Email'}
         </button>
 
-        <button className="btn btn-primary-alt cursor-pointer" onClick={() => router.replace("/login")}>
-          login
-        </button>
+        {loginPageButton && (
+          <button className="btn btn-primary-alt cursor-pointer" onClick={() => router.replace("/login")}>
+            login
+          </button>
+        )}
 
-        {message && <p className={`text-sm ${status === 'error' ? 'text-red-500' : 'text-green-600'}`}>{message}</p>}
+        {registerPageButton && (
+          <button className="btn btn-primary-alt cursor-pointer" onClick={() => router.replace("/register")}>
+            register 
+          </button>
+        )}
+
+        {message && <p className={`text-sm text-start w-fit ${status === 'error' ? 'bg-red-500 text-white p-2 rounded' : 'bg-green-500 text-white p-2 rounded'}`}>{message}</p>}
       </div>
     </div>
   );

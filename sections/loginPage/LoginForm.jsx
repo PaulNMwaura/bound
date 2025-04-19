@@ -84,7 +84,7 @@ export default function LoginForm(){
                     </button>
                     <div>
                         {verifyEmailButton && (
-                            <button className="mt-1 btn cursor-pointer px-4 py-2 border-1" onClick={() => router.replace("/verifyEmail")}>Click to verify your account</button>
+                            <button className="mt-2 btn cursor-pointer px-4 py-2 border-1" onClick={() => router.replace("/verifyEmail")}>verify your account</button>
                         )}
                         {error && (
                             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
