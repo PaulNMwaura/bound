@@ -13,6 +13,7 @@
     "ably": "^2.6.5",
     "bcryptjs": "^3.0.2",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.7.4",
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2",
     "nanoid": "^5.1.5",

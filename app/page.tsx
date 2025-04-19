@@ -1,8 +1,12 @@
-// Landing Page
+"use client";
 import SEO from "../components/SEO";
+import { motion } from "framer-motion";
+import { Header } from "@/sections/homePage/Header";
+import { Hero } from "@/sections/homePage/Hero";
+import { Footer } from "@/sections/homePage/Footer";
 
 export default function Home() {
-  // CREATE PAGE THAT REGULAR USERS CAN PUBLICIZE A REQUEST!!! then listers can browse the page and claim requests!!
+  // CREATE PAGE THAT REGULAR USERS CAN POST A REQUEST!!! then listers can browse the page and claim posted requests!! -> Idead addition to website
   return (
     <>
       {/* this needs to be adjusted depending on the page. */}
@@ -14,10 +18,31 @@ export default function Home() {
         type="website" 
       />
 
+      <motion.div
+        className="fixed md:top-[-500px] left-1/2 transform -translate-x-1/2 md:w-[900px] md:h-[600px] bg-purple-500 rounded-full blur-3xl opacity-70 dark:opacity-20 z-0"
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.1, 0.2, 0.1],
+          boxShadow: [
+            "0 0 0px rgba(168, 85, 247, 0.4)",
+            "0 0 80px rgba(168, 85, 247, 0.5)",
+            "0 0 0px rgba(168, 85, 247, 0.4)"
+          ]
+        }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        style={{
+          boxShadow: "0 0 40px rgba(168, 85, 247, 0.5)", // fallback static glow
+        }}
+      />
 
-      <div className="w-screen h-screen flex flex-col justify-center items-center">
-        <strong className="text-lg">This site is under development</strong>
-        <p>come back later for updates</p>
+      <div className="z-10">
+        <Header />
+        <Hero />
+        <Footer />
       </div>
     </>
   );

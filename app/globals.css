@@ -34,7 +34,7 @@ body {
 }
 
 .tag {
-  @apply text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight;
+  @apply text-sm inline-flex border border-orange-500 px-3 py-1 rounded-lg tracking-tight;
 }
 
 .section-title {
