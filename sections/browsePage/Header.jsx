@@ -58,7 +58,7 @@ export const Header = ({username, isLister, setFilters}) => {
                   className="w-full p-2 border border-gray-300 rounded placeholder:text-sm"
                 />
                 <button type="submit" className="btn btn-primary">
-                  Search
+                  Find
                 </button>  
               </form>
             </div>
