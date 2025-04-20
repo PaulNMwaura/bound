@@ -175,7 +175,7 @@ export const Hero = ({session, status}) => {
     
             if (res.ok) {
                 const data = await res.json();
-                router.replace(`/viewLister/${data.lister._id}`);
+                router.replace(`/profile/${data.lister.username}`);
             }    
         } catch (err) {
             console.error("Error registering lister:", err);

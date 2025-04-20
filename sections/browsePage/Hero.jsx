@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-// import Logo from "@/app/assets/logo-holder.png";
 import Link from "next/link";
 import { IoMdStar } from "react-icons/io";
 import { useState, useEffect } from "react";
@@ -116,7 +115,7 @@ export const Hero = () => {
                                     {/* Card Image */}
                                     <div className="flex justify-center">
                                         {lister.bannerPicture ? (
-                                            <Image src={lister.bannerPicture} alt="Lister Banner Picture" width={1920} height={1080} className="object-cover w-[368px] h-[207px] rounded-lg" />
+                                            <Image src={lister.bannerPicture} alt="Lister Banner Picture" width={1920} height={1080} priority={true} className="object-cover w-[368px] h-[207px] rounded-lg" />
                                         ):(
                                             <div className="w-[368px] h-[207px] bg-[#a2a2a2] rounded-lg">
                                             </div>
@@ -158,7 +157,7 @@ export const Hero = () => {
                                     {/* Buttons Section */}
                                     <div className="mt-auto pt-4 flex flex-row">
                                         <button className="btn btn-primary">
-                                            <Link href={`/${lister.username}`}>
+                                            <Link href={`/profile/${lister.username}`}>
                                                 View {lister.firstname}'s page
                                             </Link>
                                         </button>
@@ -174,9 +173,9 @@ export const Hero = () => {
                             <div className="fixed left-0 md:w-screen text-md text-center font-medium">
                                 {
                                     filters.service? (
-                                        <p className="mt-8 text-center">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>
+                                        <p className="mt-8">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>
                                     ):(
-                                        <p className="mt-8 text-center">
+                                        <p className="mt-20">
                                             Trouble finding listers. Either there are no listers in this area 
                                             or your spelling is incorrect. <br /> Please double check your spelling.
                                         </p>

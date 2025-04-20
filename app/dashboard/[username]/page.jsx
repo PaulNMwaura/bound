@@ -8,6 +8,7 @@ import { authOptions } from "@/app/api/auth/auth.config";
 import { connectMongoDB } from "@/lib/mongodb";
 import Lister from "@/models/lister";
 import Appointment from "@/models/appointment";
+import { notFound } from "next/navigation";
 
 
 async function getLister(username) {
@@ -46,11 +47,15 @@ export default async function Dashboard({ params }) {
   const {username} = await params;
   const session = await getServerSession(authOptions);
   const lister = await getLister(username);
+  
+  if(!session)
+    return <div>Loading...</div>;
+
+  if(!lister)
+    return notFound();
+  
   const thisListerId = lister._id.toString();
 
-  if(!session || !lister)
-    return <div>Loading...</div>
-  
   if (session.user.id !== lister.userId.toString()) {
     return redirect("/unauthorized");
   }

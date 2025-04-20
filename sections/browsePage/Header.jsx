@@ -65,7 +65,7 @@ export const Header = ({username, isLister, setFilters}) => {
             <div className="flex">
               {isLister && (
                 <div className="flex">
-                  <button onClick={() => router.replace(`/${username}`)} className="btn cursor-pointer">Profile</button>
+                  <button onClick={() => router.replace(`/profile/${username}`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
                 </div>
               )}

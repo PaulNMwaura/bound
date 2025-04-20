@@ -8,8 +8,16 @@ import { Header } from "@/sections/viewListerPage/Header";
 import { Reviews } from "@/sections/viewListerPage/Reviews";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { notFound } from 'next/navigation';
+
+const RESERVED_ROUTES = ['applyLister', 'messages', 'dashboard'];
 
 export default function listerPage ({params}) {
+
+  if (RESERVED_ROUTES.includes(params.slug)) {
+    return notFound();
+  }
+
   const [thisLister, setLister] = useState(null);
   const {username} = React.use(params);
   const [editingEnabled, setEditing] = useState(false);

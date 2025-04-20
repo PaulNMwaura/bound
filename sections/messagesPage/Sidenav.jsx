@@ -1,22 +1,19 @@
 "use client";
 
-import { IoSearch, IoHomeOutline, IoSettingsOutline  } from "react-icons/io5";
-import { AiOutlineMessage } from "react-icons/ai";
+import { IoSearch, IoHomeOutline } from "react-icons/io5";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 export const Sidenav = ({session}) => {
     return (
         <section className="bg-black text-white tracking-tight">
             <div className="h-screen flex flex-col">
                 <div className="pl-4 h-[100px] flex items-center justify-start gap-2">
-                    {/* <Image src={Logo} width={24} height={24} /> */}
-                    <div className="w-8 h-8 rounded-md shadow-sm bg-yellow-400 flex justify-center items-center font-bold text-lg">
-                        {session?.user?.firstname[0]}
-                    </div>
-                    <a>{session?.user?.firstname} {session?.user?.lastname}</a>
+                    <Image src={session.user.profilePicture} alt="Profile picture" width={32} height={32} className="object-cover rounded-full"/>
+                    <a>{session?.user?.username}</a>
                 </div>
                 <div className="py-4 bg-[#525252] text-md lg:text-lg">
                     <ul className="flex flex-col">

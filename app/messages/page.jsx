@@ -13,7 +13,7 @@ function MessagesInner() {
   const id = searchParams.get('id');
   const {data: session} = useSession();
 
-  if(!session) return <div>Loadin...</div>
+  if(!session) return <div>Loading...</div>
 
   return (
     <div className='md:flex'>
@@ -28,7 +28,7 @@ function MessagesInner() {
           <div className="w-full h-screen flex justify-center items-center border-l-2 border-gray-600/15">
             {id ? (
               <div className="w-full h-full fixed inset-0 md:static">
-                <OpenMessage reciverId={id} session={session} />
+                <OpenMessage receiverId={id} session={session} />
               </div>
             ) : (
                 <h1 className="hidden md:block">Click on a message to chat</h1>

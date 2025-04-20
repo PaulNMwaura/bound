@@ -2,15 +2,13 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import Ably from 'ably';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import Image from 'next/image';
 
 const PAGE_SIZE = 20;
 
-export default function ChatBox({ otherUserId, session }) {
+export default function ChatBox({ otherUser, session }) {
   const currentUserId = session?.user?.id;
-  const router = useRouter();
-
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
@@ -22,6 +20,23 @@ export default function ChatBox({ otherUserId, session }) {
   const containerRef = useRef(null);
   const ablyRef = useRef(null);
   const channelRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
+    } finally {
+      // Rate limit duration
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 1000); // 3 second rate limit
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -32,7 +47,7 @@ export default function ChatBox({ otherUserId, session }) {
     isFetchingRef.current = true;
 
     const res = await fetch(
-      `/api/chat/history?otherUserId=${otherUserId}&limit=${PAGE_SIZE}&skip=${initial ? 0 : skip}`
+      `/api/chat/history?otherUserId=${otherUser._id}&limit=${PAGE_SIZE}&skip=${initial ? 0 : skip}`
     );
     const data = await res.json();
 
@@ -50,14 +65,14 @@ export default function ChatBox({ otherUserId, session }) {
     setSkip(0);
     setHasMore(true);
     fetchMessages(true).then(() => setLoading(false));
-  }, [currentUserId, otherUserId]);
+  }, [currentUserId, otherUser._id]);
 
   // Set up Ably
   useEffect(() => {
     if (!currentUserId) return;
 
     const ably = new Ably.Realtime({ authUrl: '/api/ably/auth', clientId: currentUserId });
-    const channelName = [currentUserId, otherUserId].sort().join('-');
+    const channelName = [currentUserId, otherUser._id].sort().join('-');
     const channel = ably.channels.get(channelName);
 
     channel.subscribe('message', (msg) => {
@@ -71,17 +86,24 @@ export default function ChatBox({ otherUserId, session }) {
       channel.unsubscribe();
       ably.close();
     };
-  }, [currentUserId, otherUserId]);
+  }, [currentUserId, otherUser._id]);
 
   const sendMessage = useCallback(async () => {
     if (!content.trim()) return;
     await fetch('/api/chat/send', {
       method: 'POST',
-      body: JSON.stringify({ senderId: currentUserId, receiverId: otherUserId, content }),
+      body: JSON.stringify({ 
+        senderId: currentUserId, 
+        senderUsername: session.user.username, 
+        senderProfilePicture: session.user.profilePicture,
+        receiverId: otherUser._id, 
+        receiverUsername: otherUser.username,
+        receiverProfilePicture: otherUser.profilePicture,
+        content }),
       headers: { 'Content-Type': 'application/json' },
     });
     setContent('');
-  }, [content, currentUserId, otherUserId]);
+  }, [content, currentUserId, otherUser._id]);
 
   useEffect(scrollToBottom, [messages]);
 
@@ -102,21 +124,29 @@ export default function ChatBox({ otherUserId, session }) {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="w-full h-full mx-auto flex flex-col">
-      <div className="w-full p-3 flex justify-between items-center border-b-2 border-gray-600/15">
-        <button className="px-4" onClick={() => router.back()}>
+    <div className="w-full h-full mx-auto flex flex-col bg-gray-600/5">
+      <div className="w-full p-3 flex justify-between items-center border-b-2 border-gray-600/15 bg-white dark:bg-black">
+        <button className="px-4" onClick={() => redirect("/messages")}>
             Back
         </button>
         <div className="flex flex-row items-center gap-2">
-          <div className="flex flex-col">
-            <div>Name</div>
-            <div>Status</div>
+          <div className="flex flex-col items-end">
+            <div className='text-sm'>{otherUser.username}</div>
+            <div className='text-xs opacity-50'>Status</div>
           </div>
-          <div>Picture</div>
+          <div>
+            <Image
+              src={otherUser.profilePicture}
+              alt="Profile picture"
+              width={48}
+              height={48}
+              className="rounded-full object-cover"
+            />
+          </div>
         </div>
       </div>
       <div
-          className="flex-1 overflow-y-auto space-y-2 flex flex-col-reverse pr-4 bg-gray-600/5"
+          className="flex-1 overflow-y-auto space-y-2 flex flex-col-reverse px-4"
           onScroll={handleScroll}
           ref={containerRef}
       >
@@ -129,23 +159,23 @@ export default function ChatBox({ otherUserId, session }) {
                       : 'bg-gray-200 text-black self-start mr-auto'
                   }`}
               >
-                  {m.content}
+                {m.content}
               </div>
           ))}
           <div ref={messagesEndRef} />
       </div>
 
-      <div className="pb-6 flex gap-2 p-2 bg-gray-600/5">
+      <div className="pb-24 md:pb-6 flex gap-2 p-2">
         <input
-        className="flex-1 border rounded px-3 py-2 placeholder-black dark:placeholder-white"
-        placeholder="Type a message..."
+        className="flex-1 border rounded-4xl px-3 py-2 placeholder-black dark:placeholder-white"
+        placeholder="Send message..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
-          <button onClick={sendMessage} className="bg-blue-600 text-white px-4 py-2 rounded">
-          Send
-          </button>
+        <button onClick={sendMessage} disabled={isSubmitting} className={`${isSubmitting ? 'bg-gray-400' : 'bg-blue-500'} text-white px-4 py-2 rounded`}>
+          {isSubmitting ? 'sending...' : 'send'}
+        </button>
       </div>
     </div>
   );

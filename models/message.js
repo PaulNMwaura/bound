@@ -2,8 +2,11 @@ import mongoose from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
   senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  senderPicture: { type: String },
+  senderUsername: { type: String },
+  senderProfilePicture: {type: String},
   receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  receiverUsername: {type: String},
+  receiverProfilePicture: {type: String},
   content: {type: String},
   timestamp: { type: Date, default: Date.now }
 });

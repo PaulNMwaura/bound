@@ -27,8 +27,8 @@ export async function GET(request) {
         userPair: {
           $cond: {
             if: { $gt: ['$senderId', '$receiverId'] },
-            then: { $concat: [ { $toString: '$receiverId' }, '_', { $toString: '$senderId' } ] },
-            else: { $concat: [ { $toString: '$senderId' }, '_', { $toString: '$receiverId' } ] }
+            then: { $concat: [{ $toString: '$receiverId' }, '_', { $toString: '$senderId' }] },
+            else: { $concat: [{ $toString: '$senderId' }, '_', { $toString: '$receiverId' }] }
           }
         }
       }
@@ -40,9 +40,7 @@ export async function GET(request) {
         mostRecentMessage: { $first: '$$ROOT' }
       }
     },
-    {
-      $replaceWith: '$mostRecentMessage'
-    },
+    { $replaceWith: '$mostRecentMessage' },
     {
       $addFields: {
         conversationPartnerId: {
@@ -54,6 +52,7 @@ export async function GET(request) {
         }
       }
     },
+    // Lookup only the "other" user (conversation partner)
     {
       $lookup: {
         from: 'users',
@@ -68,11 +67,11 @@ export async function GET(request) {
         _id: 1,
         content: 1,
         timestamp: 1,
-        senderId: 1,
-        receiverId: 1,
         conversationPartnerId: 1,
-        'partner.name': 1,
-        'partner.profilePicture': 1,
+        partnerId: '$conversationPartnerId',
+        date: '$timestamp',
+        partnerUsername: '$partner.username',
+        partnerProfilePicture: '$partner.profilePicture',
       }
     }
   ]);
