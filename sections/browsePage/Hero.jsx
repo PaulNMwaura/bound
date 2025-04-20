@@ -178,7 +178,7 @@ export const Hero = () => {
                                     ):(
                                         <p className="mt-8 text-center">
                                             Trouble finding listers. Either there are no listers in this area 
-                                            or your spelling could is incorrect. <br /> Please double check your spelling.
+                                            or your spelling is incorrect. <br /> Please double check your spelling.
                                         </p>
                                     )
                                 }

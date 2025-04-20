@@ -77,7 +77,7 @@ export default function listerPage ({params}) {
 
   
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div>Error: {error}</div>;  // RETURN SOMETHING WENT WRONG/400 PAGE NOT FOUND 
   if (!thisLister) return <div>No lister found</div>;
   
   const isLister = session?.user?.id === thisLister.userId;
