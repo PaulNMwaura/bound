@@ -37,14 +37,14 @@ export default function RegisterLister() {
         // Redirect if user is already a lister
         if (isLister !== null) {
             if (isLister) {
-                router.replace(`/viewLister/${isLister._id}`);
+                router.replace(`/profile/${isLister.username}`);
             }
         }
     }, [isLister, router]); // Run this when isLister changes
 
     // Show loading screen while checking if the user is a lister
     if (status === "loading" || isLister != false && isLister != null) {
-        return <div>Loading...</div>;
+        return <div className="heads-up">Loading...</div>;
     }
 
     return (

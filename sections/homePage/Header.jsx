@@ -1,9 +1,7 @@
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 
-export const Header = () => {
-    const {data: session} = useSession();
-    
+export const Header = ({session}) => {
     return (
         <header>
             <div className="container p-2 flex items-center justify-between">

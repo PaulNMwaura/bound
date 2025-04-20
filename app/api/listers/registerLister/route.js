@@ -34,6 +34,7 @@ export async function POST(req) {
       state: body.state,
       description: body.description,
       services: body.services || [], // Optional services field (empty array if not provided)
+      instructions: body.instructions || "", // Optional instructions field
       unavailableDays: body.unavailableDays.map(String), // Unavailable days array
     });
 

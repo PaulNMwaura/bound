@@ -84,9 +84,8 @@ export default function listerPage ({params}) {
   }
 
   
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;  // RETURN SOMETHING WENT WRONG/400 PAGE NOT FOUND 
-  if (!thisLister) return <div>No lister found</div>;
+  if (loading) return <div className="heads-up">Loading...</div>;
+  if (!thisLister) return <div className="heads-up">This lister does not exist</div>;
   
   const isLister = session?.user?.id === thisLister.userId;
 
@@ -96,9 +95,9 @@ export default function listerPage ({params}) {
         <Header id={thisLister._id} thisLister={thisLister}/>
       </div>
       <div className="container bg-white h-fit md:h-fit md:mt-10 md:rounded-lg pb-20">
-        <Hero id={thisLister._id} thisLister={thisLister} />
+        <Hero id={thisLister._id} thisLister={thisLister} session={session}/>
         <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} />
-        <Catalog firstname={"NAME"} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
+        <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
         <Reviews reviews={reviews}/>
       </div>
     </div>

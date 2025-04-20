@@ -2,6 +2,7 @@
 "use client";
 
 import UnavailableDaysCalendar from "@/components/AvailabilitySelectionCalendar";
+import ListerSetInstructions from "@/components/ListerSetInstructions";
 import { useState, useRef } from "react";
 import cloudinary from "@/lib/cloudinary";
 import Cropper from 'react-cropper';
@@ -11,6 +12,8 @@ import { useRouter } from "next/navigation";
 
 export const Hero = ({session, status}) => {
     const [error, setError] = useState("");
+    const [showInstructionsForm, setShowInstructionsForm] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         userId: session?.user?.id || "",
         bannerPicture: session.user.bannerPicture || "",
@@ -23,6 +26,7 @@ export const Hero = ({session, status}) => {
         state: "",
         description: "",
         services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+        instructions: "",
         unavailableDays: [],
     });
     const [imagePreview, setImagePreview] = useState(null);
@@ -89,6 +93,7 @@ export const Hero = ({session, status}) => {
         formData.state = "",
         formData.description = "",
         formData.services = [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+        formData.instructions = "",
         formData.unavailableDays = []
         setImagePreview(null);
         setCropData(null);
@@ -145,6 +150,7 @@ export const Hero = ({session, status}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSubmitting(true);
         const {userId, username, firstname, lastname, city, state, description, profilePicture} = formData;
 
         if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture) {
@@ -175,6 +181,7 @@ export const Hero = ({session, status}) => {
     
             if (res.ok) {
                 const data = await res.json();
+                setSubmitting(false);
                 router.replace(`/profile/${data.lister.username}`);
             }    
         } catch (err) {
@@ -348,7 +355,7 @@ export const Hero = ({session, status}) => {
                         ))}
                         <div className="flex justify-between items-center pt-2">
                             <button type="button" onClick={addService} className="btn btn-primary text-sm">Add another service</button>
-                            <button className="btn border border-black text-sm">Add service instructions<strong className="text-red-500">Needs configuration</strong></button>
+                            <button type="button" className="btn border border-black text-sm" onClick={() => setShowInstructionsForm(true)}>Add service instructions</button>
                         </div>
                     </div>
                 </div>
@@ -363,7 +370,7 @@ export const Hero = ({session, status}) => {
                 
                 {/* Submit Button */}
                 <div className="flex flex-col">
-                    <button type="submit" className="bg-black text-white px-4 py-2 rounded mt-4 w-[45%] place-self-center" onClick={handleSubmit}>Register</button>
+                    <button type="submit" className="bg-black text-white px-4 py-2 rounded mt-4 w-[45%] place-self-center" onClick={handleSubmit}>{submitting ? 'Please wait...' : 'Register'}</button>
                     <button onClick={handleReset} className="p-2 place-self-start">Clear All</button>
                 </div>
                 {error && (
@@ -372,6 +379,9 @@ export const Hero = ({session, status}) => {
                 </div>
                 )}
             </form>
+            {showInstructionsForm && (
+                <ListerSetInstructions setShowInstructionsForm={setShowInstructionsForm} setFormData={setFormData} />
+            )}
         </section>
     );
 };

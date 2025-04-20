@@ -13,7 +13,7 @@ function MessagesInner() {
   const id = searchParams.get('id');
   const {data: session} = useSession();
 
-  if(!session) return <div>Loading...</div>
+  if(!session) return <div className="heads-up">Loading...</div>
 
   return (
     <div className='md:flex'>

@@ -6,7 +6,7 @@ export const ListersFound = ({count}) => {
                     Listers found
                 </div>
                 <div>
-                    {count ? count : "#"}
+                    {count ? count : "0"}
                 </div>
             </div>
         </div>

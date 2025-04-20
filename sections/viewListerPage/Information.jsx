@@ -126,7 +126,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                 <div>
                   <h1 className="font-semibold">Regarding Services:</h1>
                   {thisLister.instructions ? (
-                    <p className="pl-3">{thisLister.instructions}</p>
+                    <p className="pl-3 whitespace-pre-line">{thisLister.instructions}</p>
                   ):(
                     <p className="pl-3">This lister has left no special instructions. Less work for you :)</p>
                   )}

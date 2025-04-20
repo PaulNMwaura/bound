@@ -4,8 +4,13 @@ import { motion } from "framer-motion";
 import { Header } from "@/sections/homePage/Header";
 import { Hero } from "@/sections/homePage/Hero";
 import { Footer } from "@/sections/homePage/Footer";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const {data: session, status} = useSession();
+
+  if(status == "loading")
+    return <div>Loading...</div>
   // CREATE PAGE THAT REGULAR USERS CAN POST A REQUEST!!! then listers can browse the page and claim posted requests!! -> Idead addition to website
   return (
     <>
@@ -40,7 +45,7 @@ export default function Home() {
       />
 
       <div className="z-10">
-        <Header />
+        <Header session={session}/>
         <Hero />
         <Footer />
       </div>

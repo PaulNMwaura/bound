@@ -49,7 +49,7 @@ export default async function Dashboard({ params }) {
   const lister = await getLister(username);
   
   if(!session)
-    return <div>Loading...</div>;
+    return <div className="heads-up">Loading...</div>;
 
   if(!lister)
     return notFound();
