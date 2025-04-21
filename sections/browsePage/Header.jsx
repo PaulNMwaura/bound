@@ -57,7 +57,7 @@ export const Header = ({username, isLister, setFilters}) => {
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded placeholder:text-sm"
                 />
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary text-sm">
                   Find
                 </button>  
               </form>

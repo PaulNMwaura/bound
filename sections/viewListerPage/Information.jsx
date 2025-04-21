@@ -40,9 +40,9 @@ const handleAppointmentRequest = async (id, firstname, lastname, email, selected
 const generateTimeSlots = (offset) => {
   const times = [];
   let hour = 9; // Start time: 9 AM
-  if(!offset) offset = 2; // Offset is the increment scale (by how many hours);
+  if(!offset) offset = 1; // Offset is the increment scale (by how many hours);
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 24/offset; i++) {
     const ampm = hour >= 12 && hour < 24 ? "PM" : "AM";
     const formattedHour = hour % 12 === 0 ? 12 : hour % 12; // Convert 24-hour format to 12-hour format
 
