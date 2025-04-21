@@ -57,7 +57,7 @@ export const Hero = ({ thisLister, session}) => {
                   </div>
                   <a>{thisLister.city}, {thisLister.state}</a>
                 </div>
-                <div>
+                <div className="whitespace-pre-line">
                   {thisLister.description}
                 </div>
 

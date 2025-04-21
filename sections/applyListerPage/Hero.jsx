@@ -190,11 +190,11 @@ export const Hero = ({session, status}) => {
                 body: JSON.stringify(formData),
             });
     
-            setSubmitting(false);
             if (res.ok) {
                 const data = await res.json();
                 router.replace(`/profile/${data.lister.username}`);
             }    
+            setSubmitting(false);
         } catch (err) {
             console.error("Error registering lister:", err);
             setSubmitting(false);
@@ -237,8 +237,7 @@ export const Hero = ({session, status}) => {
                     )}
                 </div>
 
-                <div className="md:mt-2 md:bg-[#D9D9D9] md:px-4 md:py-4 md:rounded-t-lg md:rounded-br-lg">
-                    {/* <h2 className="font-medium text-sm">General Information</h2> */}
+                <div className="md:mt-2 md:px-4 md:py-4 md:rounded-t-lg md:rounded-br-lg">
                     <div className="flex flex-col md:flex-row  md:justify-between gap-1">
                         <div className="w-full">
                             <label className="font-medium">firstname</label>
@@ -264,13 +263,14 @@ export const Hero = ({session, status}) => {
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row md:justify-between gap-4">
-                    <div className="w-full md:bg-[#D9D9D9] md:px-4 md:rounded-b-lg">
+                    <div className="w-full md:px-4 md:rounded-b-lg">
                         <label className="block text-sm font-medium">About Me</label>
-                        <textarea name="description" placeholder="Brief description of your services" value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
+                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={850} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
+                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/850 Characters</div>
                     </div>
 
                     {/* Service Section */}
-                    <div className="w-full">
+                    <div className="w-full md:pr-4">
                         <h3 className="text-md font-semibold">What services are you looking to offer?</h3>
                         {formData.services.map((service, serviceIndex) => (
                             <div key={serviceIndex} className="bg-[#ABEEFF] p-3 rounded my-2">

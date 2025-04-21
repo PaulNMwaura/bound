@@ -8,6 +8,16 @@ import "cropperjs/dist/cropper.css";
 
 const DEFAULT_IMAGE = "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg";
 
+function capitalizeInputMask (string) {
+  if (!string) return string;
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function validatePassword (string) {
+  const disallowed = ["\"", "`", "\\", "/", "<", ">", "&", " ", ";", "\n", "\r"];
+  return disallowed.filter(char => string.includes(char));
+}
+
 
 export default function RegisterForm() {
   const [imagePreview, setImagePreview] = useState(DEFAULT_IMAGE);
@@ -31,7 +41,12 @@ export default function RegisterForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let maskedValue = "";
+    if(name == "firstname" || name == "lastname")
+      maskedValue = capitalizeInputMask(value);
+    else
+      maskedValue = value;
+    setFormData((prev) => ({ ...prev, [name]: maskedValue }));
   };
 
   const handleImageUpload = (e) => {
@@ -60,12 +75,18 @@ export default function RegisterForm() {
     e.preventDefault();
   
     const {username, firstname, lastname, phone, email, password, profilePicture } = formData;
-  
+    
     if (!username || !firstname || !lastname || !phone || !email || !password) {
       setError("All fields are necessary.");
       return;
     }
-  
+
+    let invalidChar = validatePassword(password);
+    if(invalidChar.length > 0){
+      setError(`Invalid password. Cannot contain "${invalidChar.join(", ")}".`);
+      setFormData(prev => ({...prev, password: ""}));
+      return;
+    }
     try {
       // Check if user exists
       const resUserExists = await fetch("api/validation/userExists", {
