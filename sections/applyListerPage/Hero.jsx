@@ -150,10 +150,14 @@ export const Hero = ({session, status}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitting(true);
-        const {userId, username, firstname, lastname, city, state, description, profilePicture} = formData;
 
-        if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture) {
+        if(submitting) return;
+
+        const {userId, username, firstname, lastname, city, state, description, profilePicture, services} = formData;
+
+        const noDeclaredServices = services.some(service => !service.name.trim());
+
+        if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture || noDeclaredServices) {
             if(!city) {
                 setError("Please input the city you operate within.");
                 return;
@@ -166,9 +170,16 @@ export const Hero = ({session, status}) => {
                 setError("Please provide a description of what services you provide, and what is required of your client for you to perfom said services.");
                 return;
             }
-            setError("Missing one or more required fields.");
+            else if(noDeclaredServices) {
+                setError("Please list at least one service.");
+                return;
+            } else {
+                setError("Missing one or more required fields.");
+            }
             return;
         }
+
+        setSubmitting(true);
 
         try {
             const res = await fetch("/api/listers/registerLister", {
@@ -179,13 +190,14 @@ export const Hero = ({session, status}) => {
                 body: JSON.stringify(formData),
             });
     
+            setSubmitting(false);
             if (res.ok) {
                 const data = await res.json();
-                setSubmitting(false);
                 router.replace(`/profile/${data.lister.username}`);
             }    
         } catch (err) {
             console.error("Error registering lister:", err);
+            setSubmitting(false);
             setError("There was an issue submitting your form. Please try again.");
         }
     };
