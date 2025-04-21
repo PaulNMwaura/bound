@@ -10,7 +10,7 @@ export default function Home() {
   const {data: session, status} = useSession();
 
   if(status == "loading")
-    return <div>Loading...</div>
+    return <div className="heads-up">Loading...</div>
   // CREATE PAGE THAT REGULAR USERS CAN POST A REQUEST!!! then listers can browse the page and claim posted requests!! -> Idead addition to website
   return (
     <>
