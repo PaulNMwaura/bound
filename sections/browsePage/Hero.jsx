@@ -79,11 +79,11 @@ export const Hero = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="bg-[#D9D9D9] text-black ">
+        <div className="min-h-screen bg-[#D9D9D9] text-black ">
             <Header username={username} isLister={isLister} setFilters={setFilters}/>
             <div>
                 <section className="pt-5 pb-10">
-                    <div className="container flex flex-col items-center bg-white text-black h-fit md:h-screen rounded-xl">
+                    <div className="container flex flex-col items-center bg-white text-black min-h-screen rounded-xl">
                         <Information setFilters={setFilters} />
                         <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
                             <div className="pl-3 w-full md:w-[30%]">
@@ -108,7 +108,7 @@ export const Hero = () => {
                             </div>
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {listers && listers.length > 0 ? (
+                            {listers && listers.length > 0 && (
                                 listers.map((lister, index) => (
                                 <div key={index} className="pt-3 md:pt-3 p-3 flex flex-col">
                                     
@@ -168,22 +168,21 @@ export const Hero = () => {
                                         )}
                                     </div>
                                 </div>
-                            ))
-                            ) : (
-                            <div className="fixed left-0 md:w-screen text-md text-center font-medium">
-                                {
-                                    filters.service? (
-                                        <p className="mt-8">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>
+                            )))}
+                        </div>
+                        {listers.length == 0 && (
+                            <div className="container text-md text-center font-medium min-h-screen bg-white">
+                                {filters.service ? (
+                                    <p className="mt-8">We are having trouble finding listers who specialize in <strong>{filters.service}</strong> near you.</p>
                                     ):(
                                         <p className="mt-20">
                                             Trouble finding listers. Either there are no listers in this area 
-                                            or your spelling is incorrect. <br /> Please double check your spelling.
+                                            or your spelling is incorrect. Please double check your spelling.
                                         </p>
                                     )
                                 }
                             </div>
-                            )}
-                        </div>
+                        )}
                     </div>
                 </section>
             </div>

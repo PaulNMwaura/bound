@@ -3,14 +3,13 @@
 import Logo from "@/assets/logo-holder.png";
 import Image from "next/image";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import ReportUser from "@/components/ReportUser";
 import ReviewLister from "@/components/ReviewLister";
 import { IoMdMail, IoMdStar } from "react-icons/io";
 import { BiSolidCommentEdit } from "react-icons/bi";
 import { RiAlertFill } from "react-icons/ri";
 
-export const Hero = ({ id, thisLister, session}) => {
+export const Hero = ({ thisLister, session}) => {
   const [error, setError] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [showReportForm, setShowReportForm] = useState(false);
@@ -53,7 +52,7 @@ export const Hero = ({ id, thisLister, session}) => {
                       {thisLister.firstname} {thisLister.lastname} 
                     </a>
                     <span className="hidden md:block font-light"> |</span>
-                    <a className="font-light text-black/40">@{thisLister.username}</a>
+                    <a className="hidden md:block font-light text-black/40">@{thisLister.username}</a>
                     <a className="font-light">{thisLister.language ? `| ${thisLister.language}` : "| English"}</a>
                   </div>
                   <a>{thisLister.city}, {thisLister.state}</a>

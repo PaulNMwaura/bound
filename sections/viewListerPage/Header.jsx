@@ -23,8 +23,9 @@ export const Header = ({ id, thisLister}) => {
     <>
       <section>
         <div className="container text-black md:w-[90%] md:bg-white md:rounded-b-xl">
-            <div className="py-1 flex justify-end items-center">
-              <div className="flex items-center gap-2">
+            <div className="py-1 flex justify-between md:justify-end items-center">
+              <a className="block md:hidden font-light section-title">@{thisLister.username}</a>
+              <div className="flex items-center">
                 <div className="hidden lg:flex flex-row items-center">
                   <a href="/" className="btn">Home</a>
                   <a href="/browse" className="btn">Browse</a>

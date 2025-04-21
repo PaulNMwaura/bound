@@ -43,10 +43,10 @@ export const Header = ({username, isLister, setFilters}) => {
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded placeholder:text-sm"
                 />
-                <select name="state" value={formData.state} onChange={handleChange} className="border border-gray-300 p-2rounded w-full">
-                  <option value="">Select state</option>
+                <select name="state" value={formData.state} onChange={handleChange} className="border border-gray-300 p-2 rounded w-full text-sm">
+                  <option value="" className="text-sm">Select state</option>
                     {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
-                      <option key={state} value={state}>{state}</option>
+                      <option key={state} value={state} className="text-sm">{state}</option>
                   ))}
                 </select>
                 <input
@@ -64,7 +64,7 @@ export const Header = ({username, isLister, setFilters}) => {
             </div>
             <div className="flex">
               {isLister && (
-                <div className="flex">
+                <div className="hidden md:flex">
                   <button onClick={() => router.replace(`/profile/${username}`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
                 </div>
@@ -76,7 +76,7 @@ export const Header = ({username, isLister, setFilters}) => {
             </div>
           </div>
         </div>
-        <HomeMenu isOpen={isOpen} onClose={toggleHomeMenu} />
+        <HomeMenu isOpen={isOpen} onClose={toggleHomeMenu} isLister={isLister} username={username}/>
         {/* <SearchMenu setFilters={setFilters} isOpen={isSidebarOpen} onClose={toggleSidebar} /> */}
       </header>
     );

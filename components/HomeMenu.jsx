@@ -5,13 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import { IoMail } from "react-icons/io5";
 
-
-// interface SidebarModalProps {
-//     isOpen: boolean;
-//     onClose: () => void;
-// }
-
-export const HomeMenu = ({ isOpen, onClose }) => {
+export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
     return (
         <>
             {/* Sidebar Modal */}
@@ -33,6 +27,20 @@ export const HomeMenu = ({ isOpen, onClose }) => {
                                 Start Your Search
                             </a>
                         </li>
+                        {isLister && (
+                            <div className="space-y-4">
+                                <li>
+                                    <a href={`/profile/${username}`} className="hover:underline">
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href={`/dashboard/${username}`} className="hover:underline">
+                                        Dashboard
+                                    </a>
+                                </li>                              
+                            </div>
+                        )}
                         <li>
                             <a href="/" className="hover:underline">
                                 About
