@@ -3,16 +3,44 @@
 
   <url>
     <loc>https://www.etchedintara.com/</loc>
-    <lastmod>2025-04-07</lastmod>
+    <lastmod>2025-04-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
   </url>
 
   <url>
+    <loc>https://www.etchedintara.com/login</loc>
+    <lastmod>2025-04-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.etchedintara.com/register</loc>
+    <lastmod>2025-04-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.etchedintara.com/applyLister</loc>
+    <lastmod>2025-04-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.etchedintara.com/settings</loc>
+    <lastmod>2025-04-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
     <loc>https://www.etchedintara.com/browse</loc>
-    <!-- <lastmod>2025-04-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.80</priority> -->
+    <lastmod>2025-04-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
   </url>
 
   <!-- Additional URLs -->

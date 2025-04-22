@@ -10,8 +10,8 @@ export const Header = ({session}) => {
                 </div>
                 {!session ? (
                     <div className="flex gap-5 items-center">
-                        <Link href={"login"}>Login</Link>
-                        <Link href={"register"} className="btn btn-primary-alt">Sign Up</Link>
+                        <Link href={"/login"}>Login</Link>
+                        <Link href={"/register"} className="btn btn-primary-alt">Sign Up</Link>
                     </div>
                 ):(
                     <button className="btn" onClick={() => signOut()}>Sign Out</button>

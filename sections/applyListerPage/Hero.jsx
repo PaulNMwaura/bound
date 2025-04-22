@@ -265,8 +265,8 @@ export const Hero = ({session, status}) => {
                 <div className="flex flex-col md:flex-row md:justify-between gap-4">
                     <div className="w-full md:px-4 md:rounded-b-lg">
                         <label className="block text-sm font-medium">About Me</label>
-                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={850} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
-                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/850 Characters</div>
+                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={300} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
+                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/300 Characters</div>
                     </div>
 
                     {/* Service Section */}

@@ -69,7 +69,10 @@ const authOptions: AuthOptions = {
           }
           return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
+          if(trigger === "update"){
+            return {...token, ...session.user};
+          }
           if (user) {
             token.id = user.id as string;
             token.username = user.username as string;

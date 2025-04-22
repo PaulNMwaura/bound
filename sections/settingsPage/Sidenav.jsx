@@ -7,7 +7,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-export const Sidenav = ({session}) => {
+export const Sidenav = ({session, isLister}) => {
     return (
         <section className="bg-black text-white tracking-tight">
             <div className="h-screen flex flex-col">
@@ -38,22 +38,14 @@ export const Sidenav = ({session}) => {
                                 <a href={`/messages`}>messages</a>
                             </li>
                         </div>
-                        <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
-                            <IoSettingsOutline />
-                            <li>
-                                <a href={`/profile/${session.user.username}`}>view profile</a>
-                            </li>
-                        </div>
-                    </ul>
-                </div>
-                <div className="py-5 bg-[#1c1c1c] text-md lg:text-lg">
-                    <ul className="flex flex-col">
-                        <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
-                            <MdOutlineManageAccounts size={24} />
-                            <li>
-                                <a href={`/settings`}>profile settings</a>
-                            </li>
-                        </div>  
+                        {isLister && (
+                            <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                <IoSettingsOutline />
+                                <li>
+                                    <a href={`/profile/${session.user.username}`}>view profile</a>
+                                </li>
+                            </div>
+                        )}
                     </ul>
                 </div>
                 <div className="pl-4 flex flex-row items-center mt-auto mb-6 hover:bg-gradient-to-r from-red-500 to-[#ffffff]">

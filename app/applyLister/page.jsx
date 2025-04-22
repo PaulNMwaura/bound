@@ -31,7 +31,7 @@ export default function RegisterLister() {
 
             checkListerStatus();
         }
-    }, [session]); // Dependency on session to trigger the effect when it's available
+    }, [session]); 
 
     useEffect(() => {
         // Redirect if user is already a lister
@@ -42,10 +42,8 @@ export default function RegisterLister() {
         }
     }, [isLister, router]); // Run this when isLister changes
 
-    // Show loading screen while checking if the user is a lister
-    if (status === "loading" || isLister != false && isLister != null) {
+    if (status === "loading" || isLister != false && isLister != null)
         return <div className="heads-up">Loading...</div>;
-    }
 
     return (
         <div className="flex flex-col items-center bg-[#D9D9D9] pb-20">

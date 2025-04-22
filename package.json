@@ -12,6 +12,7 @@
     "@vercel/analytics": "^1.5.0",
     "ably": "^2.6.5",
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.6.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.7.4",
     "mongodb": "^6.15.0",

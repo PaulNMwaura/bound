@@ -10,7 +10,7 @@ export async function GET(req, { params }) {
         const user = await User.findById(id).select('_id username profilePicture');
 
         if (!user) {
-        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
         return NextResponse.json(user);
