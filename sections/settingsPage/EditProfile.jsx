@@ -127,10 +127,10 @@ export const EditProfile = () => {
     
             const response = await res.json();
             if (res.ok) {
+                await signOut({redirect: false});
                 alert(response.message || "Your account has been deleted successfully.");
                 setLoading(true);
                 router.push("/");
-                signOut({redirect: false});
             } else {
                 alert(response.message || "An error occurred while deleting your account.");
             }
