@@ -29,6 +29,7 @@ export const Header = ({ id, thisLister}) => {
                 <div className="hidden lg:flex flex-row items-center">
                   <a href="/" className="btn">Home</a>
                   <a href="/browse" className="btn">Browse</a>
+                  <a href="/settings" className="btn">Settings</a>
                   {isLister && (
                     <button onClick={() => router.replace(`/dashboard/${thisLister.username}`)} className="btn cursor-pointer">Dashboard</button>
                   )}

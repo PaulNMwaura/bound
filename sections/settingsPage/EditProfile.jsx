@@ -19,7 +19,7 @@ function validatePassword (string) {
     return disallowed.filter(char => string.includes(char));
 }
 
-export const EditProfile = ({isLister}) => {
+export const EditProfile = ({isLister, thisLister}) => {
     const {data: session, status, update} = useSession();
 
     if(!session || status == "loading") return <div className="heads-up">Loading...</div>
@@ -237,6 +237,25 @@ export const EditProfile = ({isLister}) => {
               profilePicture: data.user.profilePicture,
             },
           });
+
+          if(isLister) {
+            //Update associated lister
+            const res = await fetch(`/api/listers/update`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                listerId: thisLister._id,
+                username: data.user.username,
+                firstname: data.user.firstname,
+                lastname: data.user.lastname,
+                profilePicture: data.user.profilePicture,
+              }),
+            });
+
+            if(!res.ok)
+              return;
+          }
+
 
           if (sessionUpdate.ok) {
             handleReset({

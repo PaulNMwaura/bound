@@ -54,7 +54,7 @@ export default function Settings () {
             <Sidenav session={session} isLister={isLister} />
           </div>
       
-          <div className="w-full md:pl-[300px] min-h-screen flex items-center justify-center">
+          <div className="w-full md:pl-[300px] min-h-screen flex justify-center mt-5">
             <Hero session={session} isLister={isLister} thisLister={lister} />
           </div>
         </>

@@ -146,7 +146,7 @@ export const EditListerProfile = ({ thisLister }) => {
   };
 
   return (
-    <div>
+    <div className="p-4 text-sm md:tex-lg">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center justify-center">
             <div>
                 <label className="block text-sm font-medium text-center">

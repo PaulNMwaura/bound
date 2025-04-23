@@ -63,14 +63,21 @@ export const Header = ({username, isLister, setFilters}) => {
               </form>
             </div>
             <div className="flex">
-              {isLister && (
+              <div className="hidden md:block">
+                <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Messages</button>
+              </div>
+              {isLister ? (
                 <div className="hidden md:flex">
-                  <button onClick={() => router.replace(`/profile/${username}`)} className="btn cursor-pointer">Profile</button>
+                  <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
+                </div>
+              ):(
+                <div className="hidden md:block">
+                  <button onClick={() => router.replace(`/settings`)} className="btn cursor-pointer">Settings</button>
                 </div>
               )}
               <button onClick={() => signOut({ callbackUrl: "/" })} className="btn cursor-pointer">Sign out</button>
-              <button onClick={toggleHomeMenu} className="cursor-pointer">
+              <button onClick={toggleHomeMenu} className="block md:hidden cursor-pointer">
                 <IoMenu size={24}/>
               </button>
             </div>

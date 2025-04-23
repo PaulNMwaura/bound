@@ -24,7 +24,12 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
                     <ul className="space-y-4">
                         <li>
                             <a href="/browse" className="hover:underline">
-                                Start Your Search
+                                Find A Lister
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/messages" className="hover:underline">
+                                Messages
                             </a>
                         </li>
                         {isLister && (
@@ -42,10 +47,15 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
                             </div>
                         )}
                         <li>
+                            <a href="/settings" className="hover:underline">
+                                Settings
+                            </a>
+                        </li>
+                        {/* <li>
                             <a href="/" className="hover:underline">
                                 About
                             </a>
-                        </li>
+                        </li> */}
                         <li>
                             <a>
                                 Connect With Us
