@@ -42,7 +42,7 @@ export default function LoginForm(){
                 email, password, redirect:false,
             });
             
-            if(!res || !res.ok || res.error) {
+            if(!res && !res.ok || res.error) {
                 setLoggingIn(false);
                 if (res.error == "Please verify your email address before logging in."){
                     setError(res.error);
@@ -55,7 +55,7 @@ export default function LoginForm(){
                 return;
             }
             
-            router.replace("/browse");
+            router.refresh();
         } catch (error) {
             console.log("Error: ", error);
         }
