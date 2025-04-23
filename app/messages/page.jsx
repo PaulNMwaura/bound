@@ -38,10 +38,10 @@ function MessagesInner() {
         };
   
         checkListerStatus();
-        setLoading(false);
+        if(lister != null)
+          setLoading(false);
       }
     }, [session]);
-
   if(!session || loading) return <div className="heads-up">Loading...</div>
 
   return (
