@@ -28,11 +28,14 @@ export default function LoginForm(){
     const [password, setPassword] = useState("");
     const [verifyEmailButton, setToggle] = useState(false); 
     const [error, setError] = useState("");
+    const [loggingIn, setLoggingIn] = useState(false);
 
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoggingIn(true);
 
         try {
             const res = await signIn("credentials", {
@@ -40,12 +43,15 @@ export default function LoginForm(){
             });
             
             if(!res || res.error) {
+                setLoggingIn(false);
                 if (res.error == "Please verify your email address before logging in."){
                     setError(res.error);
                     setToggle(true);
-                } else {
-                    setError("Invalid credentials.");
-                }
+                    return;
+                } 
+                if(verifyEmailButton == true)
+                    setToggle(false);
+                setError("Invalid credentials.");
                 return;
             }
             
@@ -80,7 +86,7 @@ export default function LoginForm(){
                     <button
                         type="submit"
                         className="btn-primary-alt px-4 py-2 rounded w-full cursor-pointer">
-                        Login
+                        {loggingIn ? "Please Wait...": "Login"}
                     </button>
                     <div>
                         {verifyEmailButton && (
@@ -88,7 +94,7 @@ export default function LoginForm(){
                         )}
                         {error && (
                             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-                            {error}
+                                {error}
                             </div>
                         )}
                     </div>
