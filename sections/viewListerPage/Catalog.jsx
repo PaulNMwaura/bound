@@ -122,14 +122,14 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                 currentPosts.map(({ url }, index) => (
                   <div
                     key={index}
-                    className="relative group w-full md:w-[360px] h-auto aspect-video transition transform duration-300"
+                    className="relative group w-full md:w-[360px] aspect-[9/16] bg-[#F3F3F3] rounded-lg flex items-center justify-center"
                   >
                     <Image
                       src={url}
                       alt="a lister's post"
                       width={1080}
                       height={1920}
-                      className="w-[225px] h-[400px] md:w-[360px] md:h-[640px] object-cover rounded-lg"
+                      className="max-w-full max-h-full object-contain"
                     />
 
                     {isLister && (
@@ -148,13 +148,13 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
             {/* Upload Button */}
             {isLister && (
               <div
-                className={`absolute ${
+                className={`relative pt-3 flex flex-col items-center justify-center${
                   totalPages == 1 ? "bottom-4" : "bottom-15"
                 } left-1/2 transform -translate-x-1/2`}
               >
                 <button
                   onClick={() => fileInputRef.current.click()}
-                  className="bg-black text-white px-4 py-2 text-sm rounded hover:bg-gray-800 transition"
+                  className="w-48 bg-black text-white px-4 py-2 text-sm rounded hover:bg-gray-800 transition"
                   disabled={uploading}
                 >
                   {uploading ? "Uploading..." : "Upload Image"}
@@ -166,6 +166,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                   onChange={handleFileChange}
                   className="hidden"
                 />
+                <p className="pt-2 text-xs font-semibold opacity-70 text-black text-center">We recommend 9/16 (potrait) aspect ratio :)</p>
               </div>
             )}
 
