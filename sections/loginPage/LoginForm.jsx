@@ -63,7 +63,7 @@ export default function LoginForm(){
             }
     
             // Success
-            router.replace("/browse");
+            router.redirect("/browse");
         } catch (error) {
             console.error("Login error:", error);
             setLoggingIn(false);
