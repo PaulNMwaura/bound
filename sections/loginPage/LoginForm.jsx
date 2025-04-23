@@ -42,7 +42,7 @@ export default function LoginForm(){
                 email, password, redirect:false,
             });
             
-            if(!res || res.error) {
+            if(!res.ok || res.error) {
                 setLoggingIn(false);
                 if (res.error == "Please verify your email address before logging in."){
                     setError(res.error);
