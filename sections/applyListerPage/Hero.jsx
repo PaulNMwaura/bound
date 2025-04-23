@@ -194,7 +194,6 @@ export const Hero = ({session, status}) => {
                 const data = await res.json();
                 router.replace(`/profile/${data.lister.username}`);
             }    
-            setSubmitting(false);
         } catch (err) {
             console.error("Error registering lister:", err);
             setSubmitting(false);

@@ -114,7 +114,7 @@ export default function RegisterForm() {
         cloudinaryFormData.append("file", profilePicture);
         cloudinaryFormData.append("upload_preset", "ml_default");
   
-        const uploadRes = await fetch("https://api.cloudinary.com/v1_1/djreop8la/image/upload", {
+        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
           method: "POST",
           body: cloudinaryFormData,
         });

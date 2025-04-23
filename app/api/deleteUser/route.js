@@ -23,7 +23,7 @@ export async function POST(req) {
         await connectMongoDB();
         await User.findOneAndDelete({_id: userId});
 
-        return NextResponse.json({ message: "User account and profile picture deleted successfully." }, { status: 200 });
+        return NextResponse.json({ message: "User account deleted successfully." }, { status: 200 });
     } catch (error) {
         console.error("Error deleting user:", error);
         return NextResponse.json({ message: "An error occurred while deleting the user." }, { status: 500 });

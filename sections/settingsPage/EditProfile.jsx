@@ -19,7 +19,7 @@ function validatePassword (string) {
     return disallowed.filter(char => string.includes(char));
 }
 
-export const EditProfile = () => {
+export const EditProfile = ({isLister}) => {
     const {data: session, status, update} = useSession();
 
     if(!session || status == "loading") return <div className="heads-up">Loading...</div>
@@ -96,12 +96,30 @@ export const EditProfile = () => {
         setFormData((prev) => ({ ...prev, [name]: maskedValue }));
     };
 
+    async function checkIfLister(id) {
+        const res = await fetch(`/api/listers/findByUserId?id=${id}`);
+        
+        if (res.status === 404) {
+            return false; // not a lister
+        }
+    
+        const data = await res.json();
+        return data.lister ? data.lister : false; // if lister is found, return the lister data
+    }
+
 
     const handleDeleteUser = async () => {
         // Get user's profile picture and ID
         const profilePicture = session.user.profilePicture;
         const userId = session.user.id;
-        
+    
+        const isActiveLister = await checkIfLister(session.user.id); // Check if this user's lister's account still exists
+
+        if(isLister && isActiveLister) {
+            setError("Delete your lister's profile first.\nYou can do so in the \"Edit Lister Profile\" tab above"); 
+            return;
+        }
+
         const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
         if (!confirmDelete) return;
         
@@ -183,7 +201,7 @@ export const EditProfile = () => {
           cloudinaryFormData.append("upload_preset", "ml_default");
 
           const uploadRes = await fetch(
-            "https://api.cloudinary.com/v1_1/djreop8la/image/upload",
+            `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
             {
               method: "POST",
               body: cloudinaryFormData,
@@ -240,7 +258,7 @@ export const EditProfile = () => {
     if(loading) return <div className="heads-up">Loading...</div>;
 
     return (
-      <div>
+      <div className="p-4 text-sm md:tex-lg">
         <form className="flex flex-col items-center">
 
           {/* Profile Picture */}
@@ -311,52 +329,52 @@ export const EditProfile = () => {
           </div>
 
           {/* Form Fields */}
-          <div className="mb-4 mt-4">
+          <div className="w-full mb-4 mt-4">
             <label className="block text-sm font-medium">Username</label>
             <input
               name="username"
               type="text"
               value={formData.username}
-              className="w-[400px] border rounded px-3 py-2 mt-1"
+              className="w-full border rounded px-3 py-2 mt-1"
               onChange={handleChange}
             />
           </div>
 
-          <div className="mb-4">
+          <div className="w-full mb-4">
             <label className="block text-sm font-medium">First Name</label>
             <input
               name="firstname"
               type="text"
               value={formData.firstname}
-              className="w-[400px] border rounded px-3 py-2 mt-1"
+              className="w-full border rounded px-3 py-2 mt-1"
               onChange={handleChange}
             />
           </div>
 
-          <div className="mb-4">
+          <div className="w-full mb-4">
             <label className="block text-sm font-medium">Last Name</label>
             <input
               name="lastname"
               type="text"
               value={formData.lastname}
-              className="w-[400px] border rounded px-3 py-2 mt-1"
+              className="w-full border rounded px-3 py-2 mt-1"
               onChange={handleChange}
             />
           </div>
 
-          <div className="mb-4">
+          <div className="w-full mb-4">
             <label className="block text-sm font-medium">New Password</label>
             <input
               name="password"
               type="password"
               value={formData.password}
               maxLength={64}
-              className="w-[400px] border rounded px-3 py-2 mt-1"
+              className="w-full border rounded px-3 py-2 mt-1"
               onChange={handleChange}
             />
           </div>
 
-          <div className="w-[40%] flex justify-between items-center">
+          <div className="w-full flex justify-between items-center">
             <button
                 type="button"
                 className="bg-red-500 text-white  px-4 py-2 rounded"
@@ -374,7 +392,7 @@ export const EditProfile = () => {
           </div>
 
           {error && (
-            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
+            <div className="whitespace-pre-line bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2 text-center">
               {error}
             </div>
           )}

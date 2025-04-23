@@ -26,7 +26,7 @@ export default function Settings () {
 
     useEffect(() => {
         // Only check if session is loaded
-        if (session?.user?.id) {
+        if (session) {
             const checkUserStatus = async () => {
                 const isUser = await fetch(`/api/user/${session.user.id}`);
                 if(!isUser)
@@ -49,13 +49,16 @@ export default function Settings () {
     if (!session || status == "loading" || lister == null) return <div className="heads-up">Loading...</div>;
 
     return (
-        <div className="flex">
-            <div className="hidden md:block md:w-[400px] bg-red-500">
-                <Sidenav session={session} isLister={isLister}/>
-            </div>
-            <div className="w-full min-h-screen flex items-center justify-center">
-                <Hero session={session} isLister={isLister} thisLister={lister} />
-            </div>
-        </div>
-    )
+        <>
+          <div className="hidden md:block fixed top-0 left-0 h-screen w-[300px] bg-red-500 z-50 shadow-lg">
+            <Sidenav session={session} isLister={isLister} />
+          </div>
+      
+          <div className="w-full md:pl-[300px] min-h-screen flex items-center justify-center">
+            <Hero session={session} isLister={isLister} thisLister={lister} />
+          </div>
+        </>
+    );
+      
+      
 }

@@ -179,7 +179,9 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                             <button className="cursor-pointer" onClick={() => handleServiceSelection(subService.name)}>
                               {subService.name}
                             </button>
-                            <ul className="font-semibold">{subService.name.length > 0 ? `$${subService.price}` : ""}</ul>
+                            <ul className="font-semibold">
+                              {subService?.name ? `$${subService.price}` : ""}
+                            </ul>
                           </div>
                         ))}
                         </div>
