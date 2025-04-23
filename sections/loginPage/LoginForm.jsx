@@ -34,33 +34,42 @@ export default function LoginForm(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         setLoggingIn(true);
-
+        setError(null);
+    
         try {
             const res = await signIn("credentials", {
-                email, password, redirect:false,
+                email,
+                password,
+                redirect: false,
             });
-            
-            if(!res.ok || res.error) {
+    
+            if (!res || !res.ok || res.error) {
                 setLoggingIn(false);
-                if (res.error == "Please verify your email address before logging in."){
+    
+                if (res?.error === "Please verify your email address before logging in.") {
                     setError(res.error);
                     setToggle(true);
                     return;
-                } 
-                if(verifyEmailButton == true)
+                }
+    
+                if (verifyEmailButton === true) {
                     setToggle(false);
+                }
+    
                 setError("Invalid credentials.");
                 return;
             }
-            
-            if (res.ok && !res.error)
-                router.replace("/browse");
+    
+            // Success
+            router.replace("/browse");
         } catch (error) {
-            console.log("Error: ", error);
+            console.error("Login error:", error);
+            setLoggingIn(false);
+            setError("Something went wrong. Please try again.");
         }
-    }
+    };
 
     return (
         <div className="w-screen h-screen flex flex-col justify-center items-center bg-white text-black dark:bg-black dark:text-white">

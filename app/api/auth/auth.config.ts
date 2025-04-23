@@ -6,47 +6,60 @@ import bcrypt from "bcryptjs";
 
 const authOptions: AuthOptions = {
     providers: [
-        CredentialsProvider({
+      CredentialsProvider({
           name: "credentials",
           credentials: {
             email: { label: "Email", type: "text" },
             password: { label: "Password", type: "password" }
-        },
+          },
     
         async authorize(credentials) {
-            const email = credentials?.email;
-            const password = credentials?.password;
-    
-            if (!email || !password) return null;
-    
-            try {
-              await connectMongoDB();
-              const user = await User.findOne({ email });
-    
-              // If the user does not exist in the database...
-              if (!user) return null;
-    
-              const passwordsMatch = await bcrypt.compare(password, user.password);
-    
-              // If the password hash does not match...
-              if (!passwordsMatch) return null;
-    
-              // Return the user object (can include additional fields as needed)
-              return { id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, profilePicture: user.profilePicture };
-            } catch (error) {
-              console.log("Error: ", error);
-              return null; // Return null if an error occurs
+          const email = credentials?.email;
+          const password = credentials?.password;
+        
+          if (!email || !password) {
+            console.log("Missing email or password");
+            return null;
+          }
+        
+          try {
+            console.log("Connecting to MongoDB...");
+            await connectMongoDB();
+            console.log("Database connected");
+        
+            const user = await User.findOne({ email });
+            if (!user) {
+              console.log("User not found");
+              return null;
             }
-          },
-        }),
+        
+            const passwordsMatch = await bcrypt.compare(password, user.password);
+            if (!passwordsMatch) {
+              console.log("Invalid password");
+              return null;
+            }
+        
+            console.log("User authenticated successfully");
+            return { id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, profilePicture: user.profilePicture };
+          } catch (error) {
+            console.log("Error during authentication:", error);
+            return null;
+          }
+        }        
+      }),
     ],
     callbacks: {
         async signIn({ user }) {
-          const dbUser = await User.findOne({ email: user.email });
-          if (!dbUser.verified) {
-            throw new Error("Please verify your email address before logging in.");
+          try {
+            const dbUser = await User.findOne({ email: user.email });
+            if (!dbUser || !dbUser.verified) {
+              throw new Error("Please verify your email address before logging in.");
+            }
+            return true;  // Allow sign-in if everything is valid
+          } catch (error) {
+            console.log("Error during sign-in check:", error);
+            return false;  // Return false if there's an error or the user is not verified
           }
-          return true;
         },
         async session({ session, token }) {
           if (token?.id && session.user) {
