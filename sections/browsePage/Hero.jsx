@@ -135,7 +135,7 @@ export const Hero = () => {
                                                 {lister.rating ? (
                                                     <p className="font-semibold">{lister.rating}/5</p>
                                                 ):(
-                                                <p className="font-semibold">{"0"}/5</p>
+                                                <p className="font-semibold">No yet rated</p>
                                                 )}
                                             </div>
                                         </div>

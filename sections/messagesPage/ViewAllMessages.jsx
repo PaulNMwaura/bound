@@ -8,36 +8,12 @@ import { redirect } from "next/navigation";
 import { IoMenu } from "react-icons/io5";
 import { Sidenav } from "@/sections/messagesPage/Sidenav";
 
-async function checkIfLister(id) {
-  const res = await fetch(`/api/listers/findByUserId?id=${id}`);
-
-  if (res.status === 404) {
-    return false; // not a lister
-  }
-
-  const data = await res.json();
-  return data.lister ? data.lister : false; // if lister is found, return the lister data
-}
-
-export const ViewAllMessages = ({ session }) => {
+export const ViewAllMessages = ({ session, isLister, thisLister }) => {
   const [conversations, setConversations] = useState([]);
   const [isSidenavOpen, setOpenSidenav] = useState(false);
-  const [lister, setLister] = useState(null);
   const sidenavRef = useRef();
 
   const router = useRouter();
-
-  useEffect(() => {
-    // Only check if session is loaded
-    if (session) {
-      const checkListerStatus = async () => {
-        const res = await checkIfLister(session.user.id);
-        setLister(res);
-      };
-
-      checkListerStatus();
-    }
-  }, [session]);
 
   // 🔄 Close sidenav when clicking outside of it
   useEffect(() => {
@@ -58,7 +34,6 @@ export const ViewAllMessages = ({ session }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       if (!session?.user?.id) return;
-
       try {
         const res = await fetch(
           `/api/chat/conversations?id=${session.user.id}`
@@ -157,7 +132,7 @@ export const ViewAllMessages = ({ session }) => {
             ref={sidenavRef}
             className={`fixed top-0 left-0 w-[50%] h-full bg-white z-50 transition-transform duration-300 rounded-r-lg`}
           >
-            <Sidenav session={session} thisLister={lister}/>
+            <Sidenav session={session} isLister={isLister} thisLister={thisLister}/>
           </div>
         </>
       )}

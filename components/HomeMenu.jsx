@@ -10,7 +10,7 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
         <>
             {/* Sidebar Modal */}
             <div
-                className={`fixed top-0 right-0 h-full w-[50%] md:w-[30%] flex flex-col bg-white text-black dark:bg-black dark:text-white shadow-lg z-50 transition-transform duration-300 rounded-lg ${
+                className={`fixed top-0 right-0 h-full w-[50%] md:w-[30%] flex flex-col bg-white text-black dark:bg-black dark:text-white shadow-lg z-50 transition-transform duration-300 rounded-l-lg ${
                     isOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >

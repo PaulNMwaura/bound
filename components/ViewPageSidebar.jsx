@@ -8,7 +8,7 @@ export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
         <>
             {/* Sidebar Modal */}
             <div
-                className={`fixed top-0 right-0 h-full w-[50%] flex flex-col bg-white text-black dark:bg-black dark:text-white shadow-lg z-50 transition-transform duration-300 rounded-lg ${
+                className={`fixed top-0 right-0 h-full w-[50%] flex flex-col bg-white text-black dark:bg-black dark:text-white shadow-lg z-50 transition-transform duration-300 rounded-l-lg ${
                     isOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
@@ -28,6 +28,11 @@ export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
                         <li>
                             <a href="/browse" className="hover:underline">
                                 Browse
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/messages" className="hover:underline">
+                                Messages
                             </a>
                         </li>
                         <li>

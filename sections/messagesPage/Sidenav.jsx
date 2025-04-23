@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 
-export const Sidenav = ({session, thisLister}) => {
+export const Sidenav = ({session, isLister, thisLister}) => {
     return (
         <section className="bg-black text-white tracking-tight border-r-2 border-[#525252]/20">
             <div className="h-screen flex flex-col">
@@ -30,11 +30,12 @@ export const Sidenav = ({session, thisLister}) => {
                                 <button onClick={() => redirect("/browse")}>browse</button>
                             </li>
                         </div>
-                        {thisLister && (
+                        {isLister && (
                             <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
                                 <CgProfile />
                                 <li>
-                                    <button onClick={() => redirect(`/profile/${session.user.username}`)}>profile</button>
+                                    {/* {thisLister.username} */}
+                                    <button onClick={() => redirect(`/profile/${session?.user?.username}`)}>profile</button>
                                 </li>
                             </div>
                         )}
