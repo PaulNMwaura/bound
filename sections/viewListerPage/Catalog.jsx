@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
 
 export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) => {
   const fileInputRef = useRef(null);
@@ -28,10 +29,13 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
       formData.append("file", file);
       formData.append("upload_preset", "ml_default");
 
-      const cloudinaryRes = await fetch("https://api.cloudinary.com/v1_1/djreop8la/image/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const cloudinaryRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const cloudinaryData = await cloudinaryRes.json();
       const imageUrl = cloudinaryData.secure_url;
@@ -60,6 +64,30 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
     }
   };
 
+  const handleDeletePost = async (url) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+    if (!confirmDelete) return;
+  
+    try {
+      const res = await fetch("/api/photos/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ listerId: thisLister._id, photoUrl: url }),
+      });
+  
+      if (res.ok) {
+        const updated = await fetch(`/api/photos/list/${thisLister._id}`);
+        const data = await updated.json();
+        setPosts(data.photos.map((photo) => ({ url: photo.photo })));
+      } else {
+        console.error("Failed to delete post");
+      }
+    } catch (err) {
+      console.error("Error deleting post:", err);
+    }
+  };
+  
+
   const handleSwipe = (direction) => {
     if (direction === "left" && currentPage < totalPages - 1) {
       setCurrentPage((prev) => prev + 1);
@@ -79,10 +107,13 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
           <div className="relative w-fit">
             <div
               className="pt-10 pb-20 flex flex-wrap justify-center items-center gap-3 bg-[#F3F3F3] rounded-lg px-10 min-w-[300px] min-h-[400px]"
-              onTouchStart={(e) => (window.touchStartX = e.changedTouches[0].clientX)}
+              onTouchStart={(e) =>
+                (window.touchStartX = e.changedTouches[0].clientX)
+              }
               onTouchEnd={(e) => {
                 const delta = e.changedTouches[0].clientX - window.touchStartX;
-                if (Math.abs(delta) > 50) handleSwipe(delta < 0 ? "left" : "right");
+                if (Math.abs(delta) > 50)
+                  handleSwipe(delta < 0 ? "left" : "right");
               }}
             >
               {currentPosts.length === 0 ? (
@@ -91,7 +122,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                 currentPosts.map(({ url }, index) => (
                   <div
                     key={index}
-                    className="w-full md:w-[360px] h-auto aspect-video transition transform duration-300"
+                    className="relative group w-full md:w-[360px] h-auto aspect-video transition transform duration-300"
                   >
                     <Image
                       src={url}
@@ -100,6 +131,15 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                       height={1920}
                       className="w-[225px] h-[400px] md:w-[360px] md:h-[640px] object-cover rounded-lg"
                     />
+
+                    {isLister && (
+                      <button
+                        onClick={() => handleDeletePost(url)}
+                        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
+                      >
+                        <MdDelete size={20} />
+                      </button>
+                    )}
                   </div>
                 ))
               )}
@@ -107,7 +147,11 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
 
             {/* Upload Button */}
             {isLister && (
-              <div className={`absolute ${totalPages == 1 ? "bottom-4" : "bottom-15"} left-1/2 transform -translate-x-1/2`}>
+              <div
+                className={`absolute ${
+                  totalPages == 1 ? "bottom-4" : "bottom-15"
+                } left-1/2 transform -translate-x-1/2`}
+              >
                 <button
                   onClick={() => fileInputRef.current.click()}
                   className="bg-black text-white px-4 py-2 text-sm rounded hover:bg-gray-800 transition"
@@ -136,7 +180,9 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                   Previous
                 </button>
                 <button
-                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages - 1))}
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
+                  }
                   disabled={currentPage >= totalPages - 1}
                   className="text-sm bg-black px-3 py-1 rounded disabled:opacity-50"
                 >
@@ -147,9 +193,15 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
 
             {isMobile && totalPages > 1 && (
               <div className="text-black flex justify-center items-center gap-2 mt-4">
-                <BiSolidLeftArrow onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages - 1))}/>
-                  View more
-                <BiSolidRightArrow onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}/>
+                <BiSolidLeftArrow
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
+                  }
+                />
+                View more
+                <BiSolidRightArrow
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
+                />
               </div>
             )}
           </div>
