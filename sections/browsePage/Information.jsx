@@ -1,7 +1,8 @@
+"use client";
+
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { SearchMenu } from "@/components/SearchMenu";
-import { ListersFound } from "@/components/ListersFound";
 import { useState } from "react";
 
 

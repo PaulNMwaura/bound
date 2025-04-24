@@ -8,6 +8,7 @@ import { IoMdStar } from "react-icons/io";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Header } from "./Header";
+import { ListersFound} from "@/components/ListersFound";
 import { Information } from "./Information";
 
 const getListers = async ({ city = "", state = "", service = "", page = 1, limit = 50 }) => {
@@ -102,7 +103,7 @@ export const Hero = () => {
               <Information setFilters={setFilters} />
               <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
                 <div className="pl-3 w-full md:w-[30%]">
-                  {/* <ListersFound count={listers.length} /> */}
+                  <ListersFound count={listers.length} />
                 </div>
                 <div className="font-semibold">
                   {filters.city && filters.state && (
