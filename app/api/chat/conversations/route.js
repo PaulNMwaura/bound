@@ -16,9 +16,16 @@ export async function GET(request) {
   const conversations = await Message.aggregate([
     {
       $match: {
-        $or: [
-          { senderId: new mongoose.Types.ObjectId(currentUserId) },
-          { receiverId: new mongoose.Types.ObjectId(currentUserId) }
+        $and: [
+          {
+            $or: [
+              { senderId: new mongoose.Types.ObjectId(currentUserId) },
+              { receiverId: new mongoose.Types.ObjectId(currentUserId) }
+            ]
+          },
+          {
+            deletedBy: { $ne: new mongoose.Types.ObjectId(currentUserId) }
+          }
         ]
       }
     },
@@ -52,7 +59,6 @@ export async function GET(request) {
         }
       }
     },
-    // Lookup only the "other" user (conversation partner)
     {
       $lookup: {
         from: 'users',

@@ -188,7 +188,7 @@ export default function ChatBox({ otherUser, session }) {
             >
               <div>{m.content}</div>
               <div className="text-[10px] mt-1 text-right opacity-60">
-                {formatTimestamp(m.timestamp)}
+                {formatTimestamp(m.timestamp || m.createdAt)}
               </div>
             </div>
           </div>

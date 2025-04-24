@@ -8,6 +8,7 @@ const messageSchema = new mongoose.Schema({
   receiverUsername: {type: String},
   receiverProfilePicture: {type: String},
   content: {type: String},
+  deletedBy: {type: [mongoose.Schema.Types.ObjectId],default: []},
   timestamp: { type: Date, default: Date.now }
 });
 

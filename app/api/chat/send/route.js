@@ -26,9 +26,11 @@ export async function POST(req) {
 
   channel.publish('message', {
     _id: newMessage._id,
-    senderId,
-    receiverId,
-    content,
+    senderId: newMessage.senderId,
+    senderUsername: newMessage.senderUsername,
+    receiverId: newMessage.receiverId,
+    receiverUsername: newMessage.receiverUsername,
+    content: newMessage.content,
     createdAt: newMessage.createdAt,
   });
 

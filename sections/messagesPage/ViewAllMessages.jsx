@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import DefaultAvatar from "@/assets/logo-holder.png";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { redirect } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import { IoMenu } from "react-icons/io5";
 import { Sidenav } from "@/sections/messagesPage/Sidenav";
 
@@ -48,6 +47,32 @@ export const ViewAllMessages = ({ session, isLister, thisLister }) => {
     fetchConversations();
   }, [session]);
 
+  const handleMessageDelete = async (e, c) => {
+    e.stopPropagation(); // Prevents the redirect caused by parent div.
+
+    const res = await fetch("/api/chat/deleteConversation", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: session.user.id,
+        conversationPartnerId: c.conversationPartnerId,
+      }),
+    });
+
+    if (res.ok) {
+      setConversations((prev) =>
+        prev.filter(
+          (convo) =>
+            convo.conversationPartnerId !== c.conversationPartnerId
+        )
+      );
+      redirect("/messages");
+    } else {
+      alert("Failed to delete conversation.");
+    }
+  }
+  
+
   return (
     <div className="w-full">
       <header className="flex flex-row justify-between items-center md:flex-none border-b-2 border-gray-600/15 px-4 md:px-0">
@@ -70,9 +95,9 @@ export const ViewAllMessages = ({ session, isLister, thisLister }) => {
       <div className="mt-5 px-2 py-2">
         {conversations.map((c, index) => (
           <div
-            key={index}
-            className="flex items-center gap-4 px-3 py-4 mt-5 rounded shadow hover:bg-[#303030]/40 hover:border-l-4 hover:border-blue-500"
-            onClick={() => redirect(`/messages?id=${c.conversationPartnerId}`)}
+          key={index}
+          className="relative group flex items-center gap-4 px-3 py-4 mt-5 rounded shadow hover:bg-[#303030]/40 hover:border-l-4 hover:border-blue-500 cursor-pointer"
+          onClick={() => redirect(`/messages?id=${c.conversationPartnerId}`)}
           >
             <Image
               src={c.partnerProfilePicture || DefaultAvatar}
@@ -119,6 +144,14 @@ export const ViewAllMessages = ({ session, isLister, thisLister }) => {
                 })()}
               </div>
             </div>
+
+            {/* Delete Button - appears on hover */}
+            <button
+              className="absolute bottom-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+              onClick={(e) => handleMessageDelete(e, c)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
@@ -132,7 +165,11 @@ export const ViewAllMessages = ({ session, isLister, thisLister }) => {
             ref={sidenavRef}
             className={`fixed top-0 left-0 w-[50%] h-full bg-white z-50 transition-transform duration-300 rounded-r-lg`}
           >
-            <Sidenav session={session} isLister={isLister} thisLister={thisLister}/>
+            <Sidenav
+              session={session}
+              isLister={isLister}
+              thisLister={thisLister}
+            />
           </div>
         </>
       )}
