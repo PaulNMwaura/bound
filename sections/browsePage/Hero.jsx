@@ -104,7 +104,7 @@ export const Hero = () => {
             <div className="container pb-10 flex flex-col items-center bg-white text-black min-h-screen rounded-xl">
               <Information setFilters={setFilters} />
               <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
-                <div className="pl-3 w-full md:w-[30%]">
+                <div className="pl-3 w-[50%] md:w-[30%]">
                   <ListersFound count={totalListers} />
                 </div>
                 <div className="font-semibold">
