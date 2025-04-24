@@ -35,6 +35,7 @@ export const Hero = () => {
         service: searchParams.get("service") || "",
     });
     const [listers, setListers] = useState([]);
+    const [totalListers, setCountListers] = useState("");
     const [isLister, setLister] = useState(false);
     const [username, setListerUsername] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -47,12 +48,13 @@ export const Hero = () => {
     useEffect(() => {
         const fetchListers = async () => {
             setLoading(true);
-            const { listers, totalPages } = await getListers({ ...filters, page });
+            const { listers, totalPages, totalCount } = await getListers({ ...filters, page });
             setListers((prevListers) => [
                 ...prevListers,
                 ...listers.filter((lister) => !prevListers.some((existing) => existing._id === lister._id)),
             ]);
             setTotalPages(totalPages);
+            setCountListers(totalCount);
             setLoading(false);
         };
 
@@ -103,7 +105,7 @@ export const Hero = () => {
               <Information setFilters={setFilters} />
               <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
                 <div className="pl-3 w-full md:w-[30%]">
-                  <ListersFound count={listers.length} />
+                  <ListersFound count={totalListers} />
                 </div>
                 <div className="font-semibold">
                   {filters.city && filters.state && (

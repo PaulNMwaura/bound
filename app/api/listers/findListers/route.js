@@ -43,8 +43,8 @@ export async function GET(req) {
                 };
             })
         );
-
-        return NextResponse.json({ listers: listersWithRatings, totalPages });
+        
+        return NextResponse.json({ listers: listersWithRatings, totalPages, totalCount });
     } catch (error) {
         return NextResponse.json({ error: "Server error" }, { status: 500 });
     }
