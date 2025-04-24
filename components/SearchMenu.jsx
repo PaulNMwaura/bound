@@ -51,7 +51,13 @@ export const SearchMenu= ({setFilters, isOpen, onClose }) => {
                             </div>
                             <div>
                                 <label className="label font-semibold">State</label>
-                                <input name="state" onChange={handleChange} type="text" className="pl-2 w-full border rounded placeholder:text-xs" placeholder="Which state should we base your search?"/>
+                                <select name="state" onChange={handleChange} type="text" className="pl-2 py-1 w-full border rounded text-xs">
+                                    <option value="" className="text-xs">Select state</option>
+                                        {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
+                                        <option key={state} value={state} className="text-xs">{state}</option>
+                                    ))}
+                                </select>
+                                {/* <input name="state" onChange={handleChange} type="text" className="pl-2 w-full border rounded placeholder:text-xs" placeholder="Which state should we base your search?"/> */}
                             </div>
                             {error && (
                                 <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
