@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-// import Logo from "@/app/assets/BoundLogo.png";
+import LogoBlack from "@/assets/Logo-black.png";
 import { IoMenu } from "react-icons/io5";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ export const Header = ({username, isLister, setFilters}) => {
         <div className="container py-2 bg-white text-black rounded-b-xl">
           <div className="flex justify-between items-center">
             <div>
-              <p className="pl-2">Logo</p>
+              <Image src={LogoBlack.src} alt="Logo"  width={20} height={20} />
             </div>
             <div className="hidden md:flex max-w-3/4 lg:max-w-full text-xs lg:text-lg">
               <form onSubmit={handleSubmit} className="flex flex-row justify-between gap-1">
