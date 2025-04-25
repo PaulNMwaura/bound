@@ -1,6 +1,9 @@
 "use client";
-import { FaSignOutAlt, FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn  } from "react-icons/fa";
+import LogoBlack from "@/assets/Logo-black.png";
+import LogoWhite from "@/assets/Logo-white.png";
 import React from "react";
+import Image from "next/image";
+import { FaSignOutAlt, FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn  } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 
 export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
@@ -13,7 +16,8 @@ export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
                 }`}
             >
                 <div className="p-4 flex mt-8 justify-between items-center border-b">
-                    <h2 className="text-lg font-bold">Logo</h2>
+                    <Image src={LogoBlack.src} alt="Logo"  width={15} height={15} className="dark:hidden"/>
+                    <Image src={LogoWhite.src} alt="Logo"  width={15} height={15} className="hidden dark:block"/>
                     <button onClick={onClose} className="h-6 w-6 cursor-pointer">
                         <FaRegWindowClose />
                     </button>

@@ -1,8 +1,11 @@
 "use client";
-import { FaSignOutAlt, FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn  } from "react-icons/fa";
-import React, { useState } from "react";
-import { FaXTwitter } from "react-icons/fa6";
+import React from "react";
 import Link from "next/link";
+import LogoBlack from "@/assets/Logo-black.png";
+import LogoWhite from "@/assets/Logo-white.png";
+import Image from "next/image";
+import { FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn  } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { IoMail } from "react-icons/io5";
 
 export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
@@ -15,7 +18,8 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
                 }`}
             >
                 <div className="p-4 flex mt-8 justify-between items-center border-b">
-                    <h2 className="text-lg font-bold">Logo</h2>
+                    <Image src={LogoBlack.src} alt="Logo"  width={15} height={15} className="dark:hidden"/>
+                    <Image src={LogoWhite.src} alt="Logo"  width={15} height={15} className="hidden dark:block"/>
                     <button onClick={onClose} className="h-6 w-6 cursor-pointer">
                         <FaRegWindowClose />
                     </button>
@@ -56,12 +60,11 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
                                 About
                             </a>
                         </li> */}
-                        <li>
+                        {/* <li>
                             <a>
                                 Connect With Us
                             </a>
                             <div className="pt-4 flex flex-row gap-5">
-                                {/* MAKE SURE TO DIRECT URLS TO OUR SOCIAL PAGES WHEN THEY'VE BEEN CREATED */}
                                 <Link href={"https://www.instagram.com/"}>
                                     <FaInstagram size={20} />
                                 </Link>
@@ -78,7 +81,7 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username }) => {
                                     <IoMail size={20}/>
                                 </Link>
                             </div>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 {/* <div className="pl-0 flex flex-row items-center gap-4 mt-auto mb-4">
