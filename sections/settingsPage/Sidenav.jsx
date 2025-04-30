@@ -23,13 +23,13 @@ export const Sidenav = ({session, isLister}) => {
                         <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
                             <IoHomeOutline />
                             <li>
-                                <a href="/">home</a>
+                                <a href="/home">home</a>
                             </li>
                         </div>
                         <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
                             <IoSearch />
                             <li>
-                                <button onClick={() => redirect("/browse")}>browse</button>
+                                <button onClick={() => redirect("/")}>browse</button>
                             </li>
                         </div>
                         <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
