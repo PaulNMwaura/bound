@@ -50,14 +50,14 @@ export const Selections = ({selectedServices, selectedDate, selectedTime, handle
 
                 {/* Request appointment button */}
                 <div className="flex mt-10 justify-center">
-                    {sessionStatus == "unauthenticated" ? (
-                        <button onClick={() => redirect("/login")}className="btn btn-primary text-xs">Login to request an appointment</button>
-                    ):(
+                    {sessionStatus == "authenticated" ? (
                         <button 
-                            onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices)} 
-                            className="btn btn-primary text-xs">
+                        onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices)} 
+                        className="btn btn-primary text-xs">
                             Request An Appointment
                         </button>
+                    ):(
+                        <button onClick={() => redirect("/login")}className="btn btn-primary text-xs">Login to request an appointment</button>
                     )}
                 </div>
             </div>

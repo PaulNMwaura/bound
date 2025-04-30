@@ -27,7 +27,7 @@ const Pricing = ({session}) => {
             <section id="pricing">
                 <div className="py-24 px-8 max-w-5xl mx-auto">
                     <div className="flex flex-col text-center w-full mb-10">
-                        <p className="mb-5">Hello {session?.user?.firstname}.To get started, first make your access purchase.</p>
+                        {/* <p className="mb-5">Hello {session?.user?.firstname}.To get started, first make your access purchase.</p> */}
                         <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
                             Lister Account Access
                         </h2>

@@ -6,10 +6,11 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { IoMdStar } from "react-icons/io";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Header } from "./Header";
 import { ListersFound} from "@/components/ListersFound";
 import { Information } from "./Information";
+import { BiRightArrowAlt } from "react-icons/bi";
 
 const getListers = async ({ city = "", state = "", service = "", page = 1, limit = 50 }) => {
     try {
@@ -111,6 +112,11 @@ export const Hero = ({session}) => {
               <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
                 <div className="pl-3 w-[50%] md:w-[30%]">
                   <ListersFound count={totalListers} />
+                  {/* <p className="pt-2">Become a lister</p>
+                  <div onClick={() => redirect("/payment")} className="flex items-center cursor-pointer">
+                    <p>Learn more</p>
+                    <BiRightArrowAlt/>
+                  </div> */}
                 </div>
                 <div className="font-semibold">
                   {filters.city && filters.state && (
@@ -160,12 +166,15 @@ export const Hero = ({session}) => {
                             {lister.rating ? (
                               <p className="font-semibold">{lister.rating}/5</p>
                             ) : (
-                              <p className="font-semibold">No yet rated</p>
+                              <p className="font-semibold">Not yet rated</p>
                             )}
                           </div>
                         </div>
                       </div>
-                      <div className="text-sm">{lister.location}</div>
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm opacity-60">@{lister.username}</div>
+                        <div className="font-normal">{lister.city}, {lister.state}</div>
+                      </div>
                       <div className="text-md">
                         <div className="font-bold">
                           Services offered by {lister.firstname}
@@ -190,7 +199,7 @@ export const Hero = ({session}) => {
                       <div className="mt-auto pt-4 flex flex-row">
                         <button className="btn btn-primary">
                           <Link href={`/profile/${lister.username}`}>
-                            View {lister.firstname}'s page
+                            View {lister.firstname}'s profile
                           </Link>
                         </button>
                         {lister.userId !== session?.user?.id && (

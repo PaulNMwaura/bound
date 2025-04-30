@@ -1,5 +1,4 @@
 "use client";
-// import Logo from "@/app/assets/BoundLogo.png";
 import Image from "next/image";
 import {ViewPageSidebar} from "@/components/ViewPageSidebar";
 import { redirect, useRouter } from "next/navigation";

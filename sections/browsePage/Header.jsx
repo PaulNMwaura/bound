@@ -30,7 +30,7 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
       <header>
         <div className="container py-2 bg-white text-black rounded-b-xl">
           <div className="flex justify-between items-center">
-            <div>
+            <div onClick={() => redirect("/home")}>
               <Image src={LogoBlack.src} alt="Logo"  width={20} height={20} />
             </div>
             <div className="hidden md:flex max-w-3/4 lg:max-w-full text-xs lg:text-lg">
@@ -63,10 +63,14 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
               </form>
             </div>
             <div className="flex items-center">
-              {isLister && (
+              {isLister ? (
                 <div className="hidden lg:flex">
                   <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
+                </div>
+              ):(
+                <div className="hidden lg:block">
+                  <button onClick={() => router.replace(`/home`)} className="btn cursor-pointer">Home</button>
                 </div>
               )}
               {session ? (
