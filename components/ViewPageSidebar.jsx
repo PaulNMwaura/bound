@@ -30,7 +30,7 @@ export const ViewPageSidebar = ({isLister, username, isOpen, onClose, sessionSta
                             </a>
                         </li>
                         <li>
-                            <a href="/browse" className="hover:underline">
+                            <a href="/" className="hover:underline">
                                 Browse
                             </a>
                         </li>

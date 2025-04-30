@@ -38,7 +38,7 @@ export const Hero = ({session}) => {
     const [totalListers, setCountListers] = useState("");
     const [isLister, setLister] = useState(false);
     const [username, setListerUsername] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -46,7 +46,6 @@ export const Hero = ({session}) => {
 
     useEffect(() => {
         const fetchListers = async () => {
-            setLoading(true);
             const { listers, totalPages, totalCount } = await getListers({ ...filters, page });
             setListers((prevListers) => [
                 ...prevListers,
