@@ -23,7 +23,7 @@ export default function listerPage ({params}) {
   const [editingEnabled, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [posts, setPosts] = useState([]);
   const [reviews, setReviews] = useState([]);
 
@@ -92,11 +92,11 @@ export default function listerPage ({params}) {
   return (
     <div className="bg-[#D9D9D9] flex flex-col items-center pb-10">
       <div className="w-full">
-        <Header id={thisLister._id} thisLister={thisLister}/>
+        <Header id={thisLister._id} thisLister={thisLister} sessionStatus={status}/>
       </div>
       <div className="container bg-white h-fit md:h-fit md:mt-10 rounded-lg pb-20">
-        <Hero id={thisLister._id} thisLister={thisLister} session={session}/>
-        <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} />
+        <Hero id={thisLister._id} thisLister={thisLister} session={session} sessionStatus={status}/>
+        <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} sessionStatus={status}/>
         <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
         <Reviews reviews={reviews}/>
       </div>

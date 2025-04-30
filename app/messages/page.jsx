@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import { ViewAllMessages } from '@/sections/messagesPage/ViewAllMessages';
 import { OpenMessage } from '@/sections/messagesPage/OpenMessage';
 import { Suspense } from 'react';
@@ -14,7 +14,7 @@ async function checkIfLister(id) {
   if (res.status === 404) {
     return false; // not a lister
   }
-
+  
   const data = await res.json();
   return data.lister ? data.lister : false; // if lister is found, return the lister data
 }
@@ -22,27 +22,29 @@ async function checkIfLister(id) {
 function MessagesInner() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
-  const {data: session} = useSession();
+  const {data: session, status} = useSession();
   const [lister, setLister] = useState(null);
   const [isLister, setIsLister] = useState(false);
   const [loading, setLoading] = useState(true);
 
 
-    useEffect(() => {
-      // Only check if session is loaded
-      if (session) {
-        const checkListerStatus = async () => {
-          const res = await checkIfLister(session.user.id);
-          setLister(res);
-          if(res != false) setIsLister(true);
-        };
-  
-        checkListerStatus();
-        if(lister != false || lister)
-          setLoading(false);
-      }
-    }, [session]);
-  if(!session) return <div className="heads-up">Loading...</div>
+  useEffect(() => {
+    // Only check if session is loaded
+    if (session) {
+      const checkListerStatus = async () => {
+        console.log("ID: ", session.user.id);
+        const res = await checkIfLister(session.user.id);
+        setLister(res);
+        if(res != false) setIsLister(true);
+      };
+
+      checkListerStatus();
+      if(lister != false || lister)
+        setLoading(false);
+    }
+  }, [session]);
+  if(status == "loading") return <div className="heads-up">Loading...</div>;
+  if(status == "unauthenticated") redirect("/login");
 
   return (
     <div className='md:flex'>

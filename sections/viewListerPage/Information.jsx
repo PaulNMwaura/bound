@@ -4,6 +4,7 @@ import Calendar from "@/components/Calendar";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Selections } from "./Selections";
+import { redirect } from "next/navigation";
 
 const handleAppointmentRequest = async (id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, specialNote) => {
   try {
@@ -52,7 +53,7 @@ const generateTimeSlots = (offset) => {
   return times;
 };
 
-export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing}) => {
+export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing, sessionStatus}) => {
   const [loading, setLoading] = useState(true);
   const [unavailableDays, setUnavailableDays] = useState(thisLister.unavailableDays || []);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -275,7 +276,11 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
 
             </div>
             <div className="flex md:hidden mt-10 justify-center text-xs md:text-lg">
-              <button onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, specialNote, {setSuccess, setError})} className="btn btn-primary">Request An Appointment</button>
+              {sessionStatus == "authenticated" ? (
+                <button onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, specialNote, {setSuccess, setError})} className="btn btn-primary">Request An Appointment</button>
+              ):(
+                <button onClick={() => redirect("/login")} className="btn btn-primary">Login to request appointment</button>
+              )}
             </div>
           </div>
           {success && (
@@ -299,7 +304,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
             </div>
           )} */}
         </section>
-        <Selections selectedServices={selectedServices} selectedDate={selectedDate} selectedTime={selectedTime} handleAppointmentRequest={handleAppointmentRequest} id={id} firstname={firstname} lastname={lastname} email={email}/>
+        <Selections selectedServices={selectedServices} selectedDate={selectedDate} selectedTime={selectedTime} handleAppointmentRequest={handleAppointmentRequest} id={id} firstname={firstname} lastname={lastname} email={email} sessionStatus/>
       </div>
     );
 };

@@ -8,8 +8,9 @@ import ReviewLister from "@/components/ReviewLister";
 import { IoMdMail, IoMdStar } from "react-icons/io";
 import { BiSolidCommentEdit } from "react-icons/bi";
 import { RiAlertFill } from "react-icons/ri";
+import { redirect } from "next/navigation";
 
-export const Hero = ({ thisLister, session}) => {
+export const Hero = ({ thisLister, session, sessionStatus}) => {
   const [error, setError] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [showReportForm, setShowReportForm] = useState(false);
@@ -66,18 +67,22 @@ export const Hero = ({ thisLister, session}) => {
                 <div className="mt-4 w-full flex justify-between text-xs md:text-lg">
                   <div className="flex -space-x-2 items-center">
                     <IoMdMail size={22}/>
-                    <button className="btn hover:cursor-pointer">Message</button>
+                    <button onClick={() => redirect(`/messages?id=${thisLister.userId}`)} className="btn hover:cursor-pointer">Message</button>
                   </div>
-                    <div className="flex -space-x-2 items-center">
-                      <BiSolidCommentEdit size={22} />
-                      <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
-                      Review
-                      </button>
+                  {sessionStatus == "authenticated" && (
+                    <div>
+                      <div className="flex -space-x-2 items-center">
+                        <BiSolidCommentEdit size={22} />
+                        <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
+                        Review
+                        </button>
+                      </div>
+                      <div className="flex -space-x-2 items-center">
+                        <RiAlertFill size={22} />
+                        <button className="btn" onClick={() => setShowReportForm(true)}>Report</button>
+                      </div>
                     </div>
-                    <div className="flex -space-x-2 items-center">
-                      <RiAlertFill size={22} />
-                      <button className="btn" onClick={() => setShowReportForm(true)}>Report</button>
-                    </div>
+                  )}
                 </div>
                 )}
               </div>

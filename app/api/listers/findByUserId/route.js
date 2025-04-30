@@ -18,6 +18,7 @@ export async function GET(req) {
         // Query the database
         const lister = await Lister.findOne({ userId: id });
 
+
         if (!lister) {
             // If no result is found, return a 404 Not Found response
             return NextResponse.json({ error: "Lister not found" }, { status: 404 });

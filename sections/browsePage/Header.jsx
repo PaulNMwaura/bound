@@ -4,11 +4,11 @@ import Image from "next/image";
 import LogoBlack from "@/assets/Logo-black.png";
 import { IoMenu } from "react-icons/io5";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { HomeMenu } from "@/components/HomeMenu";
 
-export const Header = ({username, isLister, setFilters}) => {
+export const Header = ({username, isLister, setFilters, session, sessionStatus}) => {
     const [isOpen, setMenuOpen] = useState(false);
 
     const toggleHomeMenu = () => setMenuOpen(!isOpen);
@@ -63,27 +63,35 @@ export const Header = ({username, isLister, setFilters}) => {
               </form>
             </div>
             <div className="flex items-center">
-              <div className="hidden lg:block">
-                <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Messages</button>
-              </div>
-              {isLister ? (
+              {isLister && (
                 <div className="hidden lg:flex">
                   <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
                 </div>
+              )}
+              {session ? (
+                <div className="hidden lg:flex">
+                  <div className="hidden lg:block">
+                    <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Messages</button>
+                  </div>
+                  <div className="hidden lg:block">
+                    <button onClick={() => router.replace(`/settings`)} className="btn cursor-pointer">Settings</button>
+                  </div>
+                  <button onClick={() => signOut({ callbackUrl: "/" })} className="btn cursor-pointer">Sign out</button>
+                </div>
               ):(
-                <div className="hidden lg:block">
-                  <button onClick={() => router.replace(`/settings`)} className="btn cursor-pointer">Settings</button>
+                <div className="hidden lg:flex">
+                  <button onClick={() => redirect("/login")} className="btn cursor-pointer">Login</button>
+                  <button onClick={() => redirect("/register")} className="btn btn-primary cursor-pointer">Sign Up</button>
                 </div>
               )}
-              <button onClick={() => signOut({ callbackUrl: "/" })} className="btn cursor-pointer">Sign out</button>
               <button onClick={toggleHomeMenu} className="block lg:hidden cursor-pointer">
                 <IoMenu size={24}/>
               </button>
             </div>
           </div>
         </div>
-        <HomeMenu isOpen={isOpen} onClose={toggleHomeMenu} isLister={isLister} username={username}/>
+        <HomeMenu isOpen={isOpen} onClose={toggleHomeMenu} isLister={isLister} username={username} sessionStatus={sessionStatus}/>
         {/* <SearchMenu setFilters={setFilters} isOpen={isSidebarOpen} onClose={toggleSidebar} /> */}
       </header>
     );

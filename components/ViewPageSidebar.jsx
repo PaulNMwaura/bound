@@ -6,7 +6,7 @@ import Image from "next/image";
 import { FaSignOutAlt, FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn  } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 
-export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
+export const ViewPageSidebar = ({isLister, username, isOpen, onClose, sessionStatus }) => {
     return (
         <>
             {/* Sidebar Modal */}
@@ -44,13 +44,27 @@ export const ViewPageSidebar = ({isLister, username, isOpen, onClose }) => {
                                 Settings
                             </a>
                         </li>
-                        <li>
-                            {isLister && (
+                        {isLister && (
+                            <li>
                                 <a href={`/dashboard/${username}`} className="hover:underline">
                                     Dashboard
                                 </a>
-                            )}
-                        </li>
+                            </li>
+                        )}
+                        {sessionStatus == "unauthenticated" && (
+                            <ul className="space-y-4">
+                                <li>
+                                    <a href={"/login"} className="hover:underline">
+                                        Login
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href={"/register"} className="hover:underline">
+                                        Sign Up
+                                    </a>
+                                </li>
+                            </ul>
+                        )}
                     </ul>
                     <div onClick={() => signOut()} className="mt-auto flex flex-row gap-2 cursor-pointer">
                         <FaSignOutAlt size={24} />

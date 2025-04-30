@@ -2,7 +2,7 @@
 import { Header } from "@/sections/applyListerPage/Header";
 import { Hero } from "@/sections/applyListerPage/Hero";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 async function checkIfLister(id) {
@@ -44,6 +44,7 @@ export default function RegisterLister() {
 
     if (status === "loading" || isLister != false && isLister != null)
         return <div className="heads-up">Loading...</div>;
+    if (status == "unauthenticated") redirect("/login");
 
     return (
         <div className="flex flex-col items-center bg-[#D9D9D9] pb-20">

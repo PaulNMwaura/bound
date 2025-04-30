@@ -12,7 +12,7 @@ export const Hero = ({session}) => {
                         <Link href={session?.user?.hasAccess ? "/applyLister" : "/payment"} className="btn outline-1">Create A Lister's Account</Link>
                     </div>
                     <div className="flex flex-col text-center">
-                        <Link href={"browse"} className="btn btn-primary-alt">Find A Lister</Link>
+                        <Link href={"/"} className="btn btn-primary-alt">Find A Lister</Link>
                     </div>
                 </div>
             </div>

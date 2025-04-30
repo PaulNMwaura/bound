@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSession, getSession } from "next-auth/react";
 import { Sidenav } from "@/sections/settingsPage/Sidenav";
 import { Hero } from "@/sections/settingsPage/Hero";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 
 async function checkIfLister(id) {
     const res = await fetch(`/api/listers/findByUserId?id=${id}`);
@@ -47,6 +47,8 @@ export default function Settings () {
     }, [lister]);
 
     if (!session || status == "loading" || lister == null) return <div className="heads-up">Loading...</div>;
+    if(status == "unauthenticated") redirect("/login");
+    
 
     return (
         <>

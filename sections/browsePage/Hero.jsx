@@ -27,7 +27,7 @@ const getListers = async ({ city = "", state = "", service = "", page = 1, limit
     }
 };
 
-export const Hero = () => {
+export const Hero = ({session}) => {
     const searchParams = useSearchParams();
     const [filters, setFilters] = useState({
         city: searchParams.get("city") || "",
@@ -42,7 +42,6 @@ export const Hero = () => {
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { data: session } = useSession();
     const router = useRouter();
 
     useEffect(() => {
@@ -89,7 +88,10 @@ export const Hero = () => {
         checkIfIsLister();
     }, [id]);
 
-    if (!session || loading && page === 1) return <div className="heads-up">Loading...</div>;
+    let sessionStatus = "";
+
+    if(!session) sessionStatus = "unauthenticated";
+    if (loading && page === 1) return <div className="heads-up">Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -98,11 +100,15 @@ export const Hero = () => {
           username={username}
           isLister={isLister}
           setFilters={setFilters}
+          session={session}
+          sessionStatus={sessionStatus}
         />
         <div>
           <section className="pt-5 pb-10">
             <div className="container pb-10 flex flex-col items-center bg-white text-black min-h-screen rounded-xl">
-              <Information setFilters={setFilters} />
+              {session && (
+                <Information setFilters={setFilters} session={session}/>
+              )}
               <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
                 <div className="pl-3 w-[50%] md:w-[30%]">
                   <ListersFound count={totalListers} />
@@ -188,7 +194,7 @@ export const Hero = () => {
                             View {lister.firstname}'s page
                           </Link>
                         </button>
-                        {lister.userId !== session.user.id && (
+                        {lister.userId !== session?.user?.id && (
                           <button
                             className="btn"
                             onClick={() =>
