@@ -21,9 +21,9 @@ export const Header = ({ }) => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
     <>
-      <section>
-        <div className="px-4">
-            <div className="py-1 flex justify-between items-center">
+      <section className="container min-w-[95%]">
+        <div className="p-4">
+            <div className="flex justify-between items-center">
                 <div>
                     <Image src={LogoWhite} alt="Logo" width={20} height={20} className="hidden dark:block"/>
                     <Image src={LogoBlack} alt="Logo" width={20} height={20} className="block dark:hidden"/>

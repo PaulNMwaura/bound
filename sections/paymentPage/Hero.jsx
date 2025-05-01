@@ -9,7 +9,7 @@ export const Hero = ({session}) => {
                         <h2 className="text-xl section-title">
                             Become a Lister and Grow Your Business <br />
                         </h2>
-                        <p className="text-lg text-orange-500">What is a lister?</p>
+                        {/* <p className="text-lg text-orange-500">What is a lister?</p> */}
                     </div>
                     <h3 className="mt-4 text-justify">
                     Joining our platform as a lister allows you to establish your own dedicated space online to promote, manage, and grow your services. 
