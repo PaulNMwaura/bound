@@ -27,7 +27,7 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username, sessionStatus })
                 <div className="p-4 tracking-tight">
                     <ul className="space-y-4">
                         <li>
-                            <a href="/browse" className="hover:underline">
+                            <a href="/" className="hover:underline">
                                 Find A Lister
                             </a>
                         </li>
