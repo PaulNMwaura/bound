@@ -88,6 +88,7 @@ export default function listerPage ({params}) {
   if (!thisLister) return <div className="heads-up">This lister does not exist</div>;
   
   const isLister = session?.user?.id === thisLister.userId;
+  // console.log("Viewing Lister: ", thisLister);
 
   return (
     <div className="bg-[#D9D9D9] flex flex-col items-center pb-10">

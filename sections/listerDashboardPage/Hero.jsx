@@ -5,15 +5,23 @@ import { useRouter } from 'next/navigation';
 import { useState } from "react";
 
 export const Hero = ({appointments, listerId, session}) => {
-    const [updatedAppointments, setUpdatedAppointments] = useState(appointments);
+    const [specialNote, setSpecialNote] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
 
     const router = useRouter();
+
+    const openDeclineModal = (appointment) => {
+        setSelectedAppointment(appointment);
+        setShowModal(true);
+    };
+
     const handleAction = async (appointmentId, date, time, status, firstname, lastname, email, specialNote) => {
         const formattedDate = new Date(date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
         const response = await fetch(`/api/appointments/${listerId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({appointmentId, date, formattedDate, time, status, firstname, lastname, email, specialNote }),
+        body: JSON.stringify({ appointmentId, date, formattedDate, time, status, firstname, lastname, email, specialNote }),
         });
 
         if (!response.ok) {
@@ -67,13 +75,31 @@ export const Hero = ({appointments, listerId, session}) => {
                                 <div className="flex justify-between">
                                     {/* handleAction paramaters is not correct */}
                                     <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "accepted", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs bg-green-500">Accept</button>
-                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "declined", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs bg-red-500">Decline</button>
+                                    <button onClick={() => openDeclineModal(appointment)} className="btn btn-primary text-xs bg-red-500">Decline</button>
                                 </div>
                             </li>
                         </div>
                     ))}
                 </ul>
             </div>
+            {/* Modal */}
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/25 z-50">
+                    <div className="bg-white rounded-md p-6 w-full max-w-md">
+                        <h2 className="text-lg font-semibold mb-4">Add a note for declining</h2>
+                        <textarea
+                        className="w-full h-24 p-2 border border-gray-300 rounded-md"
+                        placeholder="Optional special note..."
+                        value={specialNote}
+                        onChange={(e) => setSpecialNote(e.target.value)}
+                        ></textarea>
+                        <div className="flex justify-end gap-3 mt-4">
+                            <button onClick={() => setShowModal(false)} className="bg-gray-300 px-4 py-2 rounded-md">Cancel</button>
+                            <button onClick={() => handleAction(selectedAppointment._id, selectedAppointment.date, selectedAppointment.time, "declined", selectedAppointment.firstname, selectedAppointment.lastname, selectedAppointment.email, specialNote)} className="bg-red-500 text-white px-4 py-2 rounded-md">Confirm Decline</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

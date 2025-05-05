@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname, email, sessionStatus}) => {
+export const Selections = ({selectedServices, selectedDate, selectedTime, handleAppointmentRequest, id, firstname, lastname, email, sessionStatus, listerEmail, listerName, listerUsername}) => {
     return (
         <section className="hidden md:block md:mt-10 lg:mt-0 md:min-w-full lg:min-w-[150px]">
             <div className="container bg-[#F3F3F3] rounded-xl pt-5 pb-10 px-4">
@@ -52,7 +52,7 @@ export const Selections = ({selectedServices, selectedDate, selectedTime, handle
                 <div className="flex mt-10 justify-center">
                     {sessionStatus == "authenticated" ? (
                         <button 
-                        onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices)} 
+                        onClick={() => handleAppointmentRequest(id, firstname, lastname, email, selectedDate, selectedTime, selectedServices, listerEmail, listerName, listerUsername)} 
                         className="btn btn-primary text-xs">
                             Request An Appointment
                         </button>

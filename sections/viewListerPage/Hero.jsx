@@ -69,20 +69,20 @@ export const Hero = ({ thisLister, session, sessionStatus}) => {
                     <IoMdMail size={22}/>
                     <button onClick={() => redirect(`/messages?id=${thisLister.userId}`)} className="btn hover:cursor-pointer">Message</button>
                   </div>
-                  {sessionStatus == "authenticated" && (
-                    <div>
-                      <div className="flex -space-x-2 items-center">
-                        <BiSolidCommentEdit size={22} />
-                        <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
-                        Review
-                        </button>
-                      </div>
-                      <div className="flex -space-x-2 items-center">
-                        <RiAlertFill size={22} />
-                        <button className="btn" onClick={() => setShowReportForm(true)}>Report</button>
-                      </div>
+                  {sessionStatus == "authenticated" ? (
+                    <div className="flex -space-x-2 items-center">
+                      <BiSolidCommentEdit size={22} />
+                      <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
+                      Review
+                      </button>
                     </div>
-                  )}
+                  ):""}
+                  {sessionStatus == "authenticated" ? (
+                    <div className="flex -space-x-2 items-center">
+                      <RiAlertFill size={22} />
+                      <button className="btn" onClick={() => setShowReportForm(true)}>Report</button>
+                    </div>
+                  ):""}
                 </div>
                 )}
               </div>

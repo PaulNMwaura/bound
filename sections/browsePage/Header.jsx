@@ -64,7 +64,7 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
             </div>
             <div className="flex items-center">
               {isLister ? (
-                <div className="hidden lg:flex">
+                <div className="hidden lg:flex items-center">
                   <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
                 </div>
@@ -74,7 +74,7 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
                 </div>
               )}
               {session ? (
-                <div className="hidden lg:flex">
+                <div className="hidden lg:flex items-center">
                   <div className="hidden lg:block">
                     <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Messages</button>
                   </div>
@@ -84,7 +84,7 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
                   <button onClick={() => signOut({ callbackUrl: "/" })} className="btn cursor-pointer">Sign out</button>
                 </div>
               ):(
-                <div className="hidden lg:flex">
+                <div className="hidden lg:flex items-center">
                   <button onClick={() => redirect("/login")} className="btn cursor-pointer">Login</button>
                   <button onClick={() => redirect("/register")} className="btn btn-primary cursor-pointer">Sign Up</button>
                 </div>

@@ -42,7 +42,7 @@ export async function PUT(request, { params }) {
     if (status === "accepted") {
       await Appointment.findByIdAndUpdate(
         appointmentId,
-        { $set: { status, specialNote } }, // Add specialNote or other fields if needed
+        { $set: { status} }, // Add specialNote or other fields if needed
         { new: true }
       );
     }
