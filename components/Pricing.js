@@ -57,7 +57,7 @@ const Pricing = ({session}) => {
                                         name: 'Listing features access',
                                         subcategories: [
                                             'Appointment Management',
-                                            'Create posts',
+                                            'Create gallery',
                                             'Put your service/s on display',
                                         ]
                                         },

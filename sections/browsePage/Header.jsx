@@ -63,14 +63,10 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
               </form>
             </div>
             <div className="flex items-center">
-              {isLister ? (
+              {isLister && (
                 <div className="hidden lg:flex items-center">
                   <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
-                </div>
-              ):(
-                <div className="hidden lg:block">
-                  <button onClick={() => router.replace(`/home`)} className="btn cursor-pointer">Home</button>
                 </div>
               )}
               {session ? (
