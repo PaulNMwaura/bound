@@ -13,6 +13,7 @@ export default function Calendar({ appointments, listerId }) {
   const [selectedDay, setSelectedDay] = useState(null);
   const router = useRouter();
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   useEffect(() => {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();

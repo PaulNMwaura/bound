@@ -32,7 +32,6 @@ export async function PUT(request, { params }) {
     firstname,
     lastname,
     email,
-    specialNote
   } = await request.json();
 
   try {
@@ -69,9 +68,8 @@ export async function PUT(request, { params }) {
           businessName: "EIT",
         },
       });
-      console.log("Email sent successfully");
     } catch (emailError) {
-      console.error("Email failed:", emailError);
+      throw new Error("Email failed:", emailError);
     }
 
     return NextResponse.json({ message: "Appointment updated." }, { status: 200 });
