@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 // Stripe Plans >> fill in your own priceId & link
 export const plans = [
     {
-        link: process.env.NODE_ENV === 'development' ? 'https://buy.stripe.com/00gdSk5xHgad5uo9AA' : '',
-        priceId: process.env.NODE_ENV === 'development' ? 'prod_SDOSGElsmTnXkd' : '',
+        link: process.env.NODE_ENV === 'development' ? '' : 'https://buy.stripe.com/00gdSk5xHgad5uo9AA',
+        priceId: process.env.NODE_ENV === 'development' ? '' : 'prod_SDOSGElsmTnXkd',
         price: 49.99,
         duration: 'Lifetime'
     },
