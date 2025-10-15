@@ -99,7 +99,10 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
   return (
     <section>
       <div className="pt-10 pb-20">
-        <div className="container flex flex-col gap">
+        <div className="flex flex-col gap-5 justify-center items-center">
+          <div className="section-title text-xs md:text-md xl:text-2xl">
+            {thisLister.firstname}&apos;s Work
+          </div>
 
           <div className="relative w-fit">
             <div
@@ -113,7 +116,9 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                   handleSwipe(delta < 0 ? "left" : "right");
               }}
             >
-              {currentPosts.length > 0 && (
+              {currentPosts.length === 0 ? (
+                <p className="text-gray-500">No posts yet.</p>
+              ) : (
                 currentPosts.map(({ url }, index) => (
                   <div
                     key={index}

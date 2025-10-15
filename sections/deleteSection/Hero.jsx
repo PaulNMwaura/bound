@@ -73,7 +73,7 @@ export const Hero = ({ thisLister, session, sessionStatus}) => {
                     <div className="flex -space-x-2 items-center">
                       <BiSolidCommentEdit size={22} />
                       <button className="btn hover:cursor-pointer" onClick={() => setShowReviewForm(true)}>
-                      Reviews
+                      Review
                       </button>
                     </div>
                   ):""}

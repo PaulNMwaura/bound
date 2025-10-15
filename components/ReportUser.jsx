@@ -47,8 +47,8 @@ export default function ReportUser({setShowReportForm, reportedUser, reportedUse
     }
 
     return (
-      <div className="fixed inset-0 bg-black/20 flex justify-center items-center z-50 text-black">
-        <div className="bg-white rounded-xl p-6 w-11/12 md:w-[600px] shadow-xl">
+      <div className="fixed inset-0 backdrop-blur-md flex items-center justify-center text-black z-10">
+        <div className="bg-white shadow-[0_35px_35px_rgba(0,0,0,0.25)] rounded-sm p-6 w-11/12 md:w-[600px]">
           <h3 className="text-lg font-semibold mb-3">Report User</h3>
 
           <label className="block mb-2 font-semibold">Reason</label>

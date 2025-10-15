@@ -48,6 +48,8 @@ export default function Payment() {
         redirect("/login");
     else if(status == "loading")
         return <div className="heads-up">Loading...</div>;
+    else if (session?.user?.hasAccess === true)
+        redirect("/applyLister");
 
     return (
         <>

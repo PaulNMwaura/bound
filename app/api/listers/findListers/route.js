@@ -33,17 +33,17 @@ export async function GET(req) {
         const totalPages = Math.ceil(totalCount / limit);
 
         // For each lister, calculate average rating
-        const listersWithRatings = await Promise.all(
-            listers.map(async (lister) => {
-                const reviews = await Review.find({ listerId: lister._id });
-                const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / (reviews.length || 1);
-                return {
-                    ...lister.toObject(),
-                    rating: parseFloat(averageRating.toFixed(0)),
-                };
-            })
-        );
-        
+        // const listersWithRatings = await Promise.all(
+        //     listers.map(async (lister) => {
+        //         const reviews = await Review.find({ listerId: lister._id });
+        //         const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / (reviews.length || 1);
+        //         return {
+        //             ...lister.toObject(),
+        //             rating: parseFloat(averageRating.toFixed(0)),
+        //         };
+        //     })
+        // );
+        return NextResponse.json({ listers, totalPages, totalCount });
         return NextResponse.json({ listers: listersWithRatings, totalPages, totalCount });
     } catch (error) {
         return NextResponse.json({ error: "Server error" }, { status: 500 });

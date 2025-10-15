@@ -65,7 +65,7 @@ export const SearchMenu= ({setFilters, isOpen, onClose }) => {
                                 </div>
                             )}
                             <div className="flex justify-between">
-                                <button onClick={() => signOut()} className="w-32 btn">Sign out</button>
+                                <button type="button" onClick={() => signOut()} className="w-32 btn">Sign out</button>
                                 <div className="w-full flex justify-end">
                                     <button type="reset" className="btn" onClick={() => {
                                         setFormData({ city: "", state: "", service: "" });
