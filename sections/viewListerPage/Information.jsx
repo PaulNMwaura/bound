@@ -54,7 +54,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
   };
 
   return (
-    <section className="container text-xs sm:text-[16px] text-black rounded-lg shadow-sm">
+    <section className="container text-sm sm:text-[16px] text-black rounded-lg shadow-sm">
       <div className="flex flex-wrap gap-1">
         <strong className="p-2">Services: </strong>
           {thisLister.services.map((service, index) => (

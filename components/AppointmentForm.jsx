@@ -63,9 +63,9 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
         onSubmit={(e) => handleAppointmentRequest(
           e,
           lister._id, 
-          formData.firstname,
-          formData.lastname,
-          formData.email,
+          session.user.firstname,
+          session.user.lastname,
+          session.user.email,
           formData.date,
           formData.time,
           formData.services,
@@ -79,48 +79,9 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
           Fill this form in to request your appointment with {lister.firstname}
         </strong>
 
-        {/* First Name */}
-        <div className="flex flex-col space-y-2">
-          <label className="font-medium">First Name</label>
-          <input
-            type="text"
-            name="firstname"
-            className="border border-black/25 p-2 w-[300px] text-xs"
-            value={formData.firstname}
-            onChange={onChange}
-            required
-          />
-        </div>
-
-        {/* Last Name */}
-        <div className="flex flex-col space-y-2">
-          <label className="font-medium">Last Name</label>
-          <input
-            type="text"
-            name="lastname"
-            className="border border-black/25 p-2 w-[300px] text-xs"
-            value={formData.lastname}
-            onChange={onChange}
-            required
-          />
-        </div>
-
-        {/* Email */}
-        <div className="flex flex-col space-y-2">
-          <label className="font-medium">Email</label>
-          <input
-            type="text"
-            name="email"
-            className="border border-black/25 p-2 w-[300px] text-xs"
-            value={formData.email}
-            onChange={onChange}
-            required
-          />
-        </div>
-
         {/* Services */}
         <div className="flex flex-col space-y-2">
-          <label className="font-medium">Select Service(s)</label>
+          <label className="font-medium">What service/s are you looking for</label>
           <select
             name="services"
             multiple

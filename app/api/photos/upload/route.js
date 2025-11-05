@@ -5,14 +5,14 @@ import Photo from "@/models/photo";
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { listerId, photo } = body;
+    const { listerId, photo, service } = body;
 
-    if (!listerId || !photo) {
+    if (!listerId || !photo || !service) {
       return NextResponse.json({ message: "Missing required fields." }, { status: 400 });
     }
 
     await connectMongoDB();
-    await Photo.create({ listerId, photo });
+    await Photo.create({ listerId, photo, service });
 
     return NextResponse.json({ message: "Image uploaded successfully." }, { status: 201 });
   } catch (error) {

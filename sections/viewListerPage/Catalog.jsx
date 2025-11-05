@@ -167,7 +167,11 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
         <div
           className={`relative flex flex-col items-center justify-center left-1/2 transform -translate-x-1/2`}
         >
-          <button
+          <button className="btn btn-primary text-xs md:text-[16px]">
+            Upload Image
+            {/* onClick, this should open a pop up form for image upload, and service assignement for that image */}
+          </button>
+          {/* <button
             onClick={() => fileInputRef.current.click()}
             className="w-32 text-xs md:w-48 bg-black text-white px-4 py-2 md:text-sm rounded hover:bg-blue-500 transition"
             disabled={uploading}
@@ -180,10 +184,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
             ref={fileInputRef}
             onChange={handleFileChange}
             className="hidden"
-          />
-          <p className="pt-2 text-xs font-semibold opacity-70 text-black text-center">
-            We recommend 9/16 (portrait) aspect ratio :)
-          </p>
+          /> */}
         </div>
       )}
     </section>
