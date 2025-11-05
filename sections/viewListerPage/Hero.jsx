@@ -63,7 +63,7 @@ export const Hero = ({ thisLister, session, sessionStatus}) => {
                 </div>
 
                 {/* Message and reviews buttons*/}
-                {!isLister && (
+                {!isLister ? (
                 <div className="mt-4 w-full flex justify-between text-xs md:text-lg">
                   <div className="flex -space-x-2 items-center">
                     <IoMdMail size={22}/>
@@ -84,6 +84,15 @@ export const Hero = ({ thisLister, session, sessionStatus}) => {
                     </div>
                   ):""}
                 </div>
+                ):(
+                  <div className="mt-4 w-full md:w-[500px] flex justify-center md:justify-start text-xs md:text-lg gap-2">
+                    <a href={`/dashboard/${thisLister.username}`} className="w-full text-black hover:text-white bg-black/5 p-1 font-medium rounded-lg text-sm text-center dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">
+                      Dashboard
+                    </a>
+                    <a href={"/settings"} className="w-full text-black hover:text-white bg-black/5 p-1 font-medium rounded-lg text-sm text-center dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">
+                      Edit Profile
+                    </a>
+                  </div>
                 )}
               </div>
             </div>

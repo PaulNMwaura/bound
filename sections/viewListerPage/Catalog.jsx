@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
@@ -9,6 +10,8 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [currentTab, setCurrentTab ] = useState(null);
+  const searchParams = useSearchParams();
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
   const photosPerPage = isMobile ? 1 : 3;
@@ -18,6 +21,12 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
     currentPage * photosPerPage,
     currentPage * photosPerPage + photosPerPage
   );
+
+  const filteredPosts = posts.filter((post) => {
+    if (!currentTab || currentTab === "All") 
+      return true; // show all
+    return post.service === currentTab; // show only matching service
+  });
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -86,6 +95,13 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
       console.error("Error deleting post:", err);
     }
   };
+
+  useEffect(() => {
+    let tab = searchParams.get("tab");
+    if(tab == null)
+      tab = "All"
+    setCurrentTab(tab);
+  }, [searchParams]);
   
 
   const handleSwipe = (direction) => {
@@ -98,111 +114,78 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
 
   return (
     <section>
-      <div className="pt-10 pb-20">
-        <div className="container flex flex-col gap">
-
-          <div className="relative w-fit">
-            <div
-              className="pt-10 pb-20 flex flex-wrap justify-center items-center gap-3 px-10 min-w-[300px] min-h-[400px]"
-              onTouchStart={(e) =>
-                (window.touchStartX = e.changedTouches[0].clientX)
-              }
-              onTouchEnd={(e) => {
-                const delta = e.changedTouches[0].clientX - window.touchStartX;
-                if (Math.abs(delta) > 50)
-                  handleSwipe(delta < 0 ? "left" : "right");
-              }}
-            >
-              {currentPosts.length > 0 && (
-                currentPosts.map(({ url }, index) => (
-                  <div
-                    key={index}
-                    className="relative group w-full md:w-[360px] aspect-[9/16] rounded-lg flex items-center justify-center"
-                  >
-                    <Image
-                      src={url}
-                      alt="a lister's post"
-                      width={1080}
-                      height={1920}
-                      className="max-w-full max-h-full object-contain"
-                    />
-
-                    {isLister && (
-                      <button
-                        onClick={() => handleDeletePost(url)}
-                        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
-                      >
-                        <MdDelete size={20} />
-                      </button>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-
-            {/* Upload Button */}
-            {isLister && (
+      <div className="mt-2 pb-5">
+        <div
+          className="container mx-auto"
+          style={{
+            columnCount: typeof window !== "undefined" && window.innerWidth < 1024 ? 3 : 5,
+            columnGap: "0.2rem",
+          }}
+        >
+          {filteredPosts.length > 0 &&
+            filteredPosts.map(({ url }, index) => (
               <div
-                className={`relative pt-3 flex flex-col items-center justify-center${
-                  totalPages == 1 ? "bottom-4" : "bottom-15"
-                } left-1/2 transform -translate-x-1/2`}
+                key={index}
+                style={{
+                  breakInside: "avoid",
+                  marginBottom: "1rem",
+                  borderRadius: "0.5rem",
+                  position: "relative",
+                  overflow: "hidden",
+                  width: "100%", // fill the column width
+                }}
               >
-                <button
-                  onClick={() => fileInputRef.current.click()}
-                  className="w-48 bg-black text-white px-4 py-2 text-sm rounded hover:bg-gray-800 transition"
-                  disabled={uploading}
+                
+                <div
+                  key={index}
+                  className="relative w-full break-inside-avoid mb-0 rounded-lg group"
                 >
-                  {uploading ? "Uploading..." : "Upload Image"}
-                </button>
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-                <p className="pt-2 text-xs font-semibold opacity-70 text-black text-center">We recommend 9/16 (potrait) aspect ratio :)</p>
+                  <Image
+                    src={url}
+                    alt="a lister's post"
+                    width={360}
+                    height={640}
+                    className="w-full h-auto object-contain rounded-lg"
+                  />
+                  {/* Move to Hero section? */}
+                  {isLister && (
+                    <button
+                      onClick={() => handleDeletePost(url)}
+                      className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-full opacity-60 md:opacity-0 md:group-hover:opacity-100 transition"
+                    >
+                      <MdDelete size={typeof window !== "undefined" && window.innerWidth < 1024 ? 10 : 20} />
+                    </button>
+                  )}
+                </div>
               </div>
-            )}
-
-            {/* Pagination Controls */}
-            {!isMobile && totalPages > 1 && (
-              <div className="flex justify-center gap-4 mt-4">
-                <button
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
-                  disabled={currentPage === 0}
-                  className="text-sm bg-black px-3 py-1 rounded disabled:opacity-50"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
-                  }
-                  disabled={currentPage >= totalPages - 1}
-                  className="text-sm bg-black px-3 py-1 rounded disabled:opacity-50"
-                >
-                  Next
-                </button>
-              </div>
-            )}
-
-            {isMobile && totalPages > 1 && (
-              <div className="text-black flex justify-center items-center gap-2 mt-4">
-                <BiSolidLeftArrow
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
-                  }
-                />
-                View more
-                <BiSolidRightArrow
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
-                />
-              </div>
-            )}
-          </div>
+            ))}
         </div>
+
+        {/* Upload Button */}
       </div>
+      {isLister && (
+        <div
+          className={`relative flex flex-col items-center justify-center left-1/2 transform -translate-x-1/2`}
+        >
+          <button
+            onClick={() => fileInputRef.current.click()}
+            className="w-32 text-xs md:w-48 bg-black text-white px-4 py-2 md:text-sm rounded hover:bg-blue-500 transition"
+            disabled={uploading}
+          >
+            {uploading ? "Uploading..." : "Upload Image"}
+          </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <p className="pt-2 text-xs font-semibold opacity-70 text-black text-center">
+            We recommend 9/16 (portrait) aspect ratio :)
+          </p>
+        </div>
+      )}
     </section>
   );
 };

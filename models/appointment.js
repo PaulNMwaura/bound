@@ -8,7 +8,8 @@ const AppointmentSchema = new mongoose.Schema({
   date: {type: String, required: true},
   time: {type: String, required: true},
   listerId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  status: {type: String , default: "pending"},
+  status: {type: String, default: "pending"},
+  specialNote: {type: String, required: false},
   createdAt: { type: Date, default: Date.now },
 });
 

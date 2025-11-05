@@ -23,7 +23,7 @@ export const Header = ({ id, thisLister, sessionStatus}) => {
       <section>
         <div className="container text-black md:w-[90%] md:bg-white md:rounded-b-xl">
             <div className="py-1 flex justify-between md:justify-end items-center">
-              <a className="block md:hidden font-light section-title">@{thisLister.username}</a>
+              <a className="block md:hidden font-bold">{thisLister.username}</a>
               <div className="flex items-center">
                 <div className="hidden lg:flex flex-row items-center">
                   <a href="/home" className="btn">Home</a>
@@ -31,10 +31,6 @@ export const Header = ({ id, thisLister, sessionStatus}) => {
                   {sessionStatus == "authenticated" ? (
                     <div>
                       <a href="/messages" className="btn">Messages</a>
-                      <a href="/settings" className="btn">Settings</a>
-                      {isLister && (
-                        <button onClick={() => router.replace(`/dashboard/${thisLister.username}`)} className="btn cursor-pointer">Dashboard</button>
-                      )}
                       <button onClick={() => signOut({callbackUrl:"/"})} className="btn cursor-pointer">Sign out</button>
                     </div>
                   ):(

@@ -1,8 +1,6 @@
 "use client";
 import { IoCalendar } from "react-icons/io5";
 import { IoMdClock } from "react-icons/io";
-import { useRouter } from 'next/navigation';
-import { useState } from "react";
 
 export const Hero = ({appointments, listerId, session}) => {
 
@@ -24,7 +22,7 @@ export const Hero = ({appointments, listerId, session}) => {
 
     return (
         <div className="container max-w-full mt-4 pb-20">
-            <h1 className="section-title text-center text-xl py-5">Manage Appointments</h1>
+            <h1 className="text-center font-bold text-xl py-5">Manage Appointments</h1>
             <div className="h-[500px] overflow-y-scroll">                    
                 <ul className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
                     {appointments
@@ -39,8 +37,8 @@ export const Hero = ({appointments, listerId, session}) => {
                                 </div>
                                 <div className="py-1">
                                     <strong>Requesting</strong>
-                                    {appointment.services.map((service) => (
-                                        <p key={appointment._id}>
+                                    {appointment.services.map((service, jndex) => (
+                                        <p key={jndex}>
                                             {service}
                                         </p>
                                     ))}
@@ -61,11 +59,9 @@ export const Hero = ({appointments, listerId, session}) => {
                                         <p>{appointment.time}</p>
                                     </div>
                                 </div>
-                                {/* <p>Request: {appointment.status} (ONLY SHOWING THIS FOR TESTING PURPOSES)</p> */}
                                 <div className="flex justify-between">
-                                    {/* handleAction paramaters is not correct */}
-                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "accepted", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs bg-green-500">Accept</button>
-                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "declined", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs bg-red-500">Decline</button>
+                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "declined", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs">Decline</button>
+                                    <button onClick={() => handleAction(appointment._id, appointment.date, appointment.time, "accepted", appointment.firstname, appointment.lastname, appointment.email)} className="btn btn-primary text-xs">Accept</button>
                                 </div>
                             </li>
                         </div>

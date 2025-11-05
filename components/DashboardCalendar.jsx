@@ -116,7 +116,7 @@ export default function Calendar({ appointments, listerId }) {
               <div key={day} className="relative">
                 <div
                   className={`relative h-12 md:h-16 lg:h-20 border rounded-lg flex items-start p-2 text-xs md:text-sm cursor-pointer
-                    ${isPastDay ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-white text-gray-700 border-gray-300"}
+                    ${isPastDay ? "bg-gray-100 text-gray-500 cursor-not-allowed" : "bg-white text-gray-700 border-gray-300"}
                     ${acceptedAppointments[day] ? "border-blue-400" : ""}
                     ${selectedDay === day ? "bg-blue-300" : ""}`}
                   onClick={() => !isPastDay && setSelectedDay(day)}
@@ -145,20 +145,21 @@ export default function Calendar({ appointments, listerId }) {
             const isPastAppointment = apptDate < today;
 
             return (
-              <div key={index} className="mb-4 p-3 border rounded-md bg-gray-50">
+              <div key={index} className="mb-4 p-3 rounded-md bg-gray-100 inset-shadow-sm">
                 <p className="font-bold">{appointment.firstname} {appointment.lastname}</p>
                 <p>Time: {appointment.time}</p>
                 <div className="flex gap-1">
                   <p>Requesting: </p>
-                  {appointment.services.map((service) => (
-                    <p key={appointment._id}>
+                  {appointment.services.map((service, index) => (
+                    <p key={index}>
                         {service}
                     </p>
                   ))}
                 </div>
+                <p>Note: {appointment.specialNote}</p>
                 {!isPastAppointment ? (
                   <button
-                    className="mt-1 text-red-600 text-sm hover:underline"
+                    className="mt-1 text-red-600 text-sm cursor-pointer hover:text-red-800"
                     onClick={() => handleAction(appointment._id, appointment.date, appointment.time, appointment.email, "canceled")}
                   >
                     Cancel Appointment
@@ -170,7 +171,7 @@ export default function Calendar({ appointments, listerId }) {
             );
           })
         ) : (
-          <p className="text-gray-500">Click a marked date to view its upcoming appointments.</p>
+          <p className="text-gray-500">Click a date to view your upcoming appointments.</p>
         )}
       </div>
     </section>

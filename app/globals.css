@@ -62,7 +62,7 @@ body {
 }
 
 .btn-primary {
-  @apply bg-black text-white;
+  @apply bg-black text-white hover:bg-blue-500 hover:text-white cursor-pointer;
 }
 
 .btn-primary-opp {
