@@ -9,7 +9,8 @@ import { AppointmentForm } from "@/components/AppointmentForm";
 import { Reviews } from "@/sections/viewListerPage/Reviews";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useSearchParams, useRouter, redirect } from "next/navigation";
+import { usePathname, useSearchParams, useRouter, redirect } from "next/navigation";
+import { useMemo } from "react";
 import { notFound } from 'next/navigation';
 
 const RESERVED_ROUTES = ['applyLister', 'messages', 'dashboard'];
@@ -54,6 +55,10 @@ export default function listerPage ({params}) {
     }
   };
 
+  const [currentUrl, setCurrentUrl] = useState("")
+    useEffect(() => {
+      setCurrentUrl(window.location.href)
+  }, [])
 
   // Fetch photos for this lister when the component mounts
   useEffect(() => {
@@ -151,11 +156,11 @@ export default function listerPage ({params}) {
       </div>
       <div className="w-full pb-20">
         <Hero id={thisLister._id} thisLister={thisLister} session={session} sessionStatus={status}/>
-        <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} sessionStatus={status}/>
+        <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} sessionStatus={status} posts={posts} setPosts={setPosts}/>
         <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
         {/* <Reviews reviews={reviews}/> */}
       </div>
-      <button className={formOpen ? `hidden`:`z-10 fixed bottom-10 right-8 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]`} onClick={()=>{session ? openPopup("appointment") : redirect("/login")}}>
+      <button className={formOpen ? `hidden`:`z-10 fixed bottom-10 right-8 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]`} onClick={()=>{session ? openPopup("appointment") : redirect(`/login?callbackUrl=${currentUrl}`)}}>
         {session != null ? "Request Appointment":"Login to Request"}
       </button>
       {formOpen && thisLister && (

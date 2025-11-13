@@ -95,7 +95,7 @@ export const Hero = ({session}) => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-      <div className="min-h-screen bg-[#D9D9D9] text-black">
+      <div className="min-h-screen bg-white text-black">
         <Header
           username={username}
           isLister={isLister}

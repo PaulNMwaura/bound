@@ -9,11 +9,14 @@ import { IoMdMail, IoMdStar } from "react-icons/io";
 import { BiSolidCommentEdit } from "react-icons/bi";
 import { RiAlertFill } from "react-icons/ri";
 import { redirect } from "next/navigation";
+import { UploadImage } from "@/components/UploadImage";
 
-export const Hero = ({ thisLister, session, sessionStatus}) => {
+
+export const Hero = ({ thisLister, session, sessionStatus, posts, setPosts}) => {
   const [error, setError] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [showReportForm, setShowReportForm] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
 
   if (error) {
@@ -85,13 +88,16 @@ export const Hero = ({ thisLister, session, sessionStatus}) => {
                   ):""}
                 </div>
                 ):(
-                  <div className="mt-4 w-full md:w-[500px] flex justify-center md:justify-start text-xs md:text-lg gap-2">
+                  <div className="mt-4 w-full flex justify-between text-xs md:text-lg gap-2">
                     <a href={`/dashboard/${thisLister.username}`} className="w-full text-black hover:text-white bg-black/5 p-1 font-medium rounded-lg text-sm text-center dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">
                       Dashboard
                     </a>
                     <a href={"/settings"} className="w-full text-black hover:text-white bg-black/5 p-1 font-medium rounded-lg text-sm text-center dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">
                       Edit Profile
                     </a>
+                    <button type="button" className="w-full text-black hover:text-white bg-black/5 p-1 font-medium rounded-lg text-sm text-center dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" onClick={() => setShowUploadModal(true)}>
+                      Upload Image
+                    </button>
                   </div>
                 )}
               </div>
@@ -104,6 +110,14 @@ export const Hero = ({ thisLister, session, sessionStatus}) => {
         {showReviewForm && (
           <ReviewLister setShowReviewForm={setShowReviewForm} listerId={thisLister._id} reviewerName={session.user.firstname}/>
         )}
+
+        {/* Upload Modal */}
+        <UploadImage
+          isOpen={showUploadModal}
+          onClose={() => setShowUploadModal(false)}
+          thisLister={thisLister}
+          setPosts={setPosts}
+        />
       </section>
     );
 };

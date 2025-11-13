@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signIn, getSession } from "next-auth/react";
@@ -29,6 +30,8 @@ export default function LoginForm(){
     const [verifyEmailButton, setToggle] = useState(false); 
     const [error, setError] = useState("");
     const [loggingIn, setLoggingIn] = useState(false);
+    const searchParams = useSearchParams();
+    const callBackUrl = searchParams.get("callbackUrl") || "/";
 
     const router = useRouter();
 
@@ -39,7 +42,7 @@ export default function LoginForm(){
 
         try {
             const res = await signIn("credentials", {
-                email, password, redirect:false,
+                email, password, redirect:true, callbackUrl: callBackUrl,
             });
             
             if(!res && !res.ok || res.error) {

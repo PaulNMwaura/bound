@@ -91,7 +91,7 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
             required
           >
             {lister.services.map((service, index) => (
-              <option key={index} value={service.name} className="p-1">
+              <option key={index} value={service.name} className="p-1 text-black">
                 {service.name}
               </option>
             ))}

@@ -49,8 +49,6 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
       router.push(`?tab=${string}`);
     else
       router.push("?", { scroll: false });
-
-    /* 2. Display catalog based on URL Params */
   };
 
   return (
