@@ -32,12 +32,12 @@ export const Sidenav = ({session, isLister}) => {
                                 <button onClick={() => redirect("/")}>browse</button>
                             </li>
                         </div>
-                        <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                        {/* <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
                             <AiOutlineMessage />
                             <li>
                                 <a href={`/messages`}>messages</a>
                             </li>
-                        </div>
+                        </div> */}
                         {isLister && (
                             <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
                                 <IoSettingsOutline />

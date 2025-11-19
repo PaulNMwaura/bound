@@ -74,12 +74,11 @@ export const Hero = () => {
           {status === 'loading' ? 'Sending...' : 'Resend Verification Email'}
         </button>
 
-        {loginPageButton && (
-          <button className="btn btn-primary-alt cursor-pointer" onClick={() => router.replace("/login")}>
-            login
-          </button>
-        )}
-
+        {/* {loginPageButton && (
+        )} */}
+        <button className="w-full btn btn-primary-alt cursor-pointer" onClick={() => router.replace("/login")}>
+          login
+        </button>
         {registerPageButton && (
           <button className="btn btn-primary-alt cursor-pointer" onClick={() => router.replace("/register")}>
             register 

@@ -12,7 +12,6 @@ const UserSchema = new mongoose.Schema({
   profilePicture: { type: String, default: "" },
   priceId: { type: String },
   customerId: { type: String },
-  hasAccess: { type: Boolean, default: false},
   verified: { type: Boolean, default: false },
   emailVerificationToken: { type: String },
   emailVerificationTokenExpiry: { type: Date },

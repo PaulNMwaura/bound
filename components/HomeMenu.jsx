@@ -31,11 +31,11 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username, sessionStatus })
                                 Find A Lister
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <a href="/messages" className="hover:underline">
                                 Messages
                             </a>
-                        </li>
+                        </li> */}
                         {isLister && (
                             <div className="space-y-4">
                                 <li>

@@ -373,11 +373,11 @@ export const Hero = ({session, status}) => {
 
 
                 {/* Calendar Component to Select Unavailable Days */}
-                <div className="mt-4">
+                {/* <div className="mt-4">
                     <h3 className="text-lg font-semibold text-center py-2">Set your availability for this month</h3>
                     <UnavailableDaysCalendar unavailableDays={formData.unavailableDays} onUnavailableDaysChange={handleUnavailableDaysChange} />
                 </div>
-                <h3 className="mt-4 mb-5 text-center font-normal">After registration, you can always make changes to this information in your profile settings accessible through settings</h3>
+                <h3 className="mt-4 mb-5 text-center font-normal">After registration, you can always make changes to this information in your profile settings accessible through settings</h3> */}
                 
                 {/* Submit Button */}
                 <div className="flex flex-col">

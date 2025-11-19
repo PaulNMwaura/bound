@@ -9,7 +9,8 @@ export const Hero = ({session}) => {
                 <strong className="text-xl md:text-3xl tracking-tight">And Let Your Customers Find You</strong>
                 <div className="mt-5 flex flex-row items-center gap-5">
                     <div className="flex flex-col text-center">
-                        <Link href={session?.user?.hasAccess ? "/applyLister" : "/payment"} className="btn outline-1">Create A Lister's Account</Link>
+                        {/* <Link href={session?.user?.hasAccess ? "/applyLister" : "/payment"} className="btn outline-1">Create A Lister's Account</Link> */}
+                        <Link href="/applyLister" className="btn outline-1">Create A Lister's Account</Link>
                     </div>
                     <div className="flex flex-col text-center">
                         <Link href={"/"} className="btn btn-primary-alt">Find A Lister</Link>

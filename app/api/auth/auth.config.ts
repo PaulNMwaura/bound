@@ -40,7 +40,7 @@ const authOptions: AuthOptions = {
             }
         
             console.log("User authenticated successfully");
-            return { id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, profilePicture: user.profilePicture, hasAccess: user.hasAccess};
+            return { id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, profilePicture: user.profilePicture};
           } catch (error) {
             console.log("Error during authentication:", error);
             return null;
@@ -80,9 +80,6 @@ const authOptions: AuthOptions = {
           if (token?.profilePicture) {
             session.user.profilePicture = token.profilePicture as string; // Add user profilePicture to session
           }
-          if(token?.hasAccess) {
-            session.user.hasAccess = token.hasAccess as boolean;
-          }
           return session;
         },
         async jwt({ token, user, trigger, session }) {
@@ -96,7 +93,6 @@ const authOptions: AuthOptions = {
             token.lastname = user.lastname as string;
             token.email = user.email as string;
             token.profilePicture = user.profilePicture as string;
-            token.hasAccess = user.hasAccess as boolean;
           }
           return token;
         },

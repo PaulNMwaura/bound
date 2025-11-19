@@ -5,12 +5,10 @@ import Link from "next/link";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { IoMdStar } from "react-icons/io";
-import { useSession } from "next-auth/react";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Header } from "./Header";
 import { ListersFound} from "@/components/ListersFound";
 import { Information } from "./Information";
-import { BiRightArrowAlt } from "react-icons/bi";
 
 const getListers = async ({ city = "", state = "", service = "", page = 1, limit = 50 }) => {
     try {
@@ -112,11 +110,6 @@ export const Hero = ({session}) => {
               <div className="mt-8 flex justify-between gap-5 md:gap-0 w-full">
                 <div className="pl-3 w-[50%] md:w-[30%]">
                   <ListersFound count={totalListers} />
-                  {/* <p className="pt-2">Become a lister</p>
-                  <div onClick={() => redirect("/payment")} className="flex items-center cursor-pointer">
-                    <p>Learn more</p>
-                    <BiRightArrowAlt/>
-                  </div> */}
                 </div>
                 <div className="font-semibold">
                   {filters.city && filters.state && (
@@ -202,7 +195,7 @@ export const Hero = ({session}) => {
                             View {lister.firstname}'s profile
                           </Link>
                         </button>
-                        {lister.userId !== session?.user?.id && (
+                        {/* {lister.userId !== session?.user?.id && (
                           <button
                             className="btn"
                             onClick={() =>
@@ -211,7 +204,7 @@ export const Hero = ({session}) => {
                           >
                             Message {lister.firstname}
                           </button>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   ))}
@@ -251,6 +244,12 @@ export const Hero = ({session}) => {
             </div>
           </section>
         </div>
+        <button 
+        className="z-10 fixed bottom-10 right-8 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]"
+        onClick={() => redirect("/requests?request=true")}
+        >
+            {session != null ? "Request Service":"Login to Request Service"}
+        </button>
       </div>
     );
 };

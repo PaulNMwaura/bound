@@ -55,11 +55,11 @@ export const Hero = ({ thisLister, session, sessionStatus, posts, setPosts}) => 
                     <a className="font-semibold">
                       {thisLister.firstname} {thisLister.lastname} 
                     </a>
-                    <span className="hidden md:block font-light"> |</span>
-                    <a className="hidden md:block font-light text-black/40">@{thisLister.username}</a>
+                    <span className="font-light"> |</span>
+                    <a className="font-light text-black/40">@{thisLister.username}</a>
                     <a className="font-light">{thisLister.language ? `| ${thisLister.language}` : "| English"}</a>
                   </div>
-                  <a>{thisLister.city}, {thisLister.state}</a>
+                  <a className="hidden md:block">{thisLister.city}, {thisLister.state}</a>
                 </div>
                 <div className="whitespace-pre-line">
                   {thisLister.description}
@@ -83,7 +83,7 @@ export const Hero = ({ thisLister, session, sessionStatus, posts, setPosts}) => 
                   {sessionStatus == "authenticated" ? (
                     <div className="flex -space-x-2 items-center">
                       <RiAlertFill size={22} />
-                      <button className="btn" onClick={() => setShowReportForm(true)}>Report</button>
+                      <button className="btn hover:cursor-pointer" onClick={() => setShowReportForm(true)}>Report</button>
                     </div>
                   ):""}
                 </div>

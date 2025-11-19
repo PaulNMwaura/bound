@@ -47,7 +47,7 @@ export default function RegisterLister() {
     if (status == "unauthenticated") redirect("/login");
 
     return (
-        <div className="flex flex-col items-center bg-[#D9D9D9] pb-20">
+        <div className="flex flex-col items-center bg-white pb-20">
             <Header />
             <Hero session={session} status={status} />
         </div>

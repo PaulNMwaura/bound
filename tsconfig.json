@@ -22,7 +22,7 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/authOptions.js", "app/api/auth/[...nextauth]/authOptions.ts", "app/profile/[username]/page.jsx", "components/ViewPageSidebar.jsx", "app/dashboard/[username]/page.jsx", "components/Calendar.jsx", "app/messages/inbox/[id]/page.jsx", "app/api/ably/auth/route.js", "app/applyLister/page.jsx", "sections/verifyEmailPage/Hero.jsx", "app/messages/page.jsx", "app/api/webhook/stripe/route.js", "sections/paymentPage/Header.jsx", "app/payment/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/authOptions.js", "app/api/auth/[...nextauth]/authOptions.ts", "app/profile/[username]/page.jsx", "components/ViewPageSidebar.jsx", "app/dashboard/[username]/page.jsx", "components/Calendar.jsx", "app/messages/inbox/[id]/page.jsx", "app/api/ably/auth/route.js", "app/applyLister/page.jsx", "sections/verifyEmailPage/Hero.jsx", "app/messages/page.jsx", "app/api/webhook/stripe/route.js", "sections/paymentPage/Header.jsx", "app/payment/page.jsx", "app/Requests/page.jsx"],
   "exclude": ["node_modules"],
   "types": ["next-auth", "./types/next-auth"]
 }

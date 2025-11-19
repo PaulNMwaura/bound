@@ -10,7 +10,6 @@ declare module "next-auth" {
       firstname: string;
       lastname: string;
       profilePicture: string;
-      hasAccess: boolean;
     };
   }
 
@@ -21,7 +20,6 @@ declare module "next-auth" {
     firstname: string;
     lastname: string;
     profilePicture: string;
-    hasAccess: boolean;
   }
 }
 
@@ -33,6 +31,5 @@ declare module "next-auth/jwt" {
     firstname: string;
     lastname: string;
     profilePicture: string;
-    hasAccess: boolean;
   }
 }

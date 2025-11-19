@@ -34,11 +34,11 @@ export const ViewPageSidebar = ({isLister, username, isOpen, onClose, sessionSta
                                 Browse
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <a href="/messages" className="hover:underline">
                                 Messages
                             </a>
-                        </li>
+                        </li> */}
                         <li>
                             <a href="/settings" className="hover:underline">
                                 Settings

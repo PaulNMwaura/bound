@@ -65,15 +65,15 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
             <div className="flex items-center">
               {isLister && (
                 <div className="hidden lg:flex items-center">
-                  <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Profile</button>
+                  <button onClick={() => router.replace(`/profile/${username}`)} className="btn cursor-pointer">Profile</button>
                   <button onClick={() => router.replace(`/dashboard/${username}`)} className="btn cursor-pointer">Dashboard</button>
                 </div>
               )}
               {session ? (
                 <div className="hidden lg:flex items-center">
-                  <div className="hidden lg:block">
+                  {/* <div className="hidden lg:block">
                     <button onClick={() => router.replace(`/messages`)} className="btn cursor-pointer">Messages</button>
-                  </div>
+                  </div> */}
                   <div className="hidden lg:block">
                     <button onClick={() => router.replace(`/settings`)} className="btn cursor-pointer">Settings</button>
                   </div>

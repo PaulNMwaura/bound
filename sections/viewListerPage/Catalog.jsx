@@ -53,7 +53,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
         <div
           className="container mx-auto"
           style={{
-            columnCount: isMobile ? 3 : 5,
+            columnCount: isMobile ? 2 : 4,
             columnGap: "0.2rem",
           }}
         >
@@ -63,7 +63,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                 key={index}
                 style={{
                   breakInside: "avoid",
-                  marginBottom: "1rem",
+                  marginBottom: "0.2rem",
                   borderRadius: "0.5rem",
                   position: "relative",
                   overflow: "hidden",
@@ -76,8 +76,8 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                     alt="a lister's post"
                     width={360}
                     height={640}
-                    className="w-full h-auto object-contain rounded-lg cursor-pointer"
-                    onClick={() => setSelectedImage(url)} // 👈 Opens fullscreen
+                    className="object-contain rounded-lg cursor-pointer"
+                    onClick={() => setSelectedImage(url)}
                   />
 
                   {isLister && (
