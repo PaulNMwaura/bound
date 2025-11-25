@@ -14,12 +14,12 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
   
   if(!session)
     redirect(`/profile/${lister.username}`);
-  
   const today = new Date().toISOString().split("T")[0];
   const [alertOpen, setAlertOpen] = useState(false);
   const [error, setError] = useState(null);
   const handleAppointmentRequest = async (e, listerId, firstname, lastname, email, selectedDate, selectedTime, selectedServices, listerEmail, listerName, listerUsername, specialNote) => {
     e.preventDefault();
+    const formattedTime = formatTimeTo12Hour(selectedTime);
     try {
       const response = await fetch("/api/appointments", {
         method: "POST",
@@ -33,17 +33,18 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
           lastname,
           email,
           date: selectedDate,
-          time: formatTimeTo12Hour(selectedTime),
+          time: formattedTime,
           services: selectedServices,
-          specialNote
+          specialNote,
         }),
       });
 
       const data = await response.json();
       setAlertOpen(true);
       if (response.ok) {
+        setError("Your appointment has been requested.")
       } else {
-        setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment.");
+        setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment.", response.error);
       }
     } catch (error) {
       setAlertOpen(true);

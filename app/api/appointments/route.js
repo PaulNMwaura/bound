@@ -8,7 +8,7 @@ export async function POST(req) {
   try {
     await connectMongoDB();
     const { listerId, listerEmail, listerName, listerUsername, firstname, lastname, email, date, time, services, specialNote } = await req.json();
-    if (!listerId || !listerEmail || !listerName || !listerUsername || !firstname || !lastname || !email || !date || !time || !services) {
+    if (!listerId || !listerEmail || !listerName || !listerUsername || !firstname || !lastname || !email || !date || !time || services.length === 0) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
 

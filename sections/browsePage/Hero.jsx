@@ -245,7 +245,7 @@ export const Hero = ({session}) => {
           </section>
         </div>
         <button 
-        className="z-10 fixed bottom-10 right-8 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]"
+        className="z-10 fixed bottom-10 right-3 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]"
         onClick={() => redirect("/requests?request=true")}
         >
             {session != null ? "Request Service":"Login to Request Service"}

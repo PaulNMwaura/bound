@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { ConfirmationAlert } from "@/components/ConfirmationAlert";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
@@ -21,7 +22,8 @@ export const EditListerProfile = ({ thisLister }) => {
   const [imagePreview, setImagePreview] = useState(thisLister.bannerPicture);
   const [rawImageFile, setRawImageFile] = useState(null);
   const [cropData, setCropData] = useState(null);
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const addService = () => {
     setFormData((prev) => ({
@@ -87,15 +89,17 @@ export const EditListerProfile = ({ thisLister }) => {
 
       const result = await res.json();
       if (res.ok) {
-        alert("Your lister account has been deleted.");
-        router.push("/browse");
+        setMessage("Your lister account has been deleted.")
+        // alert("Your lister account has been deleted.");
       } else {
-        alert(result.message || "Failed to delete lister.");
+        setMessage(result.message || "Failed to delete lister.");
+        // alert(result.message || "Failed to delete lister.");
       }
     } catch (err) {
-      console.error("Delete error:", err);
-      alert("Error deleting lister.");
+      setMessage("Error deleting lister.");
+      // alert("Error deleting lister.");
     }
+    location.reload();
   };
 
   const handleSubmit = async (e) => {
@@ -323,6 +327,9 @@ export const EditListerProfile = ({ thisLister }) => {
                 </button>
             </div>
         </form>
+        {openAlert && (
+          <ConfirmationAlert message={message} openAlert={openAlert} />
+        )}
     </div>
   );
 };
