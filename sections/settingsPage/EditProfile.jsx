@@ -9,10 +9,10 @@ import { signOut, useSession } from "next-auth/react";
 
 const DEFAULT_IMAGE = "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg";
 
-function capitalizeInputMask (string) {
-    if (!string) return string;
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+// function capitalizeFirst(str) {
+//   if (!str) return "";
+//   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+// }
 
 function validatePassword (string) {
     const disallowed = ["\"", "`", "\\", "/", "<", ">", "&", " ", ";", "\n", "\r"];
@@ -88,12 +88,7 @@ export const EditProfile = ({isLister, thisLister}) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        let maskedValue = "";
-        if(name == "firstname" || name == "lastname")
-          maskedValue = capitalizeInputMask(value);
-        else
-          maskedValue = value;
-        setFormData((prev) => ({ ...prev, [name]: maskedValue }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     async function checkIfLister(id) {

@@ -9,6 +9,10 @@ import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css'; 
 import { useRouter } from "next/navigation";
 
+function capitalizeFirst(str) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
 
 export const Hero = ({session, status}) => {
     const [error, setError] = useState("");
@@ -21,6 +25,7 @@ export const Hero = ({session, status}) => {
         firstname: session.user.firstname || "",
         lastname: session.user.lastname || "",
         email: session.user.email || "",
+        language: "",
         profilePicture: session.user.profilePicture || "",
         city: "",
         state: "",
@@ -48,7 +53,10 @@ export const Hero = ({session, status}) => {
     
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        if (name == "language" || name == "city")
+            setFormData((prev) => ({ ...prev, [name]: capitalizeFirst(value)}));
+        else
+            setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const getCroppedImage = () => {
@@ -88,6 +96,7 @@ export const Hero = ({session, status}) => {
         formData.firstname = session?.user?.firstname || "",
         formData.lastname = session?.user?.lastname || "",
         formData.email = session?.user?.email || "",
+        formData.language = "",
         formData.profilePicture = session?.user?.profilePicture || "",
         formData.city = "",
         formData.state = "",
@@ -153,7 +162,7 @@ export const Hero = ({session, status}) => {
 
         if(submitting) return;
 
-        const {userId, username, firstname, lastname, city, state, description, profilePicture, services} = formData;
+        const {userId, username, firstname, lastname, language, city, state, description, profilePicture, services} = formData;
 
         const noDeclaredServices = services.some(service => !service.name.trim());
 
@@ -245,6 +254,10 @@ export const Hero = ({session, status}) => {
                         <div className="w-full">
                             <label className="font-medium">lastname</label>
                             <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
+                        </div>
+                        <div className="w-full">
+                            <label className="font-medium">language</label>
+                            <input type="text" name="language" value={formData.language} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
                         </div>
                         <div className="w-full">
                             <label className="font-medium">city</label>

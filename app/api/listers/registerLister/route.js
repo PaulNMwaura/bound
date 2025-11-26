@@ -30,6 +30,7 @@ export async function POST(req) {
       firstname: body.firstname,
       lastname: body.lastname,
       email: body.email,
+      language: body.language,
       city: body.city,
       state: body.state,
       description: body.description,

@@ -7,13 +7,14 @@ export async function POST(req) {
     await connectMongoDB();
 
     const body = await req.json();
-    const { bannerPicture, username, firstname, lastname, profilePicture, listerId, city, state, description, services, instructions } = body;
+    const { bannerPicture, username, firstname, lastname, language, profilePicture, listerId, city, state, description, services, instructions } = body;
 
     const updateData = {};
 
     if (bannerPicture) updateData.bannerPicture = bannerPicture;
     if (username) updateData.username = username;
     if (firstname) updateData.firstname = firstname;
+    if (language) updateData.language = language;
     if (lastname) updateData.lastname = lastname;
     if (profilePicture) updateData.profilePicture = profilePicture;
     if (city) updateData.city = city;

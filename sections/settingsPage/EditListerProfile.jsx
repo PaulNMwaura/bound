@@ -6,6 +6,11 @@ import { ConfirmationAlert } from "@/components/ConfirmationAlert";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
+function capitalizeFirst(str) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 export const EditListerProfile = ({ thisLister }) => {
   const router = useRouter();
   const cropperRef = useRef(null);
@@ -13,6 +18,7 @@ export const EditListerProfile = ({ thisLister }) => {
 
   const [formData, setFormData] = useState({
     bannerPicture: thisLister.bannerPicture || "",
+    language: thisLister.language,
     city: thisLister.city,
     state: thisLister.state,
     description: thisLister.description,
@@ -71,10 +77,13 @@ export const EditListerProfile = ({ thisLister }) => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name == "language" || name == "city")
+            setFormData((prev) => ({ ...prev, [name]: capitalizeFirst(value)}));
+        else
+            setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
   const handleDeleteLister = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this lister?");
@@ -129,6 +138,7 @@ export const EditListerProfile = ({ thisLister }) => {
         body: JSON.stringify({
           bannerPicture: finalBannerURL,
           listerId: thisLister._id,
+          language: formData.language,
           city: formData.city,
           state: formData.state,
           description: formData.description,
@@ -188,7 +198,10 @@ export const EditListerProfile = ({ thisLister }) => {
                 <img src={imagePreview} alt="Banner preview" className="w-full h-48 object-cover mt-2" />
                 )}
             </div>
-
+            <div className="w-full">
+                <label className="font-medium">Language</label>
+                <input type="text" name="language" value={formData.language} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs md:text-sm" required />
+            </div>
             <div className="w-full">
                 <label className="font-medium">City</label>
                 <input type="text" name="city" value={formData.city} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs md:text-sm" required />

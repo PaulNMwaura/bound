@@ -103,7 +103,7 @@ export const Hero = ({session}) => {
         />
         <div>
           <section className="pt-5 pb-10">
-            <div className="container pb-10 flex flex-col items-center bg-white text-black min-h-screen rounded-xl">
+            <div className="container pb-10 flex flex-col items-center bg-white text-black min-h-screen">
               {session && (
                 <Information setFilters={setFilters} session={session}/>
               )}
