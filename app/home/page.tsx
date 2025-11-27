@@ -71,15 +71,17 @@ export default function Home() {
           <Information services={listedServices} />
         ):(
           <div className="pt-20 flex justify-center aspect-video">
-            <iframe 
-              className="w-full h-full md:w-[580px] md:h-[415px]"
-              src="https://www.youtube.com/embed/rmjgl45dmow?si=sDPAIRGHxengWH2C" 
-              title="YouTube video player" 
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              referrerpolicy="strict-origin-when-cross-origin" 
-              allowfullscreen>
-            </iframe>
+            <div className="w-full aspect-video">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/rmjgl45dmow?si=sDPAIRGHxengWH2C"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </div>
           </div>
         )}
       </div>
