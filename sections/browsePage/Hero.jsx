@@ -125,7 +125,7 @@ export const Hero = ({session}) => {
                   )}
                 </div>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid w-full md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {listers &&
                   listers.length > 0 &&
                   listers.map((lister, index) => (

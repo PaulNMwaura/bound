@@ -5,12 +5,28 @@ import { Header } from "@/sections/homePage/Header";
 import { Hero } from "@/sections/homePage/Hero";
 import { Footer } from "@/sections/homePage/Footer";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Information } from "@/sections/homePage/Information";
 
 export default function Home() {
   const {data: session, status} = useSession();
+  const [listedServices, setListedServices] = useState(null);
+  
+  useEffect(() => {
+    async function fetchServices() {
+      try {
+        const res = await fetch("/api/listers/findServices");
+        const data = await res.json();
+        setListedServices(data.services);
+      } catch (err) {
+        console.error("Failed to fetch services:", err);
+      }
+    }
 
-  if(status == "loading")
+    fetchServices();
+  }, []);
+
+  if (status === "loading")
     return <div className="heads-up">Loading...</div>;
 
   // CREATE PAGE THAT REGULAR USERS CAN POST A REQUEST!!! then listers can browse the page and claim posted requests!! -> Idead addition to website
@@ -46,11 +62,31 @@ export default function Home() {
         }}
       />
 
-      <div className="z-10">
-        <Header session={session}/>
+     <div className="z-10 min-h-screen flex flex-col">
+  
+      <div className="flex-grow">
+        <Header session={session} />
         <Hero session={session} />
-        <Footer />
+        {listedServices != null ? (
+          <Information services={listedServices} />
+        ):(
+          <div className="pt-20 flex justify-center aspect-video">
+            <iframe 
+              className="w-full h-full md:w-[580px] md:h-[415px]"
+              src="https://www.youtube.com/embed/rmjgl45dmow?si=sDPAIRGHxengWH2C" 
+              title="YouTube video player" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        )}
       </div>
+
+      <Footer />
+    </div>
+
     </>
   );
 }
