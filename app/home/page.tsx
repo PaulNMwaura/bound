@@ -10,21 +10,21 @@ import { Information } from "@/sections/homePage/Information";
 
 export default function Home() {
   const {data: session, status} = useSession();
-  const [listedServices, setListedServices] = useState(null);
+  const [listedServices, setListedServices] = useState([]);
   
-  // useEffect(() => {
-  //   async function fetchServices() {
-  //     try {
-  //       const res = await fetch("/api/listers/findServices");
-  //       const data = await res.json();
-  //       setListedServices(data.services);
-  //     } catch (err) {
-  //       console.error("Failed to fetch services:", err);
-  //     }
-  //   }
+  useEffect(() => {
+    async function fetchServices() {
+      try {
+        const res = await fetch("/api/listers/findServices");
+        const data = await res.json();
+        setListedServices(data.services);
+      } catch (err) {
+        console.error("Failed to fetch services:", err);
+      }
+    }
 
-  //   fetchServices();
-  // }, []);
+    fetchServices();
+  }, []);
 
   if (status === "loading")
     return <div className="heads-up">Loading...</div>;
@@ -67,7 +67,7 @@ export default function Home() {
       <div className="flex-grow">
         <Header session={session} />
         <Hero session={session} />
-        {listedServices != null ? (
+        {listedServices.length > 0 ? (
           <Information services={listedServices} />
         ):(
           <div className="pt-20 aspect-video">
