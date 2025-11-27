@@ -12,19 +12,19 @@ export default function Home() {
   const {data: session, status} = useSession();
   const [listedServices, setListedServices] = useState(null);
   
-  useEffect(() => {
-    async function fetchServices() {
-      try {
-        const res = await fetch("/api/listers/findServices");
-        const data = await res.json();
-        setListedServices(data.services);
-      } catch (err) {
-        console.error("Failed to fetch services:", err);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchServices() {
+  //     try {
+  //       const res = await fetch("/api/listers/findServices");
+  //       const data = await res.json();
+  //       setListedServices(data.services);
+  //     } catch (err) {
+  //       console.error("Failed to fetch services:", err);
+  //     }
+  //   }
 
-    fetchServices();
-  }, []);
+  //   fetchServices();
+  // }, []);
 
   if (status === "loading")
     return <div className="heads-up">Loading...</div>;
@@ -70,10 +70,10 @@ export default function Home() {
         {listedServices != null ? (
           <Information services={listedServices} />
         ):(
-          <div className="pt-20 flex justify-center aspect-video">
-            <div className="w-full aspect-video">
+          <div className="pt-20 aspect-video">
+            <div className="w-full flex justify-center aspect-video">
               <iframe
-                className="w-full h-full"
+                className="w-full h-full md:w-[580px] md:h-[415px]"
                 src="https://www.youtube.com/embed/rmjgl45dmow?si=sDPAIRGHxengWH2C"
                 title="YouTube video player"
                 frameBorder="0"
