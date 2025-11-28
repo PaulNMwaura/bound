@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { FaArrowRight } from "react-icons/fa";
 
 export const Information = ({ services }) => {
   if (!services || services.length === 0)
@@ -59,6 +60,12 @@ export const Information = ({ services }) => {
           </div>
         ))}
       </div>
+      {services.length > 2 && (
+        <div className="flex lg:hidden flex-row gap-1 items-center justify-center text-white/50">
+          <p className="text-xs text-center">Sroll for more</p>
+          <FaArrowRight size={12}/>
+        </div>
+      )}
       <div className="mt-10 w-full h-fit flex flex-col lg:flex-row justify-between gap-4 dark:bg-orange-500 bg-[#98F5F9] px-4 py-10">
         <div className="w-full min-h-fit h-54 p-4 rounded-md bg-white text-black inset-shadow-sm shadow-md">
           <h1 className="mt-3 font-semibold">Have a service you want to provide?</h1>
