@@ -32,7 +32,7 @@ export const Information = ({ services }) => {
               md:w-64 
               h-30 
               bg-white
-              dark:bg-black
+              dark:bg-transparent
               dark:outline-1
               dark:outline-white
               dark:text-white
@@ -81,13 +81,13 @@ export const Information = ({ services }) => {
             <button className="mt-3 btn btn-primary-opp" onClick={() => redirect("/")}>Find a lister</button>
           </div>
         </div>
-        <div className="w-full min-h-fit h-54 p-4 rounded-md bg-white text-black inset-shadow-sm shadow-md">
+        {/* <div className="w-full min-h-fit h-54 p-4 rounded-md bg-white text-black inset-shadow-sm shadow-md">
           <h1 className="mt-3 font-semibold">Can't find what you want?</h1>
           <p className="mt-3">Posting a service request allows listers to pick up your request. </p>
           <div className="w-full flex justify-end">
             <button className="mt-11 btn btn-primary" onClick={() => redirect("/requests")}>Post a request</button>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

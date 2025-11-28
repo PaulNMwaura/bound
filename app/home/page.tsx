@@ -12,19 +12,19 @@ export default function Home() {
   const {data: session, status} = useSession();
   const [listedServices, setListedServices] = useState([]);
   
-  useEffect(() => {
-    async function fetchServices() {
-      try {
-        const res = await fetch("/api/listers/findServices");
-        const data = await res.json();
-        setListedServices(data.services);
-      } catch (err) {
-        console.error("Failed to fetch services:", err);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchServices() {
+  //     try {
+  //       const res = await fetch("/api/listers/findServices");
+  //       const data = await res.json();
+  //       setListedServices(data.services);
+  //     } catch (err) {
+  //       console.error("Failed to fetch services:", err);
+  //     }
+  //   }
 
-    fetchServices();
-  }, []);
+  //   fetchServices();
+  // }, []);
 
   if (status === "loading")
     return <div className="heads-up">Loading...</div>;
@@ -42,7 +42,7 @@ export default function Home() {
       />
 
       <motion.div
-        className="fixed md:top-[-500px] left-1/2 transform -translate-x-1/2 md:w-[900px] md:h-[600px] bg-purple-500 rounded-full blur-3xl opacity-70 dark:opacity-20 z-0"
+        className="fixed md:top-[-500px] left-1/2 transform -translate-x-1/2 md:w-[900px] md:h-[600px] dark:bg-blue-500 bg-orange-500 rounded-full blur-3xl opacity-70 dark:opacity-20 z-0"
         animate={{
           scale: [1, 1.15, 1],
           opacity: [0.1, 0.2, 0.1],
@@ -67,7 +67,7 @@ export default function Home() {
       <div className="flex-grow">
         <Header session={session} />
         <Hero session={session} />
-        {listedServices.length > 0 ? (
+        {listedServices.length ? (
           <Information services={listedServices} />
         ):(
           <div className="pt-20 aspect-video">
