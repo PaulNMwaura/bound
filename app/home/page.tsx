@@ -62,33 +62,31 @@ export default function Home() {
         }}
       />
 
-     <div className="z-10 min-h-screen h-fit flex flex-col">
-  
-      <div className="flex-grow">
-        <Header session={session} />
-        <Hero session={session} />
-        {listedServices.length ? (
-          <Information services={listedServices} />
-        ):(
-          <div className="pt-20 aspect-video">
-            <div className="w-full flex justify-center aspect-video">
-              <iframe
-                className="w-full h-full md:w-[580px] md:h-[415px]"
-                src="https://www.youtube.com/embed/rmjgl45dmow?si=sDPAIRGHxengWH2C"
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe>
+      <div className="z-10 min-h-screen h-fit flex flex-col">
+    
+        <div className="flex-grow">
+          <Header session={session} />
+          <Hero session={session} />
+          {listedServices.length ? (
+            <Information services={listedServices} />
+          ):(
+            <div className="pt-20 aspect-video">
+              <div className="w-full flex justify-center aspect-video">
+                <iframe
+                  className="w-full h-full md:w-[580px] md:h-[415px]"
+                  src="https://www.youtube.com/embed/rmjgl45dmow?si=sDPAIRGHxengWH2C"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-
-      <Footer />
-    </div>
-
+    <Footer />
     </>
   );
 }
