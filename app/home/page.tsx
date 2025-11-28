@@ -29,7 +29,7 @@ export default function Home() {
   if (status === "loading")
     return <div className="heads-up">Loading...</div>;
 
-  // CREATE PAGE THAT REGULAR USERS CAN POST A REQUEST!!! then listers can browse the page and claim posted requests!! -> Idead addition to website
+  // CREATE PAGE THAT REGULAR USERS CAN POST A REQUEST!!! then listers can browse the page and claim posted requests!! -> Ideal addition to website
   return (
     <>
       {/* this needs to be adjusted depending on the page. */}
@@ -62,7 +62,7 @@ export default function Home() {
         }}
       />
 
-     <div className="z-10 min-h-screen flex flex-col">
+     <div className="z-10 min-h-screen h-fit flex flex-col">
   
       <div className="flex-grow">
         <Header session={session} />
