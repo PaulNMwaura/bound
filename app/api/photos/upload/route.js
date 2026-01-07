@@ -6,7 +6,9 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const { listerId, photo, service } = body;
-
+    console.log(listerId);
+    console.log(photo);
+    console.log(service);
     if (!listerId || !photo || !service) {
       return NextResponse.json({ message: "Missing required fields." }, { status: 400 });
     }

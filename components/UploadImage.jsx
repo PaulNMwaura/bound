@@ -47,12 +47,13 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
         const updated = await fetch(`/api/photos/list/${thisLister._id}`);
         const imageUrl = cloudinaryData.secure_url.replace("/upload/", "/upload/h_1920,c_limit/" );
         const data = await updated.json();
-        setPosts(
+        const setPosts = () => {
           data.photos.map((photo) => ({
             url: photo.photo,
             service: photo.service,
           }))
-        );
+        };
+        setPosts();
       } else {
         console.error("Upload failed");
       }
@@ -61,6 +62,7 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
     } finally {
       setUploading(false);
       onClose();
+      window.location.reload();
     }
   };
 
