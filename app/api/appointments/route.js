@@ -42,16 +42,16 @@ export async function POST(req) {
         To: listerEmail,
         TemplateId: parseInt(process.env.POSTMARK_APPOINTMENT_REQUEST_TEMPLATE_ID),
         TemplateModel: {
-          product_name: 'etchedintara.com',
+          product_name: 'procklist.com',
           listerName,
           firstname,
           email,
           date,
           time,
           specialNote,
-          dashboardLink: `https://www.etchedintara.com/profile/${listerUsername}`,
-          company_name: "etchedintara (EIT)",
-          businessName: "EIT",
+          dashboardLink: `https://www.procklist.com/profile/${listerUsername}`,
+          company_name: "procklist",
+          businessName: "procklist",
         },
       });
     } catch (error) {

@@ -43,12 +43,12 @@ export async function POST(req) {
               To: email,
               TemplateId: parseInt(process.env.POSTMARK_EMAIL_VERIFICATION_TEMPLATE_ID),
               TemplateModel: {
-                product_name: 'etchedintara.com',
+                product_name: 'procklist.com',
                 firstname,
                 verificationUrl: url,
                 // action_url: url,
-                company_name: "etchedintara (EIT)",
-                businessName: "EIT",
+                company_name: "procklist",
+                businessName: "procklist",
               },
             });
             console.log("Verification email sent successfully");
