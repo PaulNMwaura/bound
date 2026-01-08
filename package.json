@@ -18,7 +18,7 @@
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2",
     "nanoid": "^5.1.5",
-    "next": "^16.0.4",
+    "next": "16.0.10",
     "next-auth": "^4.24.11",
     "next-cloudinary": "^6.16.0",
     "postmark": "^4.0.5",
