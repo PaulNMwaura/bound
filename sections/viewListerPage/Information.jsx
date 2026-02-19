@@ -2,11 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { SiThreedotjs } from "react-icons/si";
 
 export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing, sessionStatus}) => {
   const [selectedTab, setTab] = useState("All");
   const [showPriceIndex, setShowPriceIndex] = useState(null);
   const router = useRouter();
+
+  console.log(thisLister);
 
   const togglePrice = (i) => {
     setShowPriceIndex(showPriceIndex === i ? null : i);
@@ -28,22 +31,41 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
 
   return (
     <section className="container text-sm sm:text-[16px] text-black rounded-lg shadow-sm">
-      <div className="flex flex-wrap gap-1">
-        <strong className="p-2">Services: </strong>
+      <div className="flex flex-col items-center">
+        <strong className="p-2">Services</strong>
+        <div className="w-150 bg-[#d6ffe7] rounded-md ">
           {thisLister.services.map((service, index) => (
-            <div key={index} className="relative group">
-              <div
-                className={`
-                  absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center
-                  bg-black text-white text-xs px-2 py-1 rounded
-                  transition-opacity duration-200 pointer-events-none
-                  ${showPriceIndex === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"}
-                `}
-              >
-                ${service.price}
-                <div className="absolute left-1/2 -bottom-1 -translate-x-1/2 w-2 h-2 bg-black rotate-45"></div>
+            <div key={index} className="relative group p-3">
+              <div className="flex justify-between border-b border-black/35"> 
+                <strong>
+                  {service.type}
+                </strong>
+                <div className="">
+                  ({service.subcategories.length})
+                </div>
               </div>
-              <button
+              {service.subcategories.map((service, jndex) => (
+                <div key={jndex} className="py-2 hover:scale-[1.01] cursor-default duration-100">
+                  <div className="flex justify-between"> 
+                    <div className="w-full">
+                      <div className="tracking-wide">
+                        {service.name} - ${service.price}
+                      </div>
+                      {service.description && (
+                        <div className="text-black/65 text-sm">
+                          {service.description}
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <button className="btn btn-primary">
+                        Book
+                      </button>
+                    </div>
+                    </div>
+                </div>
+              ))}
+              {/* <button
                 className={`
                   ${selectedTab == service.name ? "bg-black/5" : ""}
                   w-fit h-fit p-2 rounded-t-md cursor-pointer
@@ -55,12 +77,13 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                 }}
               >
                 {service.name}
-              </button>
+              </button> */}
             </div>
           ))}
-        <button className={`${selectedTab == "All" ? "bg-black/5":""} h-fit p-2 rounded-t-md cursor-pointer hover:bg-blue-500 hover:text-white`} onClick={() => handleTabChange("All")}>
+        {/* <button className={`${selectedTab == "All" ? "bg-black/5":""} h-fit p-2 rounded-t-md cursor-pointer hover:bg-blue-500 hover:text-white`} onClick={() => handleTabChange("All")}>
           All
-        </button>
+        </button> */}
+        </div>
       </div>
     </section>
   );

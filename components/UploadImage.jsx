@@ -96,12 +96,14 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
               onChange={(e) => setAssignedService(e.target.value)}
               required
             >
-              <option value="">-- Select a service --</option>
-              {thisLister?.services?.map((service, index) => (
+              <option value="">Select a service</option>
+              {thisLister?.services?.flatMap((serviceType) =>
+              serviceType.subcategories?.map((service, index) => (
                 <option key={index} value={service.name}>
                   {service.name}
                 </option>
-              ))}
+              ))
+              )}
             </select>
           </div>
 

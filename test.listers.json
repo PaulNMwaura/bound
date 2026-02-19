@@ -1,0 +1,274 @@
+[{
+  "_id": "6808294ecb61fbd84d5d5c9a2",
+  "userId": "6807d7831adf3da96b76fa26",
+  "profilePicture": "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg",
+  "username": "HandymanDave",
+  "firstname": "David",
+  "lastname": "Clark",
+  "email": "david.clark@handyman.com",
+  "city": "Tacoma",
+  "state": "WA",
+  "services": [
+    {
+      "name": "Furniture assembly",
+      "price": 85,
+      "subcategories": [
+        {
+          "_id": "6808294ecb61fbd84d5d5c9d"
+        }
+      ],
+      "_id": "6808294ecb61fbd84d5d5c9d2"
+    }
+  ],
+  "instructions": "Please have the furniture parts ready and nearby.",
+  "description": "Experienced handyman for assembling all types of furniture.",
+  "unavailableDays": [
+    {
+      "$date": "2025-04-26T00:00:00.000Z"
+    }
+  ],
+  "__v": 0,
+  "rating": 3.8
+},
+{
+  "_id": "6808294ecb61fbd84d5d5c9a4",
+  "userId": "6807d7831adf3da96b76fa26",
+  "profilePicture": "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg",
+  "username": "TechFixer",
+  "firstname": "Leo",
+  "lastname": "Murphy",
+  "email": "leo.murphy@techfix.com",
+  "city": "Seattle",
+  "state": "WA",
+  "services": [
+    {
+      "name": "Computer repair",
+      "price": 150,
+      "subcategories": [
+        {
+          "_id": "6808294ecb61fbd84d5d5c9d"
+        }
+      ],
+      "_id": "6808294ecb61fbd84d5d5c9d4"
+    }
+  ],
+  "instructions": "Backup your data before service.",
+  "description": "Expert computer repair and diagnostics for all major brands.",
+  "unavailableDays": [
+    {
+      "$date": "2025-05-02T00:00:00.000Z"
+    },
+    {
+      "$date": "2025-05-10T00:00:00.000Z"
+    }
+  ],
+  "__v": 0,
+  "rating": 4
+},
+{
+  "_id": "6808294ecb61fbd84d5d5c9a1",
+  "userId": "6807d7831adf3da96b76fa26",
+  "profilePicture": "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg",
+  "username": "CleanMaster88",
+  "firstname": "Samantha",
+  "lastname": "Green",
+  "email": "samantha.green@gmail.com",
+  "city": "Portland",
+  "state": "OR",
+  "services": [
+    {
+      "name": "House cleaning",
+      "price": 120,
+      "subcategories": [
+        {
+          "_id": "6808294ecb61fbd84d5d5c9d"
+        }
+      ],
+      "_id": "6808294ecb61fbd84d5d5c9d1"
+    }
+  ],
+  "instructions": "Please make sure all rooms are cleared before I arrive.",
+  "description": "Offering high-quality house cleaning services for all your home needs.",
+  "unavailableDays": [
+    {
+      "$date": "2025-04-25T00:00:00.000Z"
+    },
+    {
+      "$date": "2025-05-01T00:00:00.000Z"
+    }
+  ],
+  "__v": 0,
+  "rating": 4
+},
+{
+  "_id": "6808294ecb61fbd84d5d5c9a5",
+  "userId": "6807d7831adf3da96b76fa26",
+  "profilePicture": "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg",
+  "username": "MoverMax",
+  "firstname": "Max",
+  "lastname": "Fischer",
+  "email": "max.fischer@movers.com",
+  "city": "Bellevue",
+  "state": "WA",
+  "services": [
+    {
+      "name": "Moving assistance",
+      "price": 200,
+      "subcategories": [
+        {
+          "_id": "6808294ecb61fbd84d5d5c9d"
+        }
+      ],
+      "_id": "6808294ecb61fbd84d5d5c9d5"
+    }
+  ],
+  "instructions": "Ensure that boxes are packed and ready to go.",
+  "description": "Efficient and reliable moving assistance for all your needs.",
+  "unavailableDays": [
+    {
+      "$date": "2025-04-29T00:00:00.000Z"
+    }
+  ],
+  "__v": 0,
+  "rating": 4
+},
+{
+  "_id": "6808294ecb61fbd84d5d5c9a6",
+  "userId": "6807d7831adf3da96b76fa26",
+  "profilePicture": "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg",
+  "username": "PetWalkerSteve",
+  "firstname": "Steve",
+  "lastname": "Harris",
+  "email": "steve.harris@petservices.com",
+  "city": "Tacoma",
+  "state": "WA",
+  "services": [
+    {
+      "name": "Dog walking",
+      "price": 30,
+      "subcategories": [
+        {
+          "_id": "6808294ecb61fbd84d5d5c9d"
+        }
+      ],
+      "_id": "6808294ecb61fbd84d5d5c9d6"
+    }
+  ],
+  "instructions": "Please provide leash and any necessary pet items.",
+  "description": "Professional dog walking services for your furry friend.",
+  "unavailableDays": [
+    {
+      "$date": "2025-05-03T00:00:00.000Z"
+    }
+  ],
+  "__v": 0,
+  "rating": 5
+},
+{
+  "_id": "6808294ecb61fbd84d5d5c9a3",
+  "userId": "6807d7831adf3da96b76fa26",
+  "profilePicture": "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg",
+  "username": "GardeningGuru",
+  "firstname": "Elena",
+  "lastname": "Vega",
+  "email": "elena.vega@gardens.com",
+  "city": "Spokane",
+  "state": "WA",
+  "services": [
+    {
+      "name": "Lawn mowing",
+      "price": 50,
+      "subcategories": [
+        {
+          "_id": "6808294ecb61fbd84d5d5c9d"
+        }
+      ],
+      "_id": "6808294ecb61fbd84d5d5c9d3"
+    }
+  ],
+  "instructions": "Please ensure gates are unlocked and dogs are indoors.",
+  "description": "I provide affordable lawn mowing and garden care services.",
+  "unavailableDays": [
+    {
+      "$date": "2025-05-05T00:00:00.000Z"
+    }
+  ],
+  "__v": 0,
+  "rating": 5
+},
+{
+  "_id": {
+    "$oid": "699651708f1457bbad99fd2b"
+  },
+  "userId": {
+    "$oid": "691f39cfa20377358f048883"
+  },
+  "bannerPicture": "",
+  "profilePicture": "https://res.cloudinary.com/djreop8la/image/upload/v1744851332/default-avatar_pc0ltx.jpg",
+  "username": "johndoe",
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "johndoe@gmail.com",
+  "language": "English",
+  "city": "Boston",
+  "state": "MA",
+  "services": [
+    {
+      "name": "Lawn and Parking",
+      "price": "100",
+      "subcategories": [
+        {
+          "name": "Mowing",
+          "price": "90",
+          "_id": {
+            "$oid": "699651708f1457bbad99fd2d"
+          }
+        },
+        {
+          "name": "Leafblowing",
+          "price": "70",
+          "_id": {
+            "$oid": "699651708f1457bbad99fd2e"
+          }
+        },
+        {
+          "name": "Snow shoveling",
+          "price": "100",
+          "_id": {
+            "$oid": "699651708f1457bbad99fd2f"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "699651708f1457bbad99fd2c"
+      }
+    },
+    {
+      "name": "Car",
+      "price": "100",
+      "subcategories": [
+        {
+          "name": "Detailing ",
+          "price": "100",
+          "_id": {
+            "$oid": "699651708f1457bbad99fd31"
+          }
+        },
+        {
+          "name": "Washing (Exterior)",
+          "price": "50",
+          "_id": {
+            "$oid": "699651708f1457bbad99fd32"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "699651708f1457bbad99fd30"
+      }
+    }
+  ],
+  "instructions": "",
+  "description": "Multi-skilled. Can tackle different requests. Just book an appointment on which ever of my many skills you require!",
+  "unavailableDays": [],
+  "__v": 0
+}]

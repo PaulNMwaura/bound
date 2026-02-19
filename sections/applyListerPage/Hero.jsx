@@ -30,7 +30,7 @@ export const Hero = ({session, status}) => {
         city: "",
         state: "",
         description: "",
-        services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+        services: [{ type: "", price: "", subcategories: [{ name: "", price: "", description: "" }] }],
         instructions: "",
         unavailableDays: [],
     });
@@ -101,7 +101,7 @@ export const Hero = ({session, status}) => {
         formData.city = "",
         formData.state = "",
         formData.description = "",
-        formData.services = [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+        formData.services = [{ type: "", price: "", subcategories: [{ name: "", price: "", description: "" }] }],
         formData.instructions = "",
         formData.unavailableDays = []
         setImagePreview(null);
@@ -164,7 +164,7 @@ export const Hero = ({session, status}) => {
 
         const {userId, username, firstname, lastname, language, city, state, description, profilePicture, services} = formData;
 
-        const noDeclaredServices = services.some(service => !service.name.trim());
+        const noDeclaredServices = services.some(service => !service.type.trim());
 
         if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture || noDeclaredServices) {
             if(!city) {
@@ -290,65 +290,66 @@ export const Hero = ({session, status}) => {
                             {/* Service Name */}
                             <input
                                 type="text"
-                                placeholder="Service (e.g., Haircuts)"
-                                value={service.name}
+                                placeholder="Service Catergory"
+                                value={service.type}
                                 onChange={(e) => {
                                 const newServices = [...formData.services];
-                                newServices[serviceIndex].name = e.target.value;
+                                newServices[serviceIndex].type = e.target.value;
                                 setFormData({ ...formData, services: newServices });
                                 }}
                                 className="border border-black p-2 rounded w-full"
                                 required
                             />
 
-                            {/* Service Price */}
-                            <input
-                                type="text"
-                                placeholder="Service Price"
-                                value={service.price}
-                                onChange={(e) => {
-                                const newServices = [...formData.services];
-                                newServices[serviceIndex].price = e.target.value;
-                                setFormData({ ...formData, services: newServices });
-                                }}
-                                className="border border-black p-2 rounded w-full mt-2"
-                            />
-
                             {/* Subcategories - Only Show If There Is At Least One */}
-                            {service.subcategories.length > 0 && (
+                            {service.type && (
                                 <div className="mt-2">
-                                <h4 className="text-md font-semibold">Complementary services for {service?.name}</h4>
+                                <h4 className="text-md font-semibold">Services for {service?.type}</h4>
                                 {service.subcategories.map((subcategory, subIndex) => (
-                                    <div key={subIndex} className="flex space-x-2 mt-2">
-                                    <input
-                                        type="text"
-                                        placeholder="Add-on service"
-                                        value={subcategory.name}
-                                        onChange={(e) => {
-                                        const newServices = [...formData.services];
-                                        newServices[serviceIndex].subcategories[subIndex].name = e.target.value;
-                                        setFormData({ ...formData, services: newServices });
-                                        }}
-                                        className="border border-black p-2 rounded w-1/2"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Price"
-                                        value={subcategory.price}
-                                        onChange={(e) => {
-                                        const newServices = [...formData.services];
-                                        newServices[serviceIndex].subcategories[subIndex].price = e.target.value;
-                                        setFormData({ ...formData, services: newServices });
-                                        }}
-                                        className="border border-black p-2 rounded w-1/2"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => removeSubcategory(serviceIndex, subIndex)}
-                                        className="text-red-500"
-                                    >
-                                        Remove
-                                    </button>
+                                    <div key={subIndex}>
+                                        <div className="flex space-x-2 mt-2">
+                                            <input
+                                                type="text"
+                                                placeholder="Add-on service"
+                                                value={subcategory.name}
+                                                onChange={(e) => {
+                                                const newServices = [...formData.services];
+                                                newServices[serviceIndex].subcategories[subIndex].name = e.target.value;
+                                                setFormData({ ...formData, services: newServices });
+                                                }}
+                                                className="border border-black p-2 rounded w-1/2"
+                                            />
+                                            <input
+                                                type="number"
+                                                min={0}
+                                                placeholder="Price"
+                                                value={subcategory.price}
+                                                onChange={(e) => {
+                                                const newServices = [...formData.services];
+                                                newServices[serviceIndex].subcategories[subIndex].price = e.target.value;
+                                                setFormData({ ...formData, services: newServices });
+                                                }}
+                                                className="border border-black p-2 rounded w-1/2"
+                                            />
+                                        </div>
+                                        <textarea 
+                                            type="text"
+                                            className="mt-2 border border-black p-2 w-full" 
+                                            value={subcategory.description}
+                                            onChange={(e) => {
+                                            const newServices = [...formData.services];
+                                            newServices[serviceIndex].subcategories[subIndex].description = e.target.value;
+                                            setFormData({ ...formData, services: newServices });
+                                            }}
+                                            placeholder="Describe what a client should expect"
+                                        />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeSubcategory(serviceIndex, subIndex)}
+                                                className="w-full text-red-500 text-end"
+                                            >
+                                                Remove
+                                            </button>
                                     </div>
                                 ))}
                                 </div>
@@ -359,10 +360,10 @@ export const Hero = ({session, status}) => {
                                 <div>
                                 <button
                                     type="button"
-                                    onClick={() => addSubcategory(serviceIndex)}
-                                    className="btn text-sm "
+                                    onClick={() => {service.type ? addSubcategory(serviceIndex) : null}}
+                                    className="btn text-sm cursor-pointer"
                                 >
-                                    Add a complementary service
+                                    {service.type ? `Add service for ${service.type}` : "Add a service"}
                                 </button>
                                 </div>
                                 <div>

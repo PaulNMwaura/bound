@@ -13,10 +13,9 @@ const ListerSchema = new mongoose.Schema ({
     state: { type: String, required: true }, 
     services: [
         {
-            name: {type: String, required: true},
-            price: {type: String},
+            type: {type: String, required: true},
             subcategories: [
-                { name: {type: String}, price: {type: String}},
+                { name: {type: String}, price: {type: String}, description: {type:String} },
             ],
         },
     ],
