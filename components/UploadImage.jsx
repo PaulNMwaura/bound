@@ -68,7 +68,7 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-92 relative">
+      <div className="bg-white rounded-lg shadow-lg py-6 w-92 relative">
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
           onClick={onClose}

@@ -63,3 +63,32 @@ export async function POST(req) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
+
+export async function GET(req) {
+  try {
+    await connectMongoDB();
+
+    const url = new URL(req.url);
+    const listerId = url.searchParams.get("listerId");
+    const date = url.searchParams.get("date"); // 'YYYY-MM-DD'
+
+    if (!listerId || !date) {
+      return NextResponse.json({ error: "Missing listerId or date" }, { status: 400 });
+    }
+
+    // Find all appointments for that lister on that date
+    const appointments = await Appointment.find({
+      listerId,
+      date,
+      status: { $in: ["pending", "confirmed"] }, // optionally ignore cancelled
+    }).select("time");
+
+    // Return just the booked times
+    const bookedTimes = appointments.map((appt) => appt.time);
+
+    return NextResponse.json({ bookedTimes });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

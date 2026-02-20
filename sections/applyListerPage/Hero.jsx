@@ -1,7 +1,7 @@
 // THIS IS THE FORM COMPONENT OF THE APPLY LISTER PAGE //
 "use client";
 
-import UnavailableDaysCalendar from "@/components/AvailabilitySelectionCalendar";
+import ListerAvailabilityEditor from "@/components/ListerAvailabilityEditor";
 import ListerSetInstructions from "@/components/ListerSetInstructions";
 import { useState, useRef } from "react";
 import cloudinary from "@/lib/cloudinary";
@@ -32,7 +32,15 @@ export const Hero = ({session, status}) => {
         description: "",
         services: [{ type: "", price: "", subcategories: [{ name: "", price: "", description: "" }] }],
         instructions: "",
-        unavailableDays: [],
+        availability: {
+            monday: [{ start: "", end: "" }],
+            tuesday: [{ start: "", end: "" }],
+            wednesday: [{ start: "", end: "" }],
+            thursday: [{ start: "", end: "" }],
+            friday: [{ start: "", end: "" }],
+            saturday: [{ start: "", end: "" }],
+            sunday: [{ start: "", end: "" }],
+        },
     });
     const [imagePreview, setImagePreview] = useState(null);
     const [cropData, setCropData] = useState(null);
@@ -103,7 +111,15 @@ export const Hero = ({session, status}) => {
         formData.description = "",
         formData.services = [{ type: "", price: "", subcategories: [{ name: "", price: "", description: "" }] }],
         formData.instructions = "",
-        formData.unavailableDays = []
+        formData.availability = {
+            monday: [{ start: "", end: "" }],
+            tuesday: [{ start: "", end: "" }],
+            wednesday: [{ start: "", end: "" }],
+            thursday: [{ start: "", end: "" }],
+            friday: [{ start: "", end: "" }],
+            saturday: [{ start: "", end: "" }],
+            sunday: [{ start: "", end: "" }],
+        },
         setImagePreview(null);
         setCropData(null);
         setError("");
@@ -168,7 +184,7 @@ export const Hero = ({session, status}) => {
 
         if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture || noDeclaredServices) {
             if(!city) {
-                setError("Please input the city you operate within.");
+                setError("Please enter the name of the city you operate within.");
                 return;
             }
             else if(!state) {
@@ -185,6 +201,14 @@ export const Hero = ({session, status}) => {
             } else {
                 setError("Missing one or more required fields.");
             }
+            return;
+        }
+
+        const hasAtLeastOneAvailableDay = Object.values(formData.availability)
+        .some(day => day.length > 0);
+
+        if (!hasAtLeastOneAvailableDay) {
+            setError("Please set at least one available day.");
             return;
         }
 
@@ -277,8 +301,8 @@ export const Hero = ({session, status}) => {
                 <div className="flex flex-col md:flex-row md:justify-between gap-4">
                     <div className="w-full md:px-4 md:rounded-b-lg">
                         <label className="block text-sm font-medium">About Me</label>
-                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={300} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
-                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/300 Characters</div>
+                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={500} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
+                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/500 Characters</div>
                     </div>
 
                     {/* Service Section */}
@@ -310,7 +334,7 @@ export const Hero = ({session, status}) => {
                                         <div className="flex space-x-2 mt-2">
                                             <input
                                                 type="text"
-                                                placeholder="Add-on service"
+                                                placeholder="Name"
                                                 value={subcategory.name}
                                                 onChange={(e) => {
                                                 const newServices = [...formData.services];
@@ -343,13 +367,15 @@ export const Hero = ({session, status}) => {
                                             }}
                                             placeholder="Describe what a client should expect"
                                         />
+                                        <div className="flex justify-end">
                                             <button
                                                 type="button"
                                                 onClick={() => removeSubcategory(serviceIndex, subIndex)}
-                                                className="w-full text-red-500 text-end"
+                                                className="text-red-500 text-end"
                                             >
                                                 Remove
                                             </button>
+                                        </div>
                                     </div>
                                 ))}
                                 </div>
@@ -385,13 +411,8 @@ export const Hero = ({session, status}) => {
                     </div>
                 </div>
 
-
-                {/* Calendar Component to Select Unavailable Days */}
-                {/* <div className="mt-4">
-                    <h3 className="text-lg font-semibold text-center py-2">Set your availability for this month</h3>
-                    <UnavailableDaysCalendar unavailableDays={formData.unavailableDays} onUnavailableDaysChange={handleUnavailableDaysChange} />
-                </div>
-                <h3 className="mt-4 mb-5 text-center font-normal">After registration, you can always make changes to this information in your profile settings accessible through settings</h3> */}
+                {/* Availability Editor */}
+                <ListerAvailabilityEditor availability={formData.availability} setFormData={setFormData} />
                 
                 {/* Submit Button */}
                 <div className="flex flex-col">

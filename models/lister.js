@@ -22,7 +22,15 @@ const ListerSchema = new mongoose.Schema ({
     instructions: {type: String, required: false},
     rating: {type: Number},
     description: {type: String, required: true},
-    unavailableDays: [String],
+    availability: {
+        monday: [{ start: String, end: String }],
+        tuesday: [{ start: String, end: String }],
+        wednesday: [{ start: String, end: String }],
+        thursday: [{ start: String, end: String }],
+        friday: [{ start: String, end: String }],
+        saturday: [{ start: String, end: String }],
+        sunday: [{ start: String, end: String }],
+    },
 });
 
 export default mongoose.models.Lister || mongoose.model("Lister", ListerSchema);
