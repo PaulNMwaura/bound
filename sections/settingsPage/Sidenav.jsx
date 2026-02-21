@@ -1,8 +1,6 @@
 "use client";
 
-import { IoSearch, IoHomeOutline, IoSettingsOutline  } from "react-icons/io5";
-import { AiOutlineMessage } from "react-icons/ai";
-import { MdOutlineManageAccounts } from "react-icons/md";
+import { IoSearch, IoHomeOutline, IoSettingsOutline, IoAppsSharp  } from "react-icons/io5";
 import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -39,11 +37,19 @@ export const Sidenav = ({session, isLister}) => {
                             </li>
                         </div> */}
                         {isLister && (
-                            <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
-                                <IoSettingsOutline />
-                                <li>
-                                    <a href={`/profile/${session.user.username}`}>view profile</a>
-                                </li>
+                            <div>
+                                <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                    <IoSettingsOutline />
+                                    <li>
+                                        <a href={`/profile/${session.user.username}`}>view profile</a>
+                                    </li>
+                                </div>
+                                <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                    <IoAppsSharp />
+                                    <li>
+                                        <a href={`/dashboard/${session.user.username}`}>dashboard</a>
+                                    </li>
+                                </div>
                             </div>
                         )}
                     </ul>

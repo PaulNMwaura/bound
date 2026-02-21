@@ -92,8 +92,8 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
             required
           >
             {lister.services.map((service, index) => (
-              <option key={index} value={service.name} className="p-1 text-black">
-                {service.name}
+              <option key={index} value={service.type} className="p-1 text-black">
+                {service.type}
               </option>
             ))}
           </select>
@@ -153,10 +153,10 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
         </div>
       </form>
       {alertOpen == true && error == null && (
-        <ConfirmationAlert message={"You're appointment has been requested. Check your inbox to confirm, and keep an eye on it for any changes or updates."} openAlert={setAlertOpen} />
+        <ConfirmationAlert message={"You're appointment has been requested. Check your inbox to confirm, and keep an eye on it for any changes or updates."} openAlert={setAlertOpen} error={true} />
       )}
       {error != null && (
-        <ConfirmationAlert message={error} openAlert={setAlertOpen}/>
+        <ConfirmationAlert message={error} openAlert={setAlertOpen} error={true} />
       )}
     </div>
   );

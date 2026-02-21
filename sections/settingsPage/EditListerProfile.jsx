@@ -24,12 +24,68 @@ export const EditListerProfile = ({ thisLister }) => {
     description: thisLister.description,
     instructions: thisLister.instructions || "",
     services: thisLister.services?.length ? thisLister.services : [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+    availability: thisLister.availability || {
+      monday: [{ start: "", end: "" }],
+      tuesday: [{ start: "", end: "" }],
+      wednesday: [{ start: "", end: "" }],
+      thursday: [{ start: "", end: "" }],
+      friday: [{ start: "", end: "" }],
+      saturday: [{ start: "", end: "" }],
+      sunday: [{ start: "", end: "" }],
+    },
+    timeSlotInterval: thisLister.timeSlotInterval,
   });
+
   const [imagePreview, setImagePreview] = useState(thisLister.bannerPicture);
   const [rawImageFile, setRawImageFile] = useState(null);
   const [cropData, setCropData] = useState(null);
   const [message, setMessage] = useState(null);
   const [openAlert, setOpenAlert] = useState(false);
+  const days = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
+
+  const addTimeBlock = (day) => {
+    setFormData((prev) => ({
+      ...prev,
+      availability: {
+        ...prev.availability,
+        [day]: [...prev.availability[day], { start: "09:00", end: "17:00" }],
+      },
+    }));
+  };
+
+  const removeTimeBlock = (day, index) => {
+    const updatedBlocks = [...formData.availability[day]];
+    updatedBlocks.splice(index, 1);
+
+    setFormData((prev) => ({
+      ...prev,
+      availability: {
+        ...prev.availability,
+        [day]: updatedBlocks,
+      },
+    }));
+  };
+
+  const updateTimeBlock = (day, index, field, value) => {
+    const updatedBlocks = [...formData.availability[day]];
+    updatedBlocks[index][field] = value;
+
+    setFormData((prev) => ({
+      ...prev,
+      availability: {
+        ...prev.availability,
+        [day]: updatedBlocks,
+      },
+    }));
+  };
 
   const addService = () => {
     setFormData((prev) => ({
@@ -144,6 +200,8 @@ export const EditListerProfile = ({ thisLister }) => {
           description: formData.description,
           instructions: formData.instructions,
           services: formData.services,
+          availability: formData.availability,
+          timeSlotInterval: formData.timeSlotInterval,
         }),
       });
 
@@ -200,15 +258,15 @@ export const EditListerProfile = ({ thisLister }) => {
             </div>
             <div className="w-full">
                 <label className="font-medium">Language</label>
-                <input type="text" name="language" value={formData.language} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs md:text-sm" required />
+                <input type="text" name="language" value={formData.language} onChange={handleChange} className="border border-black p-2 rounded w-full text-xs md:text-sm" required />
             </div>
             <div className="w-full">
                 <label className="font-medium">City</label>
-                <input type="text" name="city" value={formData.city} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs md:text-sm" required />
+                <input type="text" name="city" value={formData.city} onChange={handleChange} className="border border-black p-2 rounded w-full text-xs md:text-sm" required />
             </div>
             <div className="w-full">
                 <label className="font-medium">State</label>
-                <select name="state" value={formData.state} onChange={handleChange} className="border border-black/25 p-2 rounded w-full text-xs md:text-sm" required>
+                <select name="state" value={formData.state} onChange={handleChange} className="border border-black p-2 rounded w-full text-xs md:text-sm" required>
                 <option value="">Select State</option>
                 {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
                     <option key={state} value={state}>{state}</option>
@@ -222,21 +280,21 @@ export const EditListerProfile = ({ thisLister }) => {
             </div>
             <div className="w-full">
                 <label className="font-medium">Instructions</label>
-                <input type="text" name="instructions" value={formData.instructions} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs md:text-sm" />
+                <input type="text" name="instructions" value={formData.instructions} onChange={handleChange} className="border border-black rounded p-2 w-full text-xs md:text-sm" />
             </div>
 
             <div className="w-full">
                 {/* Services Section */}
                 <div className="w-full">
-                <h3 className="text-md font-semibold">Your current services</h3>
+                <h3 className="text-md text-center font-semibold">Change services</h3>
                 {formData.services.map((service, serviceIndex) => (
                     <div key={serviceIndex} className="bg-[#ABEEFF] p-3 rounded my-2">
 
                     {/* Service Name */}
                     <input
                         type="text"
-                        placeholder="Service (e.g., Haircuts)"
-                        value={service.name}
+                        placeholder="Service Category"
+                        value={service.type}
                         onChange={(e) => {
                         const newServices = [...formData.services];
                         newServices[serviceIndex].name = e.target.value;
@@ -246,23 +304,10 @@ export const EditListerProfile = ({ thisLister }) => {
                         // required
                     />
 
-                    {/* Service Price */}
-                    <input
-                        type="text"
-                        placeholder="Service Price"
-                        value={service.price}
-                        onChange={(e) => {
-                        const newServices = [...formData.services];
-                        newServices[serviceIndex].price = e.target.value;
-                        setFormData({ ...formData, services: newServices });
-                        }}
-                        className="border border-black p-2 rounded w-full mt-2"
-                    />
-
                     {/* Subcategories */}
                     {service.subcategories?.length > 0 && (
                         <div className="mt-2">
-                        <h4 className="text-md font-semibold">Complementary services for {service?.name}</h4>
+                        <h4 className="text-md font-semibold">Complementary services for {service?.type}</h4>
                         {service.subcategories.map((subcategory, subIndex) => (
                             <div key={subIndex} className="flex space-x-2 mt-2">
                             <input
@@ -328,6 +373,65 @@ export const EditListerProfile = ({ thisLister }) => {
                     </button>
                 </div>
                 </div>
+            </div>
+
+            <div className="w-full">
+              <h3 className="text-md text-center font-semibold mb-2">Change Availability</h3>
+
+              <div className="w-full pb-3">
+                <label className="font-medium">Appointment time slot interval (in minutes)</label>
+                <input type="number" name="timeSlotInterval" max={6000} min={0} value={formData.timeSlotInterval} onChange={handleChange} className="border border-black rounded p-2 w-full text-xs md:text-sm" />
+              </div>
+
+              {days.map((day) => (
+                <div key={day} className="mb-4 p-3 border rounded">
+                  <h4 className="font-medium capitalize mb-2">{day}</h4>
+
+                  {formData.availability[day]?.length === 0 && (
+                    <p className="text-sm text-gray-500">Not available</p>
+                  )}
+
+                  {formData.availability[day]?.map((block, index) => (
+                    <div key={index} className="flex gap-2 items-center mb-2">
+                      <input
+                        type="time"
+                        value={block.start}
+                        onChange={(e) =>
+                          updateTimeBlock(day, index, "start", e.target.value)
+                        }
+                        className="border p-1 rounded"
+                      />
+
+                      <span>-</span>
+
+                      <input
+                        type="time"
+                        value={block.end}
+                        onChange={(e) =>
+                          updateTimeBlock(day, index, "end", e.target.value)
+                        }
+                        className="border p-1 rounded"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => removeTimeBlock(day, index)}
+                        className="text-red-500 text-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => addTimeBlock(day)}
+                    className="text-blue-500 text-sm"
+                  >
+                    Add Time Block
+                  </button>
+                </div>
+              ))}
             </div>
 
             <div className="flex justify-between w-full">

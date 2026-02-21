@@ -42,6 +42,7 @@ export default function Calendar({ isLister, editingEnabled, setSelectedDate, un
     } else {
       setSelectedDay(day);
       const selectedDate = fullDate.toISOString();
+      console.log(selectedDate);
       setSelectedDate(selectedDate); // Pass ISO format to parent
     }
   };
@@ -92,7 +93,7 @@ export default function Calendar({ isLister, editingEnabled, setSelectedDate, un
           onClick={() => setViewDate(new Date())}
           disabled={viewDate.getMonth() === new Date().getMonth()}
         >
-          Current
+          Previous
         </button>
         <div className="font-semibold text-gray-700">
           {viewDate.toLocaleString('default', { month: 'long' })} {viewDate.getFullYear()}
@@ -133,7 +134,7 @@ export default function Calendar({ isLister, editingEnabled, setSelectedDate, un
 
             if (isPast) {
               className = `${baseClass} bg-gray-300 text-gray-500 cursor-not-allowed`;
-              onClick = () => {};
+              // onClick = () => {};
             } else if (isUnavailable(day)) {
               className = `${baseClass} bg-purple-500 text-white hover:bg-red-600`;
             } else if (selectedDay === day) {

@@ -47,12 +47,13 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
         const updated = await fetch(`/api/photos/list/${thisLister._id}`);
         const imageUrl = cloudinaryData.secure_url.replace("/upload/", "/upload/h_1920,c_limit/" );
         const data = await updated.json();
-        setPosts(
+        const setPosts = () => {
           data.photos.map((photo) => ({
             url: photo.photo,
             service: photo.service,
           }))
-        );
+        };
+        setPosts();
       } else {
         console.error("Upload failed");
       }
@@ -61,12 +62,13 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
     } finally {
       setUploading(false);
       onClose();
+      window.location.reload();
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-92 relative">
+      <div className="bg-white rounded-lg shadow-lg py-6 w-92 relative">
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
           onClick={onClose}
@@ -78,28 +80,30 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
           Upload Image
         </h2>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 p-3">
           <div>
             <label
               htmlFor="service"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Assign image to:
             </label>
             <select
               id="service"
               name="service"
-              className="border border-gray-300 rounded p-2 w-full text-sm text-black"
+              className="border border-black rounded p-2 w-full text-sm text-gray-700"
               value={assignedService}
               onChange={(e) => setAssignedService(e.target.value)}
               required
             >
-              <option value="">-- Select a service --</option>
-              {thisLister?.services?.map((service, index) => (
-                <option key={index} value={service.name}>
+              <option value="">Select a service</option>
+              {thisLister?.services?.map((serviceType) =>
+              serviceType.subcategories?.map((service) => (
+                <option key={service._id} value={service.name}>
                   {service.name}
                 </option>
-              ))}
+              ))
+              )}
             </select>
           </div>
 

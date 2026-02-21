@@ -1,12 +1,12 @@
 // Lister's personal page.
 "use client";
 
-import { Information } from "@/sections/viewListerPage/Information";
-import { Hero } from "@/sections/viewListerPage/Hero";
-import { Catalog } from "@/sections/viewListerPage/Catalog";
-import { Header } from "@/sections/viewListerPage/Header";
+import { Information } from "@/sections/profilePage/Information";
+import { Hero } from "@/sections/profilePage/Hero";
+import { Catalog } from "@/sections/profilePage/Catalog";
+import { Header } from "@/sections/profilePage/Header";
 import { AppointmentForm } from "@/components/AppointmentForm";
-import { Reviews } from "@/sections/viewListerPage/Reviews";
+import { Reviews } from "@/sections/profilePage/Reviews";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useSearchParams, useRouter, redirect } from "next/navigation";
@@ -156,13 +156,19 @@ export default function listerPage ({params}) {
       </div>
       <div className="w-full pb-20">
         <Hero id={thisLister._id} thisLister={thisLister} session={session} sessionStatus={status}/>
-        <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} sessionStatus={status} posts={posts} setPosts={setPosts}/>
-        <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
+        <div className="lg:flex flex-row">
+          <div className="w-full">
+            <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} session={session} sessionStatus={status} posts={posts} setPosts={setPosts}/>
+          </div>
+          <div className="w-full">
+            <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
+          </div>
+        </div>
         {/* <Reviews reviews={reviews}/> */}
       </div>
-      <button className={formOpen ? `hidden`:`z-10 fixed bottom-10 right-3 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]`} onClick={()=>{session ? openPopup("appointment") : redirect(`/login?callbackUrl=${currentUrl}`)}}>
+      {/* <button className={formOpen ? `hidden`:`z-10 fixed bottom-10 right-3 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]`} onClick={()=>{session ? openPopup("appointment") : redirect(`/login?callbackUrl=${currentUrl}`)}}>
         {session != null ? "Request Appointment":"Login to Request"}
-      </button>
+      </button> */}
       {formOpen && thisLister && (
         <AppointmentForm
           lister={thisLister}

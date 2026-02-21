@@ -49,11 +49,11 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
 
   return (
     <section>
-      <div className="mt-2 pb-5">
+      <div className="mt-2 p-5">
         <div
           className="container mx-auto"
           style={{
-            columnCount: isMobile ? 2 : 4,
+            columnCount: isMobile ? 2 : 3,
             columnGap: "0.2rem",
           }}
         >
@@ -70,7 +70,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                   width: "100%",
                 }}
               >
-                <div className="relative w-full break-inside-avoid mb-0 rounded-lg group">
+                <div className="relative w-full break-inside-avoid rounded-lg group">
                   <Image
                     src={url}
                     alt="a lister's post"

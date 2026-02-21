@@ -42,16 +42,16 @@ export async function POST(req) {
         To: listerEmail,
         TemplateId: parseInt(process.env.POSTMARK_APPOINTMENT_REQUEST_TEMPLATE_ID),
         TemplateModel: {
-          product_name: 'etchedintara.com',
+          product_name: 'procklist.com',
           listerName,
           firstname,
           email,
           date,
           time,
           specialNote,
-          dashboardLink: `https://www.etchedintara.com/profile/${listerUsername}`,
-          company_name: "etchedintara (EIT)",
-          businessName: "EIT",
+          dashboardLink: `https://www.procklist.com/profile/${listerUsername}`,
+          company_name: "procklist",
+          businessName: "procklist",
         },
       });
     } catch (error) {
@@ -61,5 +61,34 @@ export async function POST(req) {
     return NextResponse.json({ message: "Appointment request sent", appointment: newAppointment }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
+export async function GET(req) {
+  try {
+    await connectMongoDB();
+
+    const url = new URL(req.url);
+    const listerId = url.searchParams.get("listerId");
+    const date = url.searchParams.get("date"); // 'YYYY-MM-DD'
+
+    if (!listerId || !date) {
+      return NextResponse.json({ error: "Missing listerId or date" }, { status: 400 });
+    }
+
+    // Find all appointments for that lister on that date
+    const appointments = await Appointment.find({
+      listerId,
+      date,
+      status: { $in: ["pending", "confirmed"] }, // optionally ignore cancelled
+    }).select("time");
+
+    // Return just the booked times
+    const bookedTimes = appointments.map((appt) => appt.time);
+
+    return NextResponse.json({ bookedTimes });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

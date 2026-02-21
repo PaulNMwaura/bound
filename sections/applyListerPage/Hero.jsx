@@ -1,7 +1,7 @@
 // THIS IS THE FORM COMPONENT OF THE APPLY LISTER PAGE //
 "use client";
 
-import UnavailableDaysCalendar from "@/components/AvailabilitySelectionCalendar";
+import ListerAvailabilityEditor from "@/components/ListerAvailabilityEditor";
 import ListerSetInstructions from "@/components/ListerSetInstructions";
 import { useState, useRef } from "react";
 import cloudinary from "@/lib/cloudinary";
@@ -30,9 +30,18 @@ export const Hero = ({session, status}) => {
         city: "",
         state: "",
         description: "",
-        services: [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+        services: [{ type: "", price: "", subcategories: [{ name: "", price: "", description: "" }] }],
         instructions: "",
-        unavailableDays: [],
+        availability: {
+            monday: [{ start: "", end: "" }],
+            tuesday: [{ start: "", end: "" }],
+            wednesday: [{ start: "", end: "" }],
+            thursday: [{ start: "", end: "" }],
+            friday: [{ start: "", end: "" }],
+            saturday: [{ start: "", end: "" }],
+            sunday: [{ start: "", end: "" }],
+        },
+        timeSlotInterval: "",
     });
     const [imagePreview, setImagePreview] = useState(null);
     const [cropData, setCropData] = useState(null);
@@ -101,9 +110,18 @@ export const Hero = ({session, status}) => {
         formData.city = "",
         formData.state = "",
         formData.description = "",
-        formData.services = [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+        formData.services = [{ type: "", price: "", subcategories: [{ name: "", price: "", description: "" }] }],
         formData.instructions = "",
-        formData.unavailableDays = []
+        formData.availability = {
+            monday: [{ start: "", end: "" }],
+            tuesday: [{ start: "", end: "" }],
+            wednesday: [{ start: "", end: "" }],
+            thursday: [{ start: "", end: "" }],
+            friday: [{ start: "", end: "" }],
+            saturday: [{ start: "", end: "" }],
+            sunday: [{ start: "", end: "" }],
+        },
+        formData.timeSlotInterval = "",
         setImagePreview(null);
         setCropData(null);
         setError("");
@@ -164,11 +182,11 @@ export const Hero = ({session, status}) => {
 
         const {userId, username, firstname, lastname, language, city, state, description, profilePicture, services} = formData;
 
-        const noDeclaredServices = services.some(service => !service.name.trim());
+        const noDeclaredServices = services.some(service => !service.type.trim());
 
         if(!userId || !firstname || !lastname || !city || !state || !description || !profilePicture || noDeclaredServices) {
             if(!city) {
-                setError("Please input the city you operate within.");
+                setError("Please enter the name of the city you operate within.");
                 return;
             }
             else if(!state) {
@@ -185,6 +203,14 @@ export const Hero = ({session, status}) => {
             } else {
                 setError("Missing one or more required fields.");
             }
+            return;
+        }
+
+        const hasAtLeastOneAvailableDay = Object.values(formData.availability)
+        .some(day => day.length > 0);
+
+        if (!hasAtLeastOneAvailableDay) {
+            setError("Please set at least one available day.");
             return;
         }
 
@@ -277,8 +303,8 @@ export const Hero = ({session, status}) => {
                 <div className="flex flex-col md:flex-row md:justify-between gap-4">
                     <div className="w-full md:px-4 md:rounded-b-lg">
                         <label className="block text-sm font-medium">About Me</label>
-                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={300} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
-                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/300 Characters</div>
+                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={500} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
+                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/500 Characters</div>
                     </div>
 
                     {/* Service Section */}
@@ -290,65 +316,68 @@ export const Hero = ({session, status}) => {
                             {/* Service Name */}
                             <input
                                 type="text"
-                                placeholder="Service (e.g., Haircuts)"
-                                value={service.name}
+                                placeholder="Service Catergory"
+                                value={service.type}
                                 onChange={(e) => {
                                 const newServices = [...formData.services];
-                                newServices[serviceIndex].name = e.target.value;
+                                newServices[serviceIndex].type = e.target.value;
                                 setFormData({ ...formData, services: newServices });
                                 }}
                                 className="border border-black p-2 rounded w-full"
                                 required
                             />
 
-                            {/* Service Price */}
-                            <input
-                                type="text"
-                                placeholder="Service Price"
-                                value={service.price}
-                                onChange={(e) => {
-                                const newServices = [...formData.services];
-                                newServices[serviceIndex].price = e.target.value;
-                                setFormData({ ...formData, services: newServices });
-                                }}
-                                className="border border-black p-2 rounded w-full mt-2"
-                            />
-
                             {/* Subcategories - Only Show If There Is At Least One */}
-                            {service.subcategories.length > 0 && (
+                            {service.type && (
                                 <div className="mt-2">
-                                <h4 className="text-md font-semibold">Complementary services for {service?.name}</h4>
+                                <h4 className="text-md font-semibold">Services for {service?.type}</h4>
                                 {service.subcategories.map((subcategory, subIndex) => (
-                                    <div key={subIndex} className="flex space-x-2 mt-2">
-                                    <input
-                                        type="text"
-                                        placeholder="Add-on service"
-                                        value={subcategory.name}
-                                        onChange={(e) => {
-                                        const newServices = [...formData.services];
-                                        newServices[serviceIndex].subcategories[subIndex].name = e.target.value;
-                                        setFormData({ ...formData, services: newServices });
-                                        }}
-                                        className="border border-black p-2 rounded w-1/2"
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Price"
-                                        value={subcategory.price}
-                                        onChange={(e) => {
-                                        const newServices = [...formData.services];
-                                        newServices[serviceIndex].subcategories[subIndex].price = e.target.value;
-                                        setFormData({ ...formData, services: newServices });
-                                        }}
-                                        className="border border-black p-2 rounded w-1/2"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => removeSubcategory(serviceIndex, subIndex)}
-                                        className="text-red-500"
-                                    >
-                                        Remove
-                                    </button>
+                                    <div key={subIndex}>
+                                        <div className="flex space-x-2 mt-2">
+                                            <input
+                                                type="text"
+                                                placeholder="Name"
+                                                value={subcategory.name}
+                                                onChange={(e) => {
+                                                const newServices = [...formData.services];
+                                                newServices[serviceIndex].subcategories[subIndex].name = e.target.value;
+                                                setFormData({ ...formData, services: newServices });
+                                                }}
+                                                className="border border-black p-2 rounded w-1/2"
+                                            />
+                                            <input
+                                                type="number"
+                                                min={0}
+                                                placeholder="Price"
+                                                value={subcategory.price}
+                                                onChange={(e) => {
+                                                const newServices = [...formData.services];
+                                                newServices[serviceIndex].subcategories[subIndex].price = e.target.value;
+                                                setFormData({ ...formData, services: newServices });
+                                                }}
+                                                className="border border-black p-2 rounded w-1/2"
+                                            />
+                                        </div>
+                                        <textarea 
+                                            type="text"
+                                            className="mt-2 border border-black p-2 w-full" 
+                                            value={subcategory.description}
+                                            onChange={(e) => {
+                                            const newServices = [...formData.services];
+                                            newServices[serviceIndex].subcategories[subIndex].description = e.target.value;
+                                            setFormData({ ...formData, services: newServices });
+                                            }}
+                                            placeholder="Describe what a client should expect"
+                                        />
+                                        <div className="flex justify-end">
+                                            <button
+                                                type="button"
+                                                onClick={() => removeSubcategory(serviceIndex, subIndex)}
+                                                className="text-red-500 text-end"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                                 </div>
@@ -359,10 +388,10 @@ export const Hero = ({session, status}) => {
                                 <div>
                                 <button
                                     type="button"
-                                    onClick={() => addSubcategory(serviceIndex)}
-                                    className="btn text-sm "
+                                    onClick={() => {service.type ? addSubcategory(serviceIndex) : null}}
+                                    className="btn text-sm cursor-pointer"
                                 >
-                                    Add a complementary service
+                                    {service.type ? `Add service for ${service.type}` : "Add a service"}
                                 </button>
                                 </div>
                                 <div>
@@ -383,14 +412,13 @@ export const Hero = ({session, status}) => {
                         </div>
                     </div>
                 </div>
-
-
-                {/* Calendar Component to Select Unavailable Days */}
-                {/* <div className="mt-4">
-                    <h3 className="text-lg font-semibold text-center py-2">Set your availability for this month</h3>
-                    <UnavailableDaysCalendar unavailableDays={formData.unavailableDays} onUnavailableDaysChange={handleUnavailableDaysChange} />
+                
+                {/* Availability Editor */}
+                <ListerAvailabilityEditor availability={formData.availability} setFormData={setFormData} />
+                <div className="w-full py-3">
+                    <label className="font-medium">Appointment time slot interval (in minutes)</label>
+                    <input type="number" name="timeSlotInterval" max={6000} min={0} value={formData.timeSlotInterval} onChange={handleChange} className="border border-black rounded p-2 w-full text-xs md:text-sm" />
                 </div>
-                <h3 className="mt-4 mb-5 text-center font-normal">After registration, you can always make changes to this information in your profile settings accessible through settings</h3> */}
                 
                 {/* Submit Button */}
                 <div className="flex flex-col">
