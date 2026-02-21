@@ -31,6 +31,7 @@ const ListerSchema = new mongoose.Schema ({
         saturday: [{ start: String, end: String }],
         sunday: [{ start: String, end: String }],
     },
+    timeSlotInterval: {type: Number},
 });
 
 export default mongoose.models.Lister || mongoose.model("Lister", ListerSchema);

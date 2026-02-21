@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import TimeSelection from "@/components/TimeSelection";
 import Calendar from "@/components/Calendar";
 
-export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing, sessionStatus}) => {
+export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing, session}) => {
   const [selectedService, setSelectedService] = useState({name: "", price: ""});
   const [openForm, setOpen] = useState(false);
   const [dateSelected, setDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [specialNote, setNote] = useState(null);
   const router = useRouter();
 
   const handleTabChange = (string) => {
@@ -23,6 +24,45 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
   const handleApplicationFormOpen = (object) => {
     setOpen(true);
     setSelectedService(object);
+  };
+
+  const handleAppointmentRequest = async (e, listerId, firstname, lastname, email, selectedDate, selectedTime, selectedServices, listerEmail, listerName, listerUsername, specialNote) => {
+    e.preventDefault();
+
+    console.log("SELECTED TIME: ", selectedTime);
+    return;
+    const formattedTime = formatTimeTo12Hour(selectedTime);
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          listerId,
+          listerEmail,
+          listerName,
+          listerUsername,
+          firstname,
+          lastname,
+          email,
+          date: selectedDate,
+          time: formattedTime,
+          services: selectedServices,
+          specialNote,
+        }),
+      });
+
+      const data = await response.json();
+      setAlertOpen(true);
+      if (response.ok) {
+        setError("Your appointment has been requested.")
+      } else {
+        setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment.", response.error);
+      }
+    } catch (error) {
+      setAlertOpen(true);
+      console.error(error);
+      setError("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -79,16 +119,15 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
               <button type="button" onClick={() => setOpen(false)} className="px-1 border border-white rounded-lg">x</button>
             </div> 
             <div className="p-2 flex flex-col gap-2">
+              <a className="font-bold">
+                Cost: <span className="font-normal">${selectedService.price}</span>
+              </a>
               {thisLister.instructions && (
                 <div className="flex flex-col">
-                  <label className="w-full border-b border-black/30">Note from {thisLister.firstname}</label>
+                  <label className="w-full border-b border-black/30 font-bold">Note from {thisLister.firstname}</label>
                   <a className="mt-1 text-xs max-w-[600px]">"{thisLister.instructions}"</a>
                 </div>
               )}
-              <a>
-                Cost: <span>${selectedService.price}</span>
-              </a>
-              <a>Duration: </a>
             </div>
             <div className="p-2">
               <Calendar isLister={thisLister} editingEnabled={false} setSelectedDate={setDate} unavailableDays={[]} onAvailabilityChange={null}/>
@@ -101,15 +140,36 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
                   onSelectTime={setSelectedTime}
                   listerId={thisLister._id}
                   availability={thisLister.availability}
+                  timeSlotInterval={thisLister.timeSlotInterval}
                 />
               </div>
-            )}     
+            )}
+
+            <div className="p-2">
+              <a className="font-bold">Anything you would like John to know?</a>
+              <textarea name="specialNote" className="w-full border border-black p-2 text-xs rounded-sm" placeholder="Leave a message here" onChange={(e) => setNote(e.target.value)}/>
+            </div>     
             
             <div className="flex justify-center p-2">
-              <button className="btn btn-primary w-full">
+              {/* MAYBE BEFORE REQUESTING THE APPOINTMENT THERE SHOULD BE A CONFIRMATION BOX */}
+              <button type="button" className="btn btn-primary w-full" onClick={(e) => handleAppointmentRequest(e,
+                thisLister._id, 
+                session.user.firstname,
+                session.user.lastname,
+                session.user.email,
+                dateSelected,
+                selectedTime,
+                selectedService,
+                thisLister.email,
+                thisLister.firstname,
+                thisLister.username,
+                specialNote,
+              )}
+              >
                 Request Appointment
               </button>
             </div>
+            
           </form>
         </div>
       )}

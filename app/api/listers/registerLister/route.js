@@ -11,7 +11,7 @@ export async function POST(req) {
     const body = await req.json();
 
     // Ensure required fields are present
-    if ( !body.userId || !body.firstname || !body.lastname || !body.city || !body.state || !body.description || !body.availability ) {
+    if ( !body.userId || !body.firstname || !body.lastname || !body.city || !body.state || !body.description || !body.availability || !body.timeSlotInterval ) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -32,6 +32,7 @@ export async function POST(req) {
       services: body.services || [], // Optional services field (empty array if not provided)
       instructions: body.instructions || "", // Optional instructions field
       availability: body.availability,
+      timeSlotInterval: body.timeSlotInterval,
     });
 
     // Save the Lister document to the database

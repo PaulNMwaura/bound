@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState } from "react";
 
-export default function TimeSelection({ dateSelected, selectedTime, onSelectTime, listerId, availability }) {
+export default function TimeSelection({ dateSelected, selectedTime, onSelectTime, listerId, availability, timeSlotInterval }) {
   const [bookedTimes, setBookedTimes] = useState([]);
 
   // Fetch booked times for the selected date
@@ -36,6 +36,7 @@ export default function TimeSelection({ dateSelected, selectedTime, onSelectTime
     const dayRanges = availability[dayName] || [];
 
     // Loop through each availability range
+    const intervalMinutes = Number(timeSlotInterval) || 30;
     dayRanges.forEach(range => {
       const [startHour, startMin] = range.start.split(":").map(Number);
       const [endHour, endMin] = range.end.split(":").map(Number);
@@ -46,12 +47,12 @@ export default function TimeSelection({ dateSelected, selectedTime, onSelectTime
       const endSlot = new Date(selectedDate);
       endSlot.setHours(endHour, endMin, 0, 0);
 
-      while (slot < endSlot) {
+      while (slot.getTime() + intervalMinutes * 60000 <= endSlot.getTime()) {
         const timeString = slot.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
         // Skip past times if today
         if (selectedDate.getTime() === today.getTime() && slot <= now) {
-          slot.setMinutes(slot.getMinutes() + 30);
+          slot.setMinutes(slot.getMinutes() + timeSlotInterval);
           continue;
         }
 
@@ -60,7 +61,7 @@ export default function TimeSelection({ dateSelected, selectedTime, onSelectTime
           result.push(timeString);
         }
 
-        slot.setMinutes(slot.getMinutes() + 30); // 30-min interval
+        slot.setMinutes(slot.getMinutes() + timeSlotInterval); // 30-min interval
       }
     });
 

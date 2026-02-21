@@ -7,7 +7,7 @@ export async function POST(req) {
     await connectMongoDB();
 
     const body = await req.json();
-    const { bannerPicture, username, firstname, lastname, language, profilePicture, listerId, city, state, description, services, instructions, availability } = body;
+    const { bannerPicture, username, firstname, lastname, language, profilePicture, listerId, city, state, description, services, instructions, availability, timeSlotInterval } = body;
 
     const updateData = {};
 
@@ -23,6 +23,7 @@ export async function POST(req) {
     if (services) updateData.services = services;
     if (availability) updateData.availability = availability;
     if (instructions) updateData.instructions = instructions;
+    if (timeSlotInterval) updateData.timeSlotInterval = timeSlotInterval;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json({ message: "No fields to update." }, { status: 400 });

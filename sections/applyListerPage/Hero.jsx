@@ -41,6 +41,7 @@ export const Hero = ({session, status}) => {
             saturday: [{ start: "", end: "" }],
             sunday: [{ start: "", end: "" }],
         },
+        timeSlotInterval: "",
     });
     const [imagePreview, setImagePreview] = useState(null);
     const [cropData, setCropData] = useState(null);
@@ -120,6 +121,7 @@ export const Hero = ({session, status}) => {
             saturday: [{ start: "", end: "" }],
             sunday: [{ start: "", end: "" }],
         },
+        formData.timeSlotInterval = "",
         setImagePreview(null);
         setCropData(null);
         setError("");
@@ -410,9 +412,13 @@ export const Hero = ({session, status}) => {
                         </div>
                     </div>
                 </div>
-
+                
                 {/* Availability Editor */}
                 <ListerAvailabilityEditor availability={formData.availability} setFormData={setFormData} />
+                <div className="w-full py-3">
+                    <label className="font-medium">Appointment time slot interval (in minutes)</label>
+                    <input type="number" name="timeSlotInterval" max={6000} min={0} value={formData.timeSlotInterval} onChange={handleChange} className="border border-black rounded p-2 w-full text-xs md:text-sm" />
+                </div>
                 
                 {/* Submit Button */}
                 <div className="flex flex-col">

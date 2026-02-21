@@ -70,9 +70,9 @@ export default function ListerAvailabilityEditor({ availability, setFormData }) 
               <button
                 type="button"
                 onClick={() => addRange(day)}
-                className="text-sm text-blue-600"
+                className="text-sm text-blue-600 cursor-pointer"
               >
-                + Add Time Range
+                + Add Time Block
               </button>
             </div>
 
