@@ -1,17 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import TimeSelection from "@/components/TimeSelection";
 import Calendar from "@/components/Calendar";
 
-export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing, session}) => {
+export const Information = ({id, isLister, thisLister, editingEnabled, toggleEditing, session, sessionStatus}) => {
   const [selectedService, setSelectedService] = useState({name: "", price: ""});
   const [openForm, setOpen] = useState(false);
   const [dateSelected, setDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [specialNote, setNote] = useState(null);
   const router = useRouter();
+  const callbackUrl = window.location.href;
 
   const handleTabChange = (string) => {
     setTab(string);
@@ -28,10 +29,6 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
 
   const handleAppointmentRequest = async (e, listerId, firstname, lastname, email, selectedDate, selectedTime, selectedServices, listerEmail, listerName, listerUsername, specialNote) => {
     e.preventDefault();
-
-    console.log("SELECTED TIME: ", selectedTime);
-    return;
-    const formattedTime = formatTimeTo12Hour(selectedTime);
     try {
       const response = await fetch("/api/appointments", {
         method: "POST",
@@ -45,31 +42,35 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
           lastname,
           email,
           date: selectedDate,
-          time: formattedTime,
+          time: selectedTime,
           services: selectedServices,
           specialNote,
         }),
       });
 
       const data = await response.json();
-      setAlertOpen(true);
+      // setAlertOpen(true);
       if (response.ok) {
-        setError("Your appointment has been requested.")
+        // setError("Your appointment has been requested.")
+        alert("Your appointment has been requested.")
       } else {
-        setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment.", response.error);
+        // setError("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment.", response.error);
+        alert("Something went wrong. Make sure you have selected a date, time, and service/s before requesting an appointment.", response.error);
       }
+      setOpen(false);
     } catch (error) {
-      setAlertOpen(true);
+      // setAlertOpen(true);
       console.error(error);
-      setError("Something went wrong. Please try again.");
+      // setError("Something went wrong. Please try again.");
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <section className="container text-sm sm:text-[16px] text-black pb-4">
-      <div className="flex flex-col items-center">
+    <section className="text-sm text-black pb-4">
+      <div className="flex flex-col items-center p-2">
         <strong className="p-2">Services</strong>
-        <div className="w-150 bg-[#d6ffe7] rounded-md ">
+        <div className="w-fit bg-[#d6ffe7] rounded-md ">
           {thisLister.services.map((service, index) => (
             <div key={index} className="relative group p-3">
               <div className="flex justify-between border-b border-black/35"> 
@@ -82,7 +83,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
               </div>
               {service.subcategories.map((service, jndex) => (
                 <div key={jndex} className="py-2 hover:scale-[1.01] cursor-default duration-100">
-                  <div className="flex justify-between"> 
+                  <div className="flex justify-between items-center gap-2"> 
                     <div className="w-full">
                       <div className="tracking-wide">
                         {service.name} - ${service.price}
@@ -107,11 +108,11 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
       </div>
       {openForm && (
         <div
-          className="fixed inset-0 backdrop-blur-md bg-black/2 flex items-center justify-center z-10"
+          className="fixed inset-0 backdrop-blur-md bg-black/2 flex items-center justify-center z-10 p-2"
           onClick={() => setOpen(false)}
         >
           <form 
-            className="bg-white shadow-[0_35px_35px_rgba(0,0,0,0.25)] rounded-sm min-w-[400px] h-fit flex flex-col gap-2 items- text-black pb-7" 
+            className="bg-white shadow-[0_35px_35px_rgba(0,0,0,0.25)] rounded-sm h-fit flex flex-col gap-2 items- text-black pb-7" 
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full flex justify-between items-center p-3 gap-2 bg-black text-white rounded-t-sm">
@@ -133,7 +134,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
               <Calendar isLister={thisLister} editingEnabled={false} setSelectedDate={setDate} unavailableDays={[]} onAvailabilityChange={null}/>
             </div>
             { dateSelected && (
-              <div className="p-2">
+              <div className="w-full max-w-full overflow-hidden">
                 <TimeSelection
                   dateSelected={dateSelected}
                   selectedTime={selectedTime}
@@ -152,21 +153,23 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
             
             <div className="flex justify-center p-2">
               {/* MAYBE BEFORE REQUESTING THE APPOINTMENT THERE SHOULD BE A CONFIRMATION BOX */}
-              <button type="button" className="btn btn-primary w-full" onClick={(e) => handleAppointmentRequest(e,
+              <button type="button" className="btn btn-primary w-full" onClick={(e) => {sessionStatus=="authenticated" ? handleAppointmentRequest(e,
                 thisLister._id, 
                 session.user.firstname,
                 session.user.lastname,
                 session.user.email,
                 dateSelected,
                 selectedTime,
-                selectedService,
+                selectedService.name,
                 thisLister.email,
                 thisLister.firstname,
                 thisLister.username,
                 specialNote,
-              )}
+              ):(
+                router.push(`/login?callbackUrl=${callbackUrl}`)
+              ) }}
               >
-                Request Appointment
+                {sessionStatus=="authenticated" ? "Request Appointment":"Login to request appointment"}
               </button>
             </div>
             

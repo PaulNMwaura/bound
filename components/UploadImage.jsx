@@ -80,26 +80,26 @@ export function UploadImage({ isOpen, onClose, thisLister, setPosts }) {
           Upload Image
         </h2>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 p-3">
           <div>
             <label
               htmlFor="service"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-black mb-1"
             >
               Assign image to:
             </label>
             <select
               id="service"
               name="service"
-              className="border border-gray-300 rounded p-2 w-full text-sm text-black"
+              className="border border-black rounded p-2 w-full text-sm text-gray-700"
               value={assignedService}
               onChange={(e) => setAssignedService(e.target.value)}
               required
             >
               <option value="">Select a service</option>
-              {thisLister?.services?.flatMap((serviceType) =>
-              serviceType.subcategories?.map((service, index) => (
-                <option key={index} value={service.name}>
+              {thisLister?.services?.map((serviceType) =>
+              serviceType.subcategories?.map((service) => (
+                <option key={service._id} value={service.name}>
                   {service.name}
                 </option>
               ))

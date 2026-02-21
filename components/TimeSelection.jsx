@@ -69,27 +69,30 @@ export default function TimeSelection({ dateSelected, selectedTime, onSelectTime
   }, [dateSelected, availability, bookedTimes]);
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 flex flex-col items-center">
       <p className="font-bold tracking-wider mb-2 text-center">Available Times to Book</p>
 
       {times.length === 0 ? (
         <p className="text-sm text-gray-500">No available times</p>
       ) : (
-        <div className="max-w-[700px] flex overflow-x-auto gap-3 pb-2 snap-x snap-mandatory">
-          {times.map((time) => (
-            <button
-              type="button"
-              key={time}
-              onClick={() => onSelectTime(time)}
-              className={`snap-start whitespace-nowrap px-4 py-2 rounded-md border text-sm transition-all duration-200
-                ${selectedTime === time
-                  ? "bg-blue-500 text-white"
-                  : "bg-white text-black border-gray-300 hover:bg-orange-500"
-                }`}
-            >
-              {time}
-            </button>
-          ))}
+        <div className="w-[400px] max-w-fit overflow-x-auto">
+          <div className="flex w-max gap-3 pb-2 snap-x snap-mandatory">
+            {times.map((time) => (
+              <button
+                type="button"
+                key={time}
+                onClick={() => onSelectTime(time)}
+                className={`snap-start shrink-0 whitespace-nowrap px-4 py-2 rounded-md border text-sm transition-all duration-200
+                  ${
+                    selectedTime === time
+                      ? "bg-blue-500 text-white"
+                      : "bg-white text-black border-gray-300 hover:bg-orange-500"
+                  }`}
+              >
+                {time}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>
