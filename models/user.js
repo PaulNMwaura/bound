@@ -10,11 +10,13 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true},
   password: { type: String, required: true },
   profilePicture: { type: String, default: "" },
+  acceptedTerms: { type: Boolean, default: false },
   priceId: { type: String },
   customerId: { type: String },
   verified: { type: Boolean, default: false },
   emailVerificationToken: { type: String },
   emailVerificationTokenExpiry: { type: Date },
+  acceptedTermsAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
 });
 
