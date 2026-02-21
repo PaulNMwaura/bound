@@ -34,6 +34,7 @@ export default function RegisterForm() {
   const [error, setError] = useState("");
   const [cropData, setCropData] = useState(null);
   const [rawImageFile, setRawImageFile] = useState(null);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const router = useRouter();
   const cropperRef = useRef(null);
@@ -74,7 +75,7 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const {username, firstname, lastname, phone, email, password, profilePicture } = formData;
+    const {username, firstname, lastname, phone, email, password, profilePicture, acceptedTerms } = formData;
     
     if (!username || !firstname || !lastname || !phone || !email || !password) {
       setError("All fields are necessary.");
@@ -135,6 +136,7 @@ export default function RegisterForm() {
           email,
           password,
           profilePicture: finalImageURL,
+          acceptedTerms,
         }),
       });
   
@@ -158,7 +160,9 @@ export default function RegisterForm() {
       phone: "",
       email: "",
       password: "",
+      acceptedTerms: false,
     });
+    setAcceptedTerms(false);
     setImagePreview(DEFAULT_IMAGE);
     setCropData(null);
     setError("");
@@ -266,7 +270,29 @@ export default function RegisterForm() {
             <input name="password" type="password" value={formData.password} className="w-full border rounded px-3 py-2 mt-1" onChange={handleChange} />
           </div>
 
-          <button type="submit" className="btn-primary-alt px-4 py-2 rounded w-full">
+          <div className="flex items-start gap-2 mb-1">
+            <input name="terms" type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(true)} className="mt-1"/>
+            <label htmlFor="terms" className="text-sm">
+              By checking, I agree to the{" "}
+              <a
+                href="/terms"
+                target="_blank"
+                className="text-blue-600 underline"
+              >
+                User Terms & Conditions
+              </a>
+              {" "}and affirm that I have reviewed the{" "}
+              <a
+                href="/privacy"
+                target="_blank"
+                className="text-blue-600 underline"
+              >
+                Privacy Policy
+              </a>
+            </label>
+          </div>
+          
+          <button type="submit" className="btn-primary-alt px-4 py-2 rounded w-full disabled:opacity-50" disabled={!acceptedTerms}>
             Sign Up
           </button>
 

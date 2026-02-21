@@ -21,8 +21,8 @@ export const metadata: Metadata = {
       href: "/images/favicon.ico",
     }]
   },
-  title: "Etchedintara",
-  description: "Etchedintara (EIT) is a dynamic platform for service freelancers looking to create and grow their online presence. Whether you're building a side hustle or a full-time career, EIT helps freelancers market their services effectively and gain visibility on the web. Helping you do what you do, but do it precisely.",
+  title: "PROCKLIST",
+  description: "Procklist is a dynamic platform for independent service providers looking to create and grow their online presence. Whether you're building a side hustle or a full-time career, Procklist helps freelancers market their services effectively and gain visibility on the web. Helping you do what you do, but do it precisely.",
 };
 
 export default function RootLayout({

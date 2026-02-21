@@ -9,9 +9,13 @@ import postmarkClient from "@/lib/postmark";
 export async function POST(req) {
     try {
         await connectMongoDB();
-        const {username, firstname, lastname, phone, email, password, profilePicture} = await req.json();
+        const {username, firstname, lastname, phone, email, password, profilePicture, acceptedTerms} = await req.json();
 
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+
+        if (acceptedTerms) {
+            return NextResponse.json( { error: "You must accept the Terms & Conditions." }, { status: 400 } );
+        }
 
         if (existingUser) {
             return NextResponse.json({ message: "Username or email already exists." }, { status: 400 });
@@ -29,7 +33,8 @@ export async function POST(req) {
             phone, 
             email, 
             password: hashedPass, 
-            profilePicture, 
+            profilePicture,
+            acceptedTerms: true, 
             verified: false,
             emailVerificationToken: token,
             emailVerificationTokenExpiry: expiry,
