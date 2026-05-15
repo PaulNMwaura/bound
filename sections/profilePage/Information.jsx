@@ -70,7 +70,7 @@ export const Information = ({id, isLister, thisLister, editingEnabled, toggleEdi
     <section className="text-sm text-black pb-4">
       <div className="flex flex-col items-center p-2">
         <strong className="p-2">Services</strong>
-        <div className="w-fit bg-[#d6ffe7] rounded-md ">
+        <div className="w-full md:w-1/2 bg-[#d6ffe7] rounded-md ">
           {thisLister.services.map((service, index) => (
             <div key={index} className="relative group p-3">
               <div className="flex justify-between border-b border-black/35"> 

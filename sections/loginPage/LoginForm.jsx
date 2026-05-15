@@ -31,7 +31,7 @@ export default function LoginForm(){
     const [error, setError] = useState("");
     const [loggingIn, setLoggingIn] = useState(false);
     const searchParams = useSearchParams();
-    const callBackUrl = searchParams.get("callbackUrl") || "/";
+    const callBackUrl = searchParams.get("callbackUrl") || "/?l=1";
 
     const router = useRouter();
 

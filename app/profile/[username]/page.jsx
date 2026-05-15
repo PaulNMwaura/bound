@@ -160,9 +160,11 @@ export default function listerPage ({params}) {
           <div className="w-full">
             <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} session={session} sessionStatus={status} posts={posts} setPosts={setPosts}/>
           </div>
-          <div className="w-full">
-            <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
-          </div>
+          {posts.length > 0 && (
+            <div className="w-full">
+              <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
+            </div>
+          ) }
         </div>
         {/* <Reviews reviews={reviews}/> */}
       </div>

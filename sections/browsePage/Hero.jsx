@@ -28,6 +28,7 @@ const getListers = async ({ city = "", state = "", service = "", page = 1, limit
 
 export const Hero = ({session}) => {
     const searchParams = useSearchParams();
+    const justLoggedIn = searchParams.get("l");
     const [filters, setFilters] = useState({
         city: searchParams.get("city") || "",
         state: searchParams.get("state") || "",
@@ -52,10 +53,10 @@ export const Hero = ({session}) => {
             ]);
             setTotalPages(totalPages);
             setCountListers(totalCount);
-            setLoading(false);
-        };
-
+          };
+          
         fetchListers();
+        setLoading(false); // -> will need to work on this, change to lazy loading
     }, [filters, page]);
 
     useEffect(() => {
@@ -78,17 +79,16 @@ export const Hero = ({session}) => {
                 setLister(true);
             } catch (error) {
                 return;
-            } finally {
-                setLoading(false);
             }
         };
-
         checkIfIsLister();
     }, [id]);
 
     let sessionStatus = "";
 
     if(!session) sessionStatus = "unauthenticated";
+    if(justLoggedIn && isLister && username)
+      redirect(`/dashboard/${username}`);
     if (loading && page === 1) return <div className="heads-up">Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
