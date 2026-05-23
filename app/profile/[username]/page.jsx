@@ -157,11 +157,11 @@ export default function listerPage ({params}) {
       <div className="w-full pb-20">
         <Hero id={thisLister._id} thisLister={thisLister} session={session} sessionStatus={status}/>
         <div className="lg:flex flex-row">
-          <div className="w-full">
+          <div className="w-full lg:w-3/8">
             <Information id={thisLister._id} isLister={isLister} thisLister={thisLister} editingEnabled={editingEnabled} toggleEditing={toggleEditing} session={session} sessionStatus={status} posts={posts} setPosts={setPosts}/>
           </div>
           {posts.length > 0 && (
-            <div className="w-full">
+            <div className="w-full lg:w-5/8">
               <Catalog firstname={thisLister.firstname} isLister={isLister} thisLister={thisLister} posts={posts} setPosts={setPosts}/>
             </div>
           ) }

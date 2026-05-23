@@ -77,6 +77,7 @@ export const Catalog = ({ firstname, isLister, thisLister, posts, setPosts }) =>
                     width={360}
                     height={640}
                     className="object-contain rounded-lg cursor-pointer"
+                    loading="eager"
                     onClick={() => setSelectedImage(url)}
                   />
 

@@ -228,7 +228,7 @@ export const EditListerProfile = ({ thisLister }) => {
                     type="file"
                     accept="image/*"
                     ref={fileInputRef}
-                    //   onChange={handleImageUpload}
+                      // onChange={handleImageUpload}
                     className="hidden"
                     id="upload-input"
                     />
@@ -309,8 +309,8 @@ export const EditListerProfile = ({ thisLister }) => {
                         <div className="mt-2">
                         <h4 className="text-md font-semibold">Complementary services for {service?.type}</h4>
                         {service.subcategories.map((subcategory, subIndex) => (
-                          <div>
-                            <div key={subIndex} className="flex space-x-2 mt-2">
+                          <div  key={subIndex}>
+                            <div className="flex space-x-2 mt-2">
                             <input
                                 type="text"
                                 placeholder="Add-on service"
