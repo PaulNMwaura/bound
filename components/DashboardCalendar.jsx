@@ -1,20 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
+import { AppointmentForm } from "./AppointmentForm";
 
 
-export default function Calendar({ appointments, listerId }) {
+export default function Calendar({ appointments, listerId, thisLister, session }) {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()); // 0-based index
   const [calendar, setCalendar] = useState({ daysInMonth: [], startDay: 0 });
   const [acceptedAppointments, setAcceptedAppointments] = useState({});
   const [selectedDay, setSelectedDay] = useState(null);
+
   const router = useRouter();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
+  
   useEffect(() => {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const startDay = new Date(currentYear, currentMonth, 1).getDay();
@@ -116,9 +118,9 @@ export default function Calendar({ appointments, listerId }) {
               <div key={day} className="relative">
                 <div
                   className={`relative h-12 md:h-16 lg:h-20 border rounded-lg flex items-start p-2 text-xs md:text-sm cursor-pointer
-                    ${isPastDay ? "bg-gray-100 text-gray-500 cursor-not-allowed" : "bg-white text-gray-700 border-gray-300"}
+                    ${isPastDay ? "bg-gray-100 text-gray-500 cursor-not-allowed" : "text-gray-700 border-gray-300"}
                     ${acceptedAppointments[day] ? "border-blue-400" : ""}
-                    ${selectedDay === day ? "bg-blue-300" : ""}`}
+                    ${selectedDay === day ? "bg-black text-white" : ""}`}
                   onClick={() => !isPastDay && setSelectedDay(day)}
                 >
                   <span className="font-medium">{day}</span>
@@ -171,7 +173,13 @@ export default function Calendar({ appointments, listerId }) {
             );
           })
         ) : (
-          <p className="text-gray-500">Click a date to view your upcoming appointments.</p>
+          <div>
+            <p className="text-gray-500">Click a date to view upcoming appointments.</p>
+            <div className="flex justify-center">
+              <button type="button" className="mt-4 btn btn-primary" onClick={() => redirect(`/createAppointment/${thisLister.username}`)}>Create new appointment</button>  
+              {/* before redirecting, choose service */}
+            </div>
+          </div>
         )}
       </div>
     </section>

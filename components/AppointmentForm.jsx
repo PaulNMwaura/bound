@@ -19,6 +19,12 @@ export function AppointmentForm({ lister, formData, onChange, onClose, onSubmit,
   const [error, setError] = useState(null);
   const handleAppointmentRequest = async (e, listerId, firstname, lastname, email, selectedDate, selectedTime, selectedServices, listerEmail, listerName, listerUsername, specialNote) => {
     e.preventDefault();
+
+    if (!selectedTime) {
+      setError("Please select a time.");
+      return;
+    }
+    
     const formattedTime = formatTimeTo12Hour(selectedTime);
     try {
       const response = await fetch("/api/appointments", {

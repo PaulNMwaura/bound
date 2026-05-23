@@ -75,7 +75,7 @@ export default function TimeSelection({ dateSelected, selectedTime, onSelectTime
       {times.length === 0 ? (
         <p className="text-sm text-gray-500">No available times</p>
       ) : (
-        <div className="w-[400px] max-w-fit overflow-x-auto">
+        <div className="w-9/10 max-w-fit overflow-x-auto">
           <div className="flex w-max gap-3 pb-2 snap-x snap-mandatory">
             {times.map((time) => (
               <button

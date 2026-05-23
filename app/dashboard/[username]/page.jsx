@@ -50,17 +50,18 @@ export default async function Dashboard({ params }) {
   
   if(!session)
     return <div className="heads-up">Loading...</div>;
-
+  
   if(!lister)
     return notFound();
   
-  const thisListerId = lister._id.toString();
+  // const thisListerId = lister._id.toString();
+  const thisLister = JSON.parse(JSON.stringify(lister));
 
   if (session.user.id !== lister.userId.toString()) {
     return redirect("/unauthorized");
   }
-
-  const appointments = await getAppointments(thisListerId);
+  
+  const appointments = await getAppointments(thisLister._id);
 
   return (
     <div className="flex flex-row bg-white text-black">
@@ -69,8 +70,8 @@ export default async function Dashboard({ params }) {
       </div>
       <div className="md:ml-44 lg:ml-60 flex flex-col w-full">
         <Header session={session} profilePicture={lister.profilePicture} />
-        <Calendar appointments={appointments} listerId={thisListerId} />
-        <Hero appointments={appointments} listerId={thisListerId} session={session} />
+        <Calendar appointments={appointments} listerId={thisLister._id} thisLister={thisLister} session={session} />
+        <Hero appointments={appointments} listerId={thisLister._id} session={session} />
       </div>
     </div>
   );

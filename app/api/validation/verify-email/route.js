@@ -26,5 +26,5 @@ export async function GET(req) {
   user.emailVerificationTokenExpiry = undefined;
   await user.save();
 
-  return NextResponse.redirect(`${process.env.NEXTAUTH_URL}login`);
+  return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
 }

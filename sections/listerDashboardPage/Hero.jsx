@@ -7,9 +7,9 @@ export const Hero = ({appointments, listerId, session}) => {
     const handleAction = async (appointmentId, date, time, status, firstname, lastname, email, specialNote) => {
         const formattedDate = new Date(date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
         const response = await fetch(`/api/appointments/${listerId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ appointmentId, date, formattedDate, time, status, firstname, lastname, email, specialNote }),
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ appointmentId, date, formattedDate, time, status, firstname, lastname, email, specialNote }),
         });
 
         if (!response.ok) {

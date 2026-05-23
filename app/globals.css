@@ -70,7 +70,7 @@ body {
 }
 
 .btn-primary-alt {
-  @apply bg-black text-white dark:bg-white dark:text-black;
+  @apply bg-black text-white hover:bg-blue-500 hover:text-white cursor-pointer dark:bg-white dark:text-black;
 }
 .btn-text {
   @apply text-black dark:text-white bg-transparent;

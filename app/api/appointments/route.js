@@ -8,6 +8,7 @@ export async function POST(req) {
   try {
     await connectMongoDB();
     const { listerId, listerEmail, listerName, listerUsername, firstname, lastname, email, date, time, services, specialNote } = await req.json();
+    
     if (!listerId || !listerEmail || !listerName || !listerUsername || !firstname || !lastname || !email || !date || !time || services.length === 0) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
@@ -55,7 +56,7 @@ export async function POST(req) {
         },
       });
     } catch (error) {
-      throw new Error("Email failed:", error);
+      return NextResponse.json({ message:"Email failed:"}, {status: 501});
     }
 
     return NextResponse.json({ message: "Appointment request sent", appointment: newAppointment }, { status: 200 });
