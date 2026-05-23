@@ -170,8 +170,8 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-white text-black dark:bg-black dark:text-white pt-6 pb-20">
-      <div className="rounded-lg shadow-lg p-6 w-full max-w-md">
+    <div className="h-screen flex justify-center items-center bg-white text-black dark:bg-black dark:text-white py-2">
+      <div className="h-9/10 overflow-y-scroll no-scrollbar rounded-lg shadow-lg p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4">Create Account</h1>
         <form onSubmit={handleSubmit}>
 
