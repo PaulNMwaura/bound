@@ -68,10 +68,10 @@ export const Hero = ({ thisLister, session, sessionStatus, posts, setPosts}) => 
                 {/* Message and reviews buttons*/}
                 {!isLister ? (
                 <div className="mt-4 w-full flex justify-between text-xs md:text-lg">
-                  <div className="flex -space-x-2 items-center">
+                  {/* <div className="flex -space-x-2 items-center">
                     <IoMdMail size={22}/>
                     <button onClick={() => redirect(`/messages?id=${thisLister.userId}`)} className="btn hover:cursor-pointer">Message</button>
-                  </div>
+                  </div> */}
                   {sessionStatus == "authenticated" ? (
                     <div className="flex -space-x-2 items-center">
                       <BiSolidCommentEdit size={22} />
