@@ -23,7 +23,7 @@ export const EditListerProfile = ({ thisLister }) => {
     state: thisLister.state,
     description: thisLister.description,
     instructions: thisLister.instructions || "",
-    services: thisLister.services?.length ? thisLister.services : [{ name: "", price: "", subcategories: [{ name: "", price: "" }] }],
+    services: thisLister.services?.length ? thisLister.services : [{ name: "", price: "", subcategories: [{ name: "", price: "", description: "" }] }],
     availability: thisLister.availability || {
       monday: [{ start: "", end: "" }],
       tuesday: [{ start: "", end: "" }],
@@ -90,7 +90,7 @@ export const EditListerProfile = ({ thisLister }) => {
   const addService = () => {
     setFormData((prev) => ({
       ...prev,
-      services: [...prev.services, { name: "", price: "", subcategories: [] }],
+      services: [...prev.services, { name: "", price: "", description:"", subcategories: [] }],
     }));
   };
   
@@ -309,6 +309,7 @@ export const EditListerProfile = ({ thisLister }) => {
                         <div className="mt-2">
                         <h4 className="text-md font-semibold">Complementary services for {service?.type}</h4>
                         {service.subcategories.map((subcategory, subIndex) => (
+                          <div>
                             <div key={subIndex} className="flex space-x-2 mt-2">
                             <input
                                 type="text"
@@ -335,11 +336,25 @@ export const EditListerProfile = ({ thisLister }) => {
                             <button
                                 type="button"
                                 onClick={() => removeSubcategory(serviceIndex, subIndex)}
-                                className="text-red-500"
+                                className="text-red-500 cursor-pointer"
                             >
                                 Remove
                             </button>
                             </div>
+                            <div className=" mt-2">
+                              <input
+                                  type="text"
+                                  placeholder="Description"
+                                  value={subcategory.description}
+                                  onChange={(e) => {
+                                  const newServices = [...formData.services];
+                                  newServices[serviceIndex].subcategories[subIndex].description = e.target.value;
+                                  setFormData({ ...formData, services: newServices });
+                                  }}
+                                  className="border border-black p-2 rounded w-full"
+                              />
+                            </div>
+                          </div>
                         ))}
                         </div>
                     )}

@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Calendar from "@/components/Calendar.jsx";
 import TimeSelection from "@/components/TimeSelection.jsx";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { IoMdClose } from "react-icons/io";
+
 
 const formatTimeTo12Hour = (timeStr) => {
   const [hours, minutes] = timeStr.split(":");
@@ -95,7 +97,10 @@ export const Form = ({ thisLister }) => {
         > 
             {/* CLIENT INFORMATION */}
             <section className="bg-white shadow-md dark:bg-[#878a88]/40 dark:shadow-none w-3/4 rounded-lg flex flex-col p-4">
-                <h2 className="text-xl font-bold mb-6">Client Information</h2>
+                <div className="flex justify-between">
+                    <h2 className="text-start text-xl font-bold mb-6">Client Information</h2>
+                    <IoMdClose size={30} className="cursor-pointer" onClick={() => router.push(`/dashboard/${thisLister.username}`)}/>
+                </div>
                 <div className="mt-2">
                     <div className="flex flex-col md:flex-row gap-6">
                         <input
