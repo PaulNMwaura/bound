@@ -13,7 +13,7 @@ function capitalizeInputMask (string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function validatePassword (string) {
+function validateInput (string) {
   const disallowed = ["\"", "`", "\\", "/", "<", ">", "&", " ", ";", "\n", "\r"];
   return disallowed.filter(char => string.includes(char));
 }
@@ -82,12 +82,20 @@ export default function RegisterForm() {
       return;
     }
 
-    let invalidChar = validatePassword(password);
+    let invalidChar = validateInput(password);
     if(invalidChar.length > 0){
       setError(`Invalid password. Cannot contain "${invalidChar.join(", ")}".`);
       setFormData(prev => ({...prev, password: ""}));
       return;
     }
+
+    let invalidUsernameChar = validateInput(username);
+    if(invalidUsernameChar.length > 0){
+      setError(`Invalid username. Cannot contain "${invalidUsernameChar.join(", ")}".`);
+      setFormData(prev => ({...prev, username: ""}));
+      return;
+    }
+    
     try {
       // Check if user exists
       const resUserExists = await fetch("api/validation/userExists", {
