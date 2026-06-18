@@ -51,6 +51,11 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username, sessionStatus })
                             </div>
                         )}
                         <li>
+                            <a href="/applyLister" className="hover:underline">
+                                Become a lister
+                            </a>
+                        </li>
+                        <li>
                             <a href="/settings" className="hover:underline">
                                 Settings
                             </a>

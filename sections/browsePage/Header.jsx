@@ -10,6 +10,7 @@ import { HomeMenu } from "@/components/HomeMenu";
 
 export const Header = ({username, isLister, setFilters, session, sessionStatus}) => {
     const [isOpen, setMenuOpen] = useState(false);
+    const [displayButton, setDisplayButton] = useState(true);
 
     const toggleHomeMenu = () => setMenuOpen(!isOpen);
     
@@ -25,12 +26,16 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
         e.preventDefault();
         setFilters(formData); // Update filters in parent component
     };
+
+    setTimeout(() => {
+      setDisplayButton(false)
+    }, 10000)
     
     return (
       <header>
         <div className="container py-2 bg-white text-black rounded-b-xl">
           <div className="flex justify-between items-center">
-            <div onClick={() => redirect("/home")}>
+            <div /*onClick={() => redirect("/home")}*/>
               <Image src={LogoBlack.src} alt="Logo"  width={20} height={20} />
             </div>
             <div className="hidden md:flex max-w-3/4 lg:max-w-full text-xs lg:text-lg">
@@ -90,6 +95,11 @@ export const Header = ({username, isLister, setFilters, session, sessionStatus})
               </button>
             </div>
           </div>
+          {displayButton && (
+            <div className="flex justify-center md:justify-end">
+              <button onClick={() => router.replace(`/applyLister`)} className="btn btn-primary cursor-pointer mt-3">Become a lister</button>
+            </div>
+          )}
         </div>
         <HomeMenu isOpen={isOpen} onClose={toggleHomeMenu} isLister={isLister} username={username} sessionStatus={sessionStatus}/>
         {/* <SearchMenu setFilters={setFilters} isOpen={isSidebarOpen} onClose={toggleSidebar} /> */}
