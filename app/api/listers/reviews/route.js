@@ -1,8 +1,13 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import Review from "@/models/review";
 import { NextResponse } from "next/server";
+import { limiter } from '@/lib/limiter';
+
 
 export async function POST(req) {
+  const res = await limiter(req);
+  
+  if(!res.ok) return res;
   try {
     const { listerId, reviewerName, review, rating } = await req.json();
 

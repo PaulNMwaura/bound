@@ -5,8 +5,15 @@ import bcrypt from "bcryptjs";
 import { nanoid } from 'nanoid';
 import { addHours } from 'date-fns';
 import postmarkClient from "@/lib/postmark";
+import { limiter } from '@/lib/limiter';
+
+
 
 export async function POST(req) {
+    const res = await limiter(req);
+
+    if(!res.ok) return res;
+
     try {
         await connectMongoDB();
         const {username, firstname, lastname, phone, email, password, profilePicture, acceptedTerms} = await req.json();

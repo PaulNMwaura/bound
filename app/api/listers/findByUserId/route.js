@@ -1,8 +1,13 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import Lister from "@/models/lister";
 import { NextResponse } from "next/server";
+import { limiter } from '@/lib/limiter';
+
 
 export async function GET(req) {
+    const res = await limiter(req);
+    
+    if(!res.ok) return res;
     try {
         const { searchParams } = new URL(req.url);
         const id = searchParams.get("id");

@@ -3,8 +3,13 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Lister from "@/models/lister";
 import Appointment from "@/models/appointment";
 import postmarkClient from "@/lib/postmark";
+import { limiter } from '@/lib/limiter';
+
 
 export async function POST(req) {
+  const res = await limiter(req);
+  
+  if(!res.ok) return res;
   try {
     await connectMongoDB();
     const { listerId, listerEmail, listerName, listerUsername, firstname, lastname, email, date, time, services, specialNote } = await req.json();

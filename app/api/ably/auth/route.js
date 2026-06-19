@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/auth.config';
 import Ably from 'ably';
+import { limiter } from '@/lib/limiter';
 
 const rest = new Ably.Rest({ key: process.env.ABLY_API_KEY });
 
-export async function GET() {
+export async function GET(req) {
+  const res = await limiter(req);
+
+  if(!res.ok) return res;
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user?.id) {

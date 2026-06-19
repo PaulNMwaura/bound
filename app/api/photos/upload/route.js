@@ -1,8 +1,13 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Photo from "@/models/photo";
+import { limiter } from '@/lib/limiter';
+
 
 export async function POST(req) {
+  const res = await limiter(req);
+  
+  if(!res.ok) return res;
   try {
     const body = await req.json();
     const { listerId, photo, service } = body;

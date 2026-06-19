@@ -2,8 +2,13 @@ import { NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import Appointment from "@/models/appointment";
 import postmarkClient from "@/lib/postmark";
+import { limiter } from '@/lib/limiter';
+
 
 export async function GET(req, { params }) {
+  const res = await limiter(req);
+  
+  if(!res.ok) return res;
   const { id } = await params;
 
   try {

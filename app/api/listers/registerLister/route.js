@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import Lister from "@/models/lister";
+import { limiter } from '@/lib/limiter';
+
 
 export async function POST(req) {
+  const res = await limiter(req);
+  
+  if(!res.ok) return res;
   try {
     // Connect to MongoDB
     await connectMongoDB();
