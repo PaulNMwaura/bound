@@ -214,13 +214,11 @@ export const Hero = ({session}) => {
                   {filters.service ? (
                     <p className="mt-8">
                       We are having trouble finding listers who specialize in{" "}
-                      <strong>{filters.service}</strong> near you.
+                      <strong>{filters.service}</strong> near you. Try expanding your search, or check back later.
                     </p>
                   ) : (
                     <p className="mt-20">
-                      Trouble finding listers. Either there are no listers in
-                      this area or your spelling is incorrect. Please double
-                      check your spelling.
+                      No listings at this moment. Check back later!
                     </p>
                   )}
                 </div>
