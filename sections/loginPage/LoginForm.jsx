@@ -38,6 +38,11 @@ export default function LoginForm(){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if(!email || !password) {
+            setError("Missing email or password");
+            return;
+        }
+
         setLoggingIn(true);
 
         try {
@@ -47,7 +52,7 @@ export default function LoginForm(){
             
             if(!res && !res.ok || res.error) {
                 setLoggingIn(false);
-                if (res.error == "Please verify your email address before logging in."){
+                if (res.error){
                     setError(res.error);
                     setToggle(true);
                     return;

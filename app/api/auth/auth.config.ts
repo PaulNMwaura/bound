@@ -18,7 +18,6 @@ const authOptions: AuthOptions = {
           const password = credentials?.password;
         
           if (!email || !password) {
-            console.log("Missing email or password");
             return null;
           }
         
