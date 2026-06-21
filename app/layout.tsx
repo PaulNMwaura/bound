@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-// import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "./Provider";
 import "./globals.css";
 
@@ -38,7 +38,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
         </AuthProvider>
-        {/* <Analytics/> */}
+        <Analytics debug={false}/>
       </body>
     </html>
   );
