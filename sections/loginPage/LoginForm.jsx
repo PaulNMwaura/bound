@@ -49,20 +49,25 @@ export default function LoginForm(){
             const res = await signIn("credentials", {
                 email, password, redirect:true, callbackUrl: callBackUrl,
             });
+
+            if(res == null){
+                setLoggingIn(false);
+                setError("This account does not exist");
+                return;
+            }
             
             if(!res && !res.ok || res.error) {
                 setLoggingIn(false);
                 if (res.error){
                     setError(res.error);
                     setToggle(true);
-                    return;
+                    return; 
                 } 
                 if(verifyEmailButton == true)
                     setToggle(false);
                 setError("Invalid credentials.");
                 return;
             }
-            
             router.refresh();
         } catch (error) {
             console.log("Error: ", error);
