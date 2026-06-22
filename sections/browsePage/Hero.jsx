@@ -84,9 +84,9 @@ export const Hero = ({session}) => {
         checkIfIsLister();
     }, [id]);
 
-    let sessionStatus = "";
+    let sessionStatus = "unauthenticated";
 
-    if(!session) sessionStatus = "unauthenticated";
+    if(session) sessionStatus = "authenticated";
     if(justLoggedIn && isLister && username)
       redirect(`/dashboard/${username}`);
     if (loading && page === 1) return <div className="heads-up">Loading...</div>;

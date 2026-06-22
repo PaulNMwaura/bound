@@ -237,202 +237,356 @@ export const Hero = ({session, status}) => {
     };
 
     return (
-        <section className="md:container bg-white text-black pt-4 pb-20 md:rounded-lg md:mt-5">
-            <form className="px-2">
-                {/* Photo Upload */}
-                <div className="flex flex-col justify-center items-center">
-                    <label className="block text-sm font-medium">
-                    Banner Picture:
-                    <div className="flex justify-center">
-                        <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileSelect} className="fixed opacity-0 h-10 w-[75px] bg-red-500 block" />
-                        <button className="btn btn-primary">Upload</button>
+        <section className="max-w-7xl mx-auto bg-white text-black py-6">
+            <form className="space-y-8 px-4 md:px-8">
+
+            {/* Banner */}
+            <div className="sectionStyle">
+                <h2 className="text-lg font-semibold mb-4">
+                Banner Picture
+                </h2>
+
+                <div className="flex flex-col items-center gap-4">
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleFileSelect}
+                    className="hidden"
+                />
+
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => fileInputRef.current?.click()}
+                >
+                    Upload Banner
+                </button>
+
+                {imagePreview && !cropData && (
+                    <div className="w-full">
+                    <Cropper
+                        src={imagePreview}
+                        style={{ height: 400, width: "100%" }}
+                        initialAspectRatio={16 / 9}
+                        aspectRatio={16 / 9}
+                        guides={true}
+                        ref={cropperRef}
+                    />
+
+                    <button
+                        type="button"
+                        onClick={getCroppedImage}
+                        className="btn btn-primary mt-4"
+                    >
+                        Save Crop
+                    </button>
                     </div>
-                    </label>
-                    {/* Image Preview */}
-                    {imagePreview && !cropData && (
-                        <div>
-                            <Cropper
-                                src={imagePreview}
-                                style={{ height: 400, width: "100%" }}
-                                initialAspectRatio={16 / 9}
-                                aspectRatio={16 / 9}
-                                guides={true}
-                                ref={cropperRef}
-                            />
-                            <button type="button" onClick={getCroppedImage} className="mt-2 btn btn-primary">Save Crop</button>
-                        </div>
-                    )}
-
-                    {/* Display Cropped Image */}
-                    {cropData && (
-                        <div className="mt-2">
-                            <img src={cropData} alt="Cropped Image" className="w-[400px] h-[225px] object-cover"/>
-                        </div>
-                    )}
-                </div>
-
-                <div className="md:mt-2 md:px-4 md:py-4 md:rounded-t-lg md:rounded-br-lg">
-                    <div className="flex flex-col md:flex-row  md:justify-between gap-1">
-                        <div className="w-full">
-                            <label className="font-medium">firstname</label>
-                            <input type="text" name="firstname" value={formData.firstname} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
-                        </div>
-                        <div className="w-full">
-                            <label className="font-medium">lastname</label>
-                            <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
-                        </div>
-                        <div className="w-full">
-                            <label className="font-medium">language</label>
-                            <input type="text" name="language" value={formData.language} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
-                        </div>
-                        <div className="w-full">
-                            <label className="font-medium">city</label>
-                            <input type="text" name="city" value={formData.city} onChange={handleChange} className="border border-black/25 p-2 w-full text-xs" required />
-                        </div>
-                        <div className="w-full">
-                            <label className="font-medium">state</label>
-                            <select name="state" value={formData.state} onChange={handleChange} className="border border-black/25 p-2 rounded w-full text-xs" required>
-                            <option value="">Select State</option>
-                            {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
-                                <option key={state} value={state}>{state}</option>
-                            ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col md:flex-row md:justify-between gap-4">
-                    <div className="w-full md:px-4 md:rounded-b-lg">
-                        <label className="block text-sm font-medium">About Me</label>
-                        <textarea name="description" placeholder="Brief description of your services. This will be your bio." maxLength={500} value={formData.description} onChange={handleChange} className="border border-black p-2 rounded w-full min-h-80" required />
-                        <div className="text-sm text-gray-500 text-right mb-2">{formData.description.length}/500 Characters</div>
-                    </div>
-
-                    {/* Service Section */}
-                    <div className="w-full md:pr-4">
-                        <h3 className="text-md font-semibold">What services are you looking to offer?</h3>
-                        {formData.services.map((service, serviceIndex) => (
-                            <div key={serviceIndex} className="bg-[#ABEEFF] p-3 rounded my-2">
-                            
-                            {/* Service Name */}
-                            <input
-                                type="text"
-                                placeholder="Service Catergory"
-                                value={service.type}
-                                onChange={(e) => {
-                                const newServices = [...formData.services];
-                                newServices[serviceIndex].type = e.target.value;
-                                setFormData({ ...formData, services: newServices });
-                                }}
-                                className="border border-black p-2 rounded w-full"
-                                required
-                            />
-
-                            {/* Subcategories - Only Show If There Is At Least One */}
-                            {service.type && (
-                                <div className="mt-2">
-                                <h4 className="text-md font-semibold">Services for {service?.type}</h4>
-                                {service.subcategories.map((subcategory, subIndex) => (
-                                    <div key={subIndex}>
-                                        <div className="flex space-x-2 mt-2">
-                                            <input
-                                                type="text"
-                                                placeholder="Name"
-                                                value={subcategory.name}
-                                                onChange={(e) => {
-                                                const newServices = [...formData.services];
-                                                newServices[serviceIndex].subcategories[subIndex].name = e.target.value;
-                                                setFormData({ ...formData, services: newServices });
-                                                }}
-                                                className="border border-black p-2 rounded w-1/2"
-                                            />
-                                            <input
-                                                type="number"
-                                                min={0}
-                                                placeholder="Price"
-                                                value={subcategory.price}
-                                                onChange={(e) => {
-                                                const newServices = [...formData.services];
-                                                newServices[serviceIndex].subcategories[subIndex].price = e.target.value;
-                                                setFormData({ ...formData, services: newServices });
-                                                }}
-                                                className="border border-black p-2 rounded w-1/2"
-                                            />
-                                        </div>
-                                        <textarea 
-                                            type="text"
-                                            className="mt-2 border border-black p-2 w-full" 
-                                            value={subcategory.description}
-                                            onChange={(e) => {
-                                            const newServices = [...formData.services];
-                                            newServices[serviceIndex].subcategories[subIndex].description = e.target.value;
-                                            setFormData({ ...formData, services: newServices });
-                                            }}
-                                            placeholder="Describe what a client should expect"
-                                        />
-                                        <div className="flex justify-end">
-                                            <button
-                                                type="button"
-                                                onClick={() => removeSubcategory(serviceIndex, subIndex)}
-                                                className="text-red-500 text-end"
-                                            >
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                                </div>
-                            )}
-
-                            {/* Buttons */}
-                            <div className="flex justify-between mt-2">
-                                <div>
-                                <button
-                                    type="button"
-                                    onClick={() => {service.type ? addSubcategory(serviceIndex) : null}}
-                                    className="btn text-sm cursor-pointer"
-                                >
-                                    {service.type ? `Add service for ${service.type}` : "Add a service"}
-                                </button>
-                                </div>
-                                <div>
-                                <button
-                                    type="button"
-                                    onClick={() => removeService(serviceIndex)}
-                                    className="btn btn-primary bg-red-500 text-sm"
-                                >
-                                    Remove Service
-                                </button>
-                                </div>
-                            </div>
-                            </div>
-                        ))}
-                        <div className="flex justify-between items-center pt-2">
-                            <button type="button" onClick={addService} className="btn btn-primary text-sm">Add another service</button>
-                            <button type="button" className="btn border border-black text-sm" onClick={() => setShowInstructionsForm(true)}>Add service instructions</button>
-                        </div>
-                    </div>
-                </div>
-                
-                {/* Availability Editor */}
-                <ListerAvailabilityEditor availability={formData.availability} setFormData={setFormData} />
-                <div className="w-full py-3">
-                    <label className="font-medium">Appointment time slot interval (in minutes)</label>
-                    <input type="number" name="timeSlotInterval" max={6000} min={0} value={formData.timeSlotInterval} onChange={handleChange} className="border border-black rounded p-2 w-full text-xs md:text-sm" />
-                </div>
-                
-                {/* Submit Button */}
-                <div className="flex flex-col">
-                    <button type="submit" className="bg-black text-white px-4 py-2 rounded mt-4 w-[45%] place-self-center" onClick={handleSubmit}>{submitting ? 'Please wait...' : 'Register'}</button>
-                    <button onClick={handleReset} className="p-2 place-self-start">Clear All</button>
-                </div>
-                {error && (
-                <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-                    {error}
-                </div>
                 )}
+
+                {cropData && (
+                    <img
+                    src={cropData}
+                    alt=""
+                    className="
+                        w-full
+                        max-w-3xl
+                        aspect-video
+                        object-cover
+                        rounded-xl
+                        border
+                        border-zinc-200
+                    "
+                    />
+                )}
+                </div>
+            </div>
+
+            {/* Personal Information */}
+            <div className="sectionStyle">
+                <h2 className="text-lg font-semibold mb-6">
+                Personal Information
+                </h2>
+
+                <div className="grid md:grid-cols-5 gap-4">
+
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                    First Name
+                    </label>
+
+                    <input
+                    type="text"
+                    name="firstname"
+                    value={formData.firstname}
+                    onChange={handleChange}
+                    className="inputStyle"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                    Last Name
+                    </label>
+
+                    <input
+                    type="text"
+                    name="lastname"
+                    value={formData.lastname}
+                    onChange={handleChange}
+                    className="inputStyle"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                    Language
+                    </label>
+
+                    <input
+                    type="text"
+                    name="language"
+                    value={formData.language}
+                    onChange={handleChange}
+                    className="inputStyle"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                    City
+                    </label>
+
+                    <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    className="inputStyle"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                    State
+                    </label>
+
+                    <select
+                    name="state"
+                    value={formData.state}
+                    onChange={handleChange}
+                    className="inputStyle"
+                    >
+                    <option value="">Select State</option>
+                    {["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"].map((state) => (
+                        <option key={state} value={state}>{state}</option>
+                    ))}
+                    </select>
+                </div>
+                </div>
+            </div>
+
+            {/* About Me */}
+            <div className="sectionStyle">
+                <h2 className="text-lg font-semibold mb-4">
+                About Me
+                </h2>
+
+                <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                maxLength={500}
+                placeholder="Brief description of your services..."
+                className="textareaStyle min-h-72"
+                />
+
+                <div className="text-xs text-zinc-500 text-right mt-2">
+                {formData.description.length}/500 Characters
+                </div>
+            </div>
+
+            {/* Services */}
+            <div className="sectionStyle">
+                <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold">
+                    Services
+                </h2>
+
+                <button
+                    type="button"
+                    onClick={addService}
+                    className="btn btn-primary"
+                >
+                    Add Service Category
+                </button>
+                </div>
+
+                {formData.services.map((service, serviceIndex) => (
+                <div
+                    key={serviceIndex}
+                    className="
+                    border
+                    border-zinc-200
+                    bg-white
+                    rounded-xl
+                    p-5
+                    mb-4
+                    "
+                >
+                    <input
+                    type="text"
+                    placeholder="Service Category"
+                    value={service.type}
+                    className="inputStyle"
+                    />
+
+                    {service.type && (
+                    <div className="mt-4 space-y-4">
+
+                        {service.subcategories.map((subcategory, subIndex) => (
+                        <div
+                            key={subIndex}
+                            className="
+                            border
+                            border-zinc-200
+                            rounded-lg
+                            p-4
+                            "
+                        >
+                            <div className="grid md:grid-cols-2 gap-3">
+
+                            <input
+                                placeholder="Name"
+                                value={subcategory.name}
+                                className="inputStyle"
+                            />
+
+                            <input
+                                type="number"
+                                placeholder="Price"
+                                value={subcategory.price}
+                                className="inputStyle"
+                            />
+                            </div>
+
+                            <textarea
+                            value={subcategory.description}
+                            placeholder="Describe what a client should expect"
+                            className="textareaStyle mt-3"
+                            />
+
+                            <div className="flex justify-end mt-3">
+                            <button
+                                type="button"
+                                className="text-sm text-red-600"
+                            >
+                                Remove
+                            </button>
+                            </div>
+                        </div>
+                        ))}
+
+                        <div className="flex justify-between">
+                        <button
+                            type="button"
+                            className="secondaryButton"
+                        >
+                            Add Service Option
+                        </button>
+
+                        <button
+                            type="button"
+                            className="text-red-600 text-sm"
+                        >
+                            Remove Category
+                        </button>
+                        </div>
+                    </div>
+                    )}
+                </div>
+                ))}
+
+                <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setShowInstructionsForm(true)}
+                >
+                Add Service Instructions
+                </button>
+            </div>
+
+            {/* Availability */}
+            <div className="sectionStyle">
+                <h2 className="text-lg font-semibold mb-4">
+                Availability
+                </h2>
+
+                <ListerAvailabilityEditor
+                availability={formData.availability}
+                setFormData={setFormData}
+                />
+            </div>
+
+            {/* Time Slot Interval */}
+            <div className="sectionStyle">
+                <label className="block text-sm font-medium mb-2">
+                Appointment Time Slot Interval (Minutes)
+                </label>
+
+                <input
+                type="number"
+                name="timeSlotInterval"
+                value={formData.timeSlotInterval}
+                onChange={handleChange}
+                className="inputStyle"
+                />
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between border-t border-zinc-200 pt-6">
+
+                <button
+                type="button"
+                onClick={handleReset}
+                className="text-sm text-zinc-500 hover:text-black"
+                >
+                Clear All
+                </button>
+
+                <button
+                type="submit"
+                onClick={handleSubmit}
+                className="btn btn-primary"
+                >
+                {submitting ? "Please wait..." : "Register"}
+                </button>
+            </div>
+
+            {error && (
+                <div
+                className="
+                    bg-red-50
+                    border
+                    border-red-200
+                    text-red-700
+                    px-4
+                    py-3
+                    rounded-lg
+                "
+                >
+                {error}
+                </div>
+            )}
+
             </form>
+
             {showInstructionsForm && (
-                <ListerSetInstructions setShowInstructionsForm={setShowInstructionsForm} setFormData={setFormData} />
+            <ListerSetInstructions
+                setShowInstructionsForm={setShowInstructionsForm}
+                setFormData={setFormData}
+            />
             )}
         </section>
     );

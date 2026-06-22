@@ -1,10 +1,9 @@
 "use client";
-import React from "react";
-import Link from "next/link";
+
 import LogoBlack from "@/assets/Logo-black.png";
 import LogoWhite from "@/assets/Logo-white.png";
 import Image from "next/image";
-import { FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn  } from "react-icons/fa";
+import { FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn, FaSignOutAlt  } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { IoMail } from "react-icons/io5";
 
@@ -76,6 +75,12 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username, sessionStatus })
                         )}
                     </ul>
                 </div>
+                {sessionStatus == "authenticated" && (
+                    <div className="pl-4 flex flex-row items-center mt-auto mb-6 hover:bg-gradient-to-r from-red-500 to-[#ffffff]">
+                        <FaSignOutAlt size={25}/>
+                        <button onClick={() => signOut({callbackUrl:"/"})} className="btn text-md lg:text-lg cursor-pointer">signout</button>
+                    </div>
+                )}
             </div>
 
             {/* Background Overlay */}

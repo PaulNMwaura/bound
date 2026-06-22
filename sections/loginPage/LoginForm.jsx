@@ -47,7 +47,7 @@ export default function LoginForm(){
 
         try {
             const res = await signIn("credentials", {
-                email, password, redirect:true, callbackUrl: callBackUrl,
+                email, password, redirect:false, callbackUrl: callBackUrl,
             });
 
             if(res == null){
@@ -56,19 +56,13 @@ export default function LoginForm(){
                 return;
             }
             
-            if(!res && !res.ok || res.error) {
+            if (res?.error) {
                 setLoggingIn(false);
-                if (res.error){
-                    setError(res.error);
-                    setToggle(true);
-                    return; 
-                } 
-                if(verifyEmailButton == true)
-                    setToggle(false);
-                setError("Invalid credentials.");
+                setError("Invalid credentials. Please validate then retry.");
                 return;
             }
-            router.refresh();
+            
+            router.push(callBackUrl || "/");
         } catch (error) {
             console.log("Error: ", error);
         }

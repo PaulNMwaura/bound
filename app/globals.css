@@ -37,6 +37,22 @@ body {
   @apply text-xs inline-flex border border-orange-500 dark:border-[#98F5F9] px-3 py-1 rounded-lg tracking-tight;
 }
 
+.inputStyle {
+  @apply w-full border border-zinc-300 bg-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black
+}
+
+.textareaStyle {
+  @apply w-full border border-zinc-300 bg-white rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black focus:border-black
+}
+
+.sectionStyle {
+  @apply bg-zinc-50 border border-zinc-200 rounded-xl p-6
+}
+
+.btn-secondary {
+  @apply border border-zinc-300 bg-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-100 transition
+}
+
 .section-title {
   @apply font-bold tracking-tighter bg-gradient-to-b from-purple-600 to-orange-500 text-transparent bg-clip-text;
 }
