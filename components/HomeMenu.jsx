@@ -3,7 +3,9 @@
 import LogoBlack from "@/assets/Logo-black.png";
 import LogoWhite from "@/assets/Logo-white.png";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 import { FaRegWindowClose, FaInstagram, FaFacebook, FaLinkedinIn, FaSignOutAlt  } from "react-icons/fa";
+import { IoShieldCheckmarkSharp, IoAlbums, IoPerson, IoSearch, IoHomeOutline, IoSettingsOutline, IoAppsSharp, IoKeySharp  } from "react-icons/io5";
 import { FaXTwitter } from "react-icons/fa6";
 import { IoMail } from "react-icons/io5";
 
@@ -16,61 +18,70 @@ export const HomeMenu = ({ isOpen, onClose, isLister, username, sessionStatus })
                     isOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
-                <div className="p-4 flex mt-8 justify-between items-center border-b">
-                    <Image src={LogoBlack.src} alt="Logo"  width={15} height={15} className="dark:hidden"/>
-                    <Image src={LogoWhite.src} alt="Logo"  width={15} height={15} className="hidden dark:block"/>
+                <div className="p-4 flex mt-8 justify-end items-center border-b">
+                    {/* <Image src={LogoBlack.src} alt="Logo"  width={15} height={15} className="dark:hidden"/>
+                    <Image src={LogoWhite.src} alt="Logo"  width={15} height={15} className="hidden dark:block"/> */}
                     <button onClick={onClose} className="h-6 w-6 cursor-pointer">
                         <FaRegWindowClose />
                     </button>
                 </div>
-                <div className="p-4 tracking-tight">
-                    <ul className="space-y-4">
-                        <li>
-                            <a href="/" className="hover:underline">
-                                Find A Lister
+                <div className="tracking-tight">
+                    <ul>
+                        <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                            <IoSearch />
+                            <a href="/">
+                                Browse
                             </a>
-                        </li>
+                        </div>
                         {/* <li>
                             <a href="/messages" className="hover:underline">
                                 Messages
                             </a>
                         </li> */}
-                        {isLister && (
-                            <div className="space-y-4">
-                                <li>
-                                    <a href={`/profile/${username}`} className="hover:underline">
+                        {isLister ? (
+                            <div>
+                                <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                    <IoPerson />
+                                    <a href={`/profile/${username}`}>
                                         Profile
                                     </a>
-                                </li>
-                                <li>
-                                    <a href={`/dashboard/${username}`} className="hover:underline">
+                                </div>
+                                <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                    <IoAppsSharp />
+                                    <a href={`/dashboard/${username}`}>
                                         Dashboard
                                     </a>
-                                </li>                              
+                                </div>                              
+                            </div>
+                        ):(
+                            <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                <IoAlbums />
+                                <a href="/applyLister">
+                                    Become a lister
+                                </a>
                             </div>
                         )}
-                        <li>
-                            <a href="/applyLister" className="hover:underline">
-                                Become a lister
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/settings" className="hover:underline">
+                        
+                        <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                            <IoSettingsOutline />
+                            <a href="/settings">
                                 Settings
                             </a>
-                        </li>
+                        </div>
                         {sessionStatus == "unauthenticated" && (
-                            <div className="space-y-4">
-                                <li>
-                                    <a href={"/login"} className="hover:underline">
+                            <div>
+                                <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                    <IoKeySharp />
+                                    <a href="/login">
                                         Login
                                     </a>
-                                </li>
-                                <li>
-                                    <a href={"/register"} className="hover:underline">
+                                </div>
+                                <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
+                                    <IoShieldCheckmarkSharp />
+                                    <a href="/register">
                                         Sign Up
                                     </a>
-                                </li> 
+                                </div> 
                             </div>
                         )}
                     </ul>

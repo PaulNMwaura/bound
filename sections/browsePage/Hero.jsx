@@ -135,14 +135,14 @@ export const Hero = ({session}) => {
                         {lister.bannerPicture ? (
                           <Image
                             src={lister.bannerPicture}
-                            alt="Lister Banner Picture"
+                            alt="Lister's Banner Picture"
                             width={1920}
                             height={1080}
                             priority={true}
-                            className="object-cover aspect-16/9 w-full h-full rounded-lg"
+                            className="object-cover aspect-video w-full h-full rounded-lg"
                           />
                         ) : (
-                          <div className="aspect-16/9 w-full h-full bg-[#a2a2a2] rounded-lg" />
+                          <div className="aspect-video w-full h-full bg-[#a2a2a2] rounded-lg" />
                         )}
                       </div>
 

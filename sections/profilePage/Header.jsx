@@ -1,22 +1,48 @@
 "use client";
-import Image from "next/image";
-import {ViewPageSidebar} from "@/components/ViewPageSidebar";
+
 import { redirect, useRouter } from "next/navigation";
 import { useState, useEffect} from "react";
 import { signOut, useSession } from "next-auth/react";
 import { IoMenu } from "react-icons/io5";
+import { HomeMenu } from "@/components/HomeMenu";
 
 export const Header = ({ id, thisLister, sessionStatus}) => {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isALister, setLister] = useState(false); /*  in other pages, "isLister is checking string a true or false based
+                                                      on whether the current user is also the lister of the current profile being viewed.
+                                                      For the homeMenu on this page howerver, we just want to check if the current user
+                                                      is a lister or not. We don't care if they are the lister for the profile in view.
+                                                      I tried to clarify this by renaming the variable to  "isALister" rather than "isLister". 
+                                                  */
+  const [username, setListerUsername] = useState(null);
 
   const [error, setError] = useState(null);
   const { data: session } = useSession(); 
 
   if (!thisLister) return <div>No lister found</div>;
 
-  const isLister = session?.user?.id === thisLister.userId;
+  const userId = session?.user?.id || "";
 
+  useEffect(() => {
+    if (!userId) return;
+      const checkIfIsLister = async () => {
+        try {
+          const response = await fetch(`/api/listers/findByUserId?id=${userId}`);
+            if (!response.ok) {
+              console.log(response.status);
+              throw new Error('Lister not found');
+            }
+            const data = await response.json();
+            setListerUsername(data.lister.username);
+            setLister(true);
+        } catch (error) {
+            return;
+        }
+      };
+    checkIfIsLister();
+  }, [userId]);
+  
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
     <>
@@ -47,7 +73,9 @@ export const Header = ({ id, thisLister, sessionStatus}) => {
             </div>
           </div>
       </section>
-      <ViewPageSidebar isLister={isLister} username={thisLister.username} isOpen={isSidebarOpen} onClose={toggleSidebar} sessionStatus={sessionStatus} />
+      {isSidebarOpen && (
+        <HomeMenu isOpen={isSidebarOpen} onClose={toggleSidebar} isLister={isALister} username={username} sessionStatus={sessionStatus}/>
+      )}
     </>
   );
 };

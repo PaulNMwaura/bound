@@ -1,6 +1,6 @@
 "use client";
 
-import { IoSearch, IoHomeOutline, IoSettingsOutline, IoAppsSharp  } from "react-icons/io5";
+import { IoSearch,IoPerson, IoHomeOutline, IoAppsSharp  } from "react-icons/io5";
 import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -39,7 +39,7 @@ export const Sidenav = ({session, isLister}) => {
                         {isLister && (
                             <div>
                                 <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
-                                    <IoSettingsOutline />
+                                    <IoPerson />
                                     <li>
                                         <a href={`/profile/${session.user.username}`}>view profile</a>
                                     </li>

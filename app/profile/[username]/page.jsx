@@ -148,7 +148,6 @@ export default function listerPage ({params}) {
   if (!thisLister) return <div className="heads-up">This lister does not exist</div>;
   
   const isLister = session?.user?.id === thisLister.userId;
-  console.log("This lister's id: ", thisLister._id);
   return (
     <div className="min-h-screen max-h-fit bg-white flex flex-col items-center pb-10">
       <div className="w-full">
@@ -168,9 +167,6 @@ export default function listerPage ({params}) {
         </div>
         {/* <Reviews reviews={reviews}/> */}
       </div>
-      {/* <button className={formOpen ? `hidden`:`z-10 fixed bottom-10 right-3 btn btn-primary hover:cursor-pointer text-xs sm:text-[14px]`} onClick={()=>{session ? openPopup("appointment") : redirect(`/login?callbackUrl=${currentUrl}`)}}>
-        {session != null ? "Request Appointment":"Login to Request"}
-      </button> */}
       {formOpen && thisLister && (
         <AppointmentForm
           lister={thisLister}

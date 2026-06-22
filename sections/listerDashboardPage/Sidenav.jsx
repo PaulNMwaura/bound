@@ -1,6 +1,6 @@
 "use client";
 
-import { IoSearch, IoHomeOutline, IoSettingsOutline  } from "react-icons/io5";
+import { IoSearch, IoHomeOutline, IoPerson  } from "react-icons/io5";
 import { AiOutlineMessage } from "react-icons/ai";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -49,7 +49,7 @@ export const Sidenav = ({session}) => {
                             </li>
                         </div> */}
                         <div className="py-3 pl-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gradient-to-r from-[#EAE8EB]/30 to-[#ffffff]">
-                            <IoSettingsOutline />
+                            <IoPerson />
                             <li>
                                 <a href={`/profile/${session.user.username}`}>view profile</a>
                             </li>
